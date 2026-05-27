@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌶️ Reports Dashboard - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f0e6 0%, #fff5e6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .date-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgb(228, 200, 151);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #D2691E;
+        }
+
+        .stat-card h3 {
+            color: #8B4513;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Report Grid */
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f0e0d0;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.15);
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .report-icon {
+            font-size: 40px;
+        }
+
+        .report-title h2 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .report-title p {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .report-body {
+            padding: 20px;
+        }
+
+        .report-preview {
+            background: #faf7f2;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #666;
+            border: 1px dashed #D2691E;
+            min-height: 100px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-view, .btn-print, .btn-pdf {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #A0522D;
+        }
+
+        .btn-print {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-print:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: #c82333;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #321704;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 8px 12px;
+            border: 2px solid #e0d5cc;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            border-top: 1px solid #f0e0d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌶️ Pearl Land Commodities</h1>
+            <p>Sales Administration System - Reports Dashboard</p>
+            <div class="date-badge">
+                📅 <span id="currentDate"></span>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <h3>📊 TOTAL REPORTS</h3>
+                <div class="stat-number">10</div>
+            </div>
+            <div class="stat-card">
+                <h3>📅 THIS MONTH</h3>
+                <div class="stat-number" id="monthName"></div>
+            </div>
+            <div class="stat-card">
+                <h3>⏱️ LAST GENERATED</h3>
+                <div class="stat-number" id="lastGenerated">Today</div>
+            </div>
+            <div class="stat-card">
+                <h3>📋 REPORT TYPES</h3>
+                <div class="stat-number">6</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>📅 Date Range:</label>
+                <input type="date" id="startDate" value="2026-03-01">
+                <span>to</span>
+                <input type="date" id="endDate" value="2026-03-12">
+            </div>
+            <div class="filter-group">
+                <label>👤 User Role:</label>
+                <select id="userRole">
+                    <option value="all">All Reports</option>
+                    <option value="manager">Manager Only</option>
+                    <option value="clerk">Clerk Only</option>
+                    <option value="account">Account Only</option>
+                </select>
+            </div>
+            <button class="btn-view" onclick="applyFilters()">Apply Filters</button>
+        </div>
+
+        <!-- Reports Grid -->
+        <div class="report-grid">
+            <!-- Report 1: Daily Summary -->
+            <div class="report-card" data-role="manager,account">
+                <div class="report-header">
+                    <div class="report-icon">📅</div>
+                    <div class="report-title">
+                        <h2>Daily Summary Report</h2>
+                        <p>Sales & Collections Overview</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Today's Summary:</strong><br>
+                        Total Sales: Rs. 252,000<br>
+                        Collections: Rs. 290,000<br>
+                        Returns: Rs. 3,700
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Daily</span>
+                        <span>👤 Manager, Account</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="daily-summary-report.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('daily-summary-report.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('daily-summary-report.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 2: Monthly Summary -->
+            <div class="report-card" data-role="manager">
+                <div class="report-header">
+                    <div class="report-icon">📊</div>
+                    <div class="report-title">
+                        <h2>Monthly Summary Report</h2>
+                        <p>Monthly Performance Overview</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>March 2026:</strong><br>
+                        Total Sales: Rs. 850,000<br>
+                        Total Orders: 145<br>
+                        Growth: +12.5%
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="monthly-summary-report.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('monthly-summary-report.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('monthly-summary-report.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 3: Supplier Performance -->
+            <div class="report-card" data-role="manager,clerk">
+                <div class="report-header">
+                    <div class="report-icon">🚚</div>
+                    <div class="report-title">
+                        <h2>Supplier Performance Report</h2>
+                        <p>Supplier Evaluation</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Top Supplier:</strong><br>
+                        Lanka Spices: 95% On-time<br>
+                        Kalutara Farmers: 88% On-time<br>
+                        Total Orders: 32
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager, Clerk</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="supplier-performance.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('supplier-performance.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('supplier-performance.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 4: Customer Performance -->
+            <div class="report-card" data-role="manager">
+                <div class="report-header">
+                    <div class="report-icon">👥</div>
+                    <div class="report-title">
+                        <h2>Customer Performance Report</h2>
+                        <p>Customer Analysis</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Top Customers:</strong><br>
+                        Saman Perera: Rs. 125,000<br>
+                        Nimali Stores: Rs. 98,000<br>
+                        Total Active: 45
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="customer-performance.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('customer-performance.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('customer-performance.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 5: Delivery Report -->
+            <div class="report-card" data-role="manager">
+                <div class="report-header">
+                    <div class="report-icon">🚚</div>
+                    <div class="report-title">
+                        <h2>Delivery Performance Report</h2>
+                        <p>Delivery Tracking</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>March 2026:</strong><br>
+                        Total Deliveries: 98<br>
+                        On-time: 85 (86.7%)<br>
+                        Delayed: 13 (13.3%)
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="delivery-report.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('delivery-report.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('delivery-report.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 6: Returns Report -->
+            <div class="report-card" data-role="manager,clerk">
+                <div class="report-header">
+                    <div class="report-icon">🔄</div>
+                    <div class="report-title">
+                        <h2>Returns Report</h2>
+                        <p>Goods Return Analysis</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>March 2026:</strong><br>
+                        Total Returns: Rs. 25,500<br>
+                        Damaged: 45% | Expired: 30%<br>
+                        Highest: Turmeric Powder
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager, Clerk</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="returns-report.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('returns-report.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('returns-report.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 7: Stock Report -->
+            <div class="report-card" data-role="manager,clerk">
+                <div class="report-header">
+                    <div class="report-icon">📦</div>
+                    <div class="report-title">
+                        <h2>Inventory / Stock Report</h2>
+                        <p>Current Stock Levels</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Low Stock Items:</strong><br>
+                        Chili Powder: 15 kg (Reorder: 25)<br>
+                        Pepper: 8 kg (Reorder: 10)<br>
+                        Total Items: 45
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Weekly</span>
+                        <span>👤 Manager, Clerk</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="stock-report.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('stock-report.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('stock-report.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 8: Sales Rep Performance -->
+            <div class="report-card" data-role="manager">
+                <div class="report-header">
+                    <div class="report-icon">👤</div>
+                    <div class="report-title">
+                        <h2>Sales Rep Performance</h2>
+                        <p>Representative Analysis</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Top Performers:</strong><br>
+                        Kamal: Rs. 450,000 (Target: 400k)<br>
+                        Nimal: Rs. 385,000 (Target: 400k)<br>
+                        Sunil: Rs. 320,000 (Target: 350k)
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="sales-rep-performance.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('sales-rep-performance.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('sales-rep-performance.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 9: Outstanding Payments -->
+            <div class="report-card" data-role="manager,account">
+                <div class="report-header">
+                    <div class="report-icon">💰</div>
+                    <div class="report-title">
+                        <h2>Outstanding Payments</h2>
+                        <p>Debtors Report</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Due Payments:</strong><br>
+                        Saman Perera: Rs. 25,000 (30 days)<br>
+                        Nimali Stores: Rs. 42,000 (15 days)<br>
+                        Total Outstanding: Rs. 185,000
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Weekly</span>
+                        <span>👤 Manager, Account</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="outstanding-payments.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('outstanding-payments.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('outstanding-payments.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report 10: Fast/Slow Moving Items -->
+            <div class="report-card" data-role="manager">
+                <div class="report-header">
+                    <div class="report-icon">⚡</div>
+                    <div class="report-title">
+                        <h2>Fast/Slow Moving Items</h2>
+                        <p>Product Analysis</p>
+                    </div>
+                </div>
+                <div class="report-body">
+                    <div class="report-preview">
+                        <strong>Fast Moving (Top 3):</strong><br>
+                        Turmeric Powder: 450 kg sold<br>
+                        Chili Powder: 380 kg sold<br>
+                        <strong>Slow Moving:</strong><br>
+                        Curry Powder: 45 kg sold
+                    </div>
+                    <div class="report-meta">
+                        <span>⏱️ Monthly</span>
+                        <span>👤 Manager</span>
+                    </div>
+                    <div class="report-actions">
+                        <a href="fast-slow-items.html" class="btn-view">View</a>
+                        <button class="btn-print" onclick="printReport('fast-slow-items.html')">Print</button>
+                        <button class="btn-pdf" onclick="generatePDF('fast-slow-items.html')">PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 Pearl Land Commodities (Pvt) Ltd. All rights reserved.</p>
+            <p style="font-size: 0.8em; margin-top: 10px;">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Set month name
+        document.getElementById('monthName').textContent = new Date().toLocaleDateString('en-US', { month: 'long' });
+
+        // Set last updated
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+
+        // Filter function
+        function applyFilters() {
+            let role = document.getElementById('userRole').value;
+            let cards = document.querySelectorAll('.report-card');
+            
+            cards.forEach(card => {
+                let roles = card.getAttribute('data-role').split(',');
+                if (role === 'all' || roles.includes(role)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Print function
+        function printReport(url) {
+            window.open(url, '_blank');
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        }
+
+        // PDF function (opens in new window, user can save as PDF)
+        function generatePDF(url) {
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

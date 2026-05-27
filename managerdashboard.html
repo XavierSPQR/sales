@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 Manager Dashboard - Pearl Land Spices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-green: #1a4d1a;
+            --secondary-green: #2e7d32;
+            --light-green: #c8e6c9;
+            --accent-brown: #8b5a2b;
+            --cream: #fff8e7;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --success: #2ecc71;
+            --info: #3498db;
+            --gray: #95a5a6;
+        }
+
+        body {
+            background: var(--cream);
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(26, 77, 26, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 25px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--light-green);
+        }
+
+        .logo {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--accent-brown);
+            margin-bottom: 25px;
+        }
+
+        .logo h2 {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 8px;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background: var(--secondary-green);
+            transform: translateX(5px);
+        }
+
+        .nav-menu .icon {
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .user-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 20px;
+            margin-top: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--accent-brown);
+        }
+
+        .header h1 {
+            color: var(--primary-green);
+        }
+
+        .date-badge {
+            background: var(--light-green);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 3px solid var(--accent-brown);
+        }
+
+        .kpi-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .kpi-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-green);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-header h3 {
+            color: var(--primary-green);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px 8px;
+            background: var(--light-green);
+            color: var(--primary-green);
+        }
+
+        .data-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-processing { background: var(--warning); color: white; }
+        .status-delivered { background: var(--success); color: white; }
+        .status-pending { background: var(--gray); color: white; }
+        .badge-customer { background: var(--info); color: white; }
+        .badge-wholesaler { background: var(--accent-brown); color: white; }
+        .badge-supplier { background: #6c3483; color: white; }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        .btn-edit { background: var(--warning); color: white; }
+        .btn-delete { background: var(--danger); color: white; }
+        .btn-primary {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .add-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .add-form.show { display: block; }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .report-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-left: 4px solid var(--accent-brown);
+        }
+        .report-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+        
+        .filter-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .filter-group select, .filter-group input {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+        }
+
+        /* Hide add buttons and report buttons as per requirements */
+        .hide-btn {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">
+                <div style="font-size: 40px;">🌶️</div>
+                <h2>Pearl Land</h2>
+                <p>Spices Manufacturing</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a onclick="showSection('dashboard')" class="active"><span class="icon">🏠</span> Dashboard</a></li>
+                <li><a onclick="showSection('orders')"><span class="icon">📦</span> Orders</a></li>
+                <li><a onclick="showSection('products')"><span class="icon">🌶️</span> Products</a></li>
+                <li><a onclick="showSection('customers')"><span class="icon">👥</span> Customers</a></li>
+                <li><a onclick="showSection('wholesalers')"><span class="icon">🏪</span> Wholesalers</a></li>
+                <li><a onclick="showSection('suppliers')"><span class="icon">🚚</span> Suppliers</a></li>
+                <li><a onclick="showSection('payments')"><span class="icon">💰</span> Payments</a></li>
+                <li><a onclick="showSection('reports')"><span class="icon">📊</span> Reports</a></li>
+            </ul>
+            <div class="user-info">
+                <div>Kamal Perera</div>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>👑 Manager Dashboard</h1>
+                <div class="date-badge" id="currentDate"></div>
+            </div>
+
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboardSection" class="section-content active">
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-icon">📦</div><div><h3>Total Orders</h3><div class="kpi-number" id="dashTotalOrders">0</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">💰</div><div><h3>Total Revenue</h3><div class="kpi-number">Rs. 0</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">👥</div><div><h3>Customers</h3><div class="kpi-number" id="dashCustomers">0</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">🏪</div><div><h3>Wholesalers</h3><div class="kpi-number" id="dashWholesalers">0</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">🚚</div><div><h3>Suppliers</h3><div class="kpi-number" id="dashSuppliers">0</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">⚠️</div><div><h3>Low Stock</h3><div class="kpi-number" id="dashLowStock">0</div></div></div>
+                </div>
+                <div class="card"><div class="card-header"><h3>📋 Recent Orders</h3><a href="#" onclick="showSection('orders')">View All →</a></div>
+                    <table class="data-table" id="recentOrdersTable"></table>
+                </div>
+                <div class="card"><div class="card-header"><h3>🏆 Top Selling Products</h3></div>
+                    <table class="data-table" id="topProductsTable"></table>
+                </div>
+            </div>
+
+            <!-- ORDERS SECTION - New Order button removed -->
+            <div id="ordersSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>📋 All Orders</h3></div>
+                    <table class="data-table"><thead><tr><th>Order ID</th><th>Name</th><th>Type</th><th>Product</th><th>Qty</th><th>Total (Rs.)</th><th>Status</th><th>Action</th></tr></thead><tbody id="ordersTableBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- PRODUCTS SECTION - Cancel button and Add button removed (only product list visible) -->
+            <div id="productsSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>🌶️ Product Inventory</h3></div>
+                    <table class="data-table"><thead><tr><th>Code</th><th>Product</th><th>Category</th><th>Price/kg</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="productsTableBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- CUSTOMERS SECTION - Add Customer and Report buttons removed -->
+            <div id="customersSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>👥 Customer Details</h3></div>
+                    <table class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent (Rs.)</th><th>Action</th></tr></thead><tbody id="customersTableBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- WHOLESALERS SECTION - Add Wholesaler and Report buttons removed -->
+            <div id="wholesalersSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>🏪 Wholesaler Details</h3></div>
+                    <table class="data-table"><thead><tr><th>ID</th><th>Business Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent (Rs.)</th><th>Action</th></tr></thead><tbody id="wholesalersTableBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- SUPPLIERS SECTION - Add Supplier and Report buttons removed -->
+            <div id="suppliersSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>🚚 Supplier Details</h3></div>
+                    <table class="data-table"><thead><tr><th>ID</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Materials</th><th>Orders Cost (Rs.)</th><th>Action</th></tr></thead><tbody id="suppliersTableBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- PAYMENTS SECTION - Record Payment button removed, only filter and list remain -->
+            <div id="paymentsSection" class="section-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💰 Payment Transactions (Income/Expense)</h3>
+                    </div>
+
+                    <!-- Filter Bar (kept for functionality) -->
+                    <div class="filter-bar">
+                        <div class="filter-group"><label>Filter by Type</label><select id="filterPayType"><option value="all">All Types</option><option value="Customer">Customer</option><option value="Wholesaler">Wholesaler</option><option value="Supplier">Supplier</option></select></div>
+                        <div class="filter-group"><label>Filter by Year</label><select id="filterPayYear"></select></div>
+                        <div class="filter-group"><label>Search Name</label><input type="text" id="filterPayName" placeholder="Name contains..."></div>
+                        <div class="filter-group"><button class="btn-primary" onclick="applyPaymentFilter()" style="padding:6px 16px;">🔍 Filter</button></div>
+                        <div class="filter-group"><button class="btn-secondary" onclick="resetPaymentFilter()" style="padding:6px 16px;">Reset</button></div>
+                    </div>
+
+                    <!-- Payment Summary Cards -->
+                    <div id="paymentSummaryCards" style="margin-bottom:20px;"></div>
+
+                    <!-- Payment Transactions Table -->
+                    <div class="card-header"><h3>📜 Payment List</h3></div>
+                    <table class="data-table">
+                        <thead><tr><th>ID</th><th>Date</th><th>Name</th><th>Type</th><th>Amount (Rs.)</th><th>Description</th><th>Action</th></tr></thead>
+                        <tbody id="paymentsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REPORTS SECTION -->
+            <div id="reportsSection" class="section-content">
+                <div class="card"><div class="card-header"><h3>📊 All Reports</h3></div><div class="reports-grid" id="reportsGrid"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ======================== DATA MODELS ========================
+        let customers = [ { id: 'C001', name: 'Saman Perera', email: 'saman@gmail.com', phone: '071-1234567', orders: 5, totalSpent: 185000 }, { id: 'C002', name: 'City Market', email: 'city@market.com', phone: '077-4567890', orders: 3, totalSpent: 95000 } ];
+        let wholesalers = [ { id: 'W001', name: 'Nimali Stores', email: 'nimali@stores.lk', phone: '072-7654321', regNo: 'REG123', orders: 12, totalSpent: 187500 }, { id: 'W002', name: 'Lanka Traders', email: 'lanka@traders.com', phone: '077-9876543', regNo: 'REG456', orders: 8, totalSpent: 320000 } ];
+        let orders = [ { id: 'ORD-001', name: 'Saman Perera', type: 'Customer', product: 'Turmeric Powder', qty: 200, price: 950, total: 190000, status: 'Delivered' }, { id: 'ORD-002', name: 'Nimali Stores', type: 'Wholesaler', product: 'Black Pepper', qty: 150, price: 780, total: 117000, status: 'Processing' }, { id: 'ORD-003', name: 'City Market', type: 'Customer', product: 'Chili Powder', qty: 100, price: 540, total: 54000, status: 'Pending' }, { id: 'ORD-004', name: 'Lanka Traders', type: 'Wholesaler', product: 'Cinnamon', qty: 300, price: 950, total: 285000, status: 'Delivered' } ];
+        let products = [ { code: 'P001', name: 'Turmeric Powder', category: 'Spice', price: 500, stock: 450, minStock: 100 }, { code: 'P002', name: 'Chili Powder', category: 'Spice', price: 400, stock: 15, minStock: 50 }, { code: 'P003', name: 'Black Pepper', category: 'Spice', price: 780, stock: 8, minStock: 40 }, { code: 'P004', name: 'Cinnamon Sticks', category: 'Spice', price: 950, stock: 320, minStock: 100 }, { code: 'P005', name: 'Cardamom', category: 'Whole Spice', price: 2800, stock: 25, minStock: 30 } ];
+        let suppliers = [ { id: 'S001', name: 'Lanka Spices', contact: 'Kamal Perera', email: 'lanka@spices.com', phone: '071-1234567', materials: 'Turmeric, Chili', ordersCost: 500000 }, { id: 'S002', name: 'Kalutara Farmers', contact: 'Nimal Silva', email: 'kalutara@farmers.com', phone: '072-7654321', materials: 'Coriander, Pepper', ordersCost: 320000 } ];
+
+        // PAYMENTS ARRAY 
+        let payments = [
+            { id: 'PAY-001', name: 'Saman Perera', type: 'Customer', amount: 25000, date: '2025-02-15', description: 'Payment for order ORD-001' },
+            { id: 'PAY-002', name: 'Nimali Stores', type: 'Wholesaler', amount: 58000, date: '2025-03-10', description: 'Wholesale advance' },
+            { id: 'PAY-003', name: 'Lanka Spices', type: 'Supplier', amount: 120000, date: '2025-01-20', description: 'Raw material payment' },
+            { id: 'PAY-004', name: 'City Market', type: 'Customer', amount: 54000, date: '2025-02-28', description: 'Chili powder order' }
+        ];
+
+        let currentPaymentFilter = { type: 'all', year: 'all', name: '' };
+
+        function populateYearFilter() {
+            const yearsSet = new Set();
+            payments.forEach(p => { if(p.date) yearsSet.add(p.date.substring(0,4)); });
+            let years = Array.from(yearsSet).sort();
+            const yearSelect = document.getElementById('filterPayYear');
+            yearSelect.innerHTML = '<option value="all">All Years</option>';
+            years.forEach(y => { yearSelect.innerHTML += `<option value="${y}">${y}</option>`; });
+            if(currentPaymentFilter.year !== 'all') yearSelect.value = currentPaymentFilter.year;
+            else yearSelect.value = 'all';
+        }
+
+        function applyPaymentFilter() {
+            currentPaymentFilter.type = document.getElementById('filterPayType').value;
+            currentPaymentFilter.year = document.getElementById('filterPayYear').value;
+            currentPaymentFilter.name = document.getElementById('filterPayName').value.toLowerCase();
+            renderPaymentsList();
+        }
+        function resetPaymentFilter() {
+            document.getElementById('filterPayType').value = 'all';
+            document.getElementById('filterPayYear').value = 'all';
+            document.getElementById('filterPayName').value = '';
+            currentPaymentFilter = { type: 'all', year: 'all', name: '' };
+            renderPaymentsList();
+        }
+
+        function getFilteredPayments() {
+            return payments.filter(p => {
+                if(currentPaymentFilter.type !== 'all' && p.type !== currentPaymentFilter.type) return false;
+                if(currentPaymentFilter.year !== 'all') {
+                    let payYear = p.date ? p.date.substring(0,4) : '';
+                    if(payYear !== currentPaymentFilter.year) return false;
+                }
+                if(currentPaymentFilter.name && !p.name.toLowerCase().includes(currentPaymentFilter.name)) return false;
+                return true;
+            });
+        }
+
+        function renderPaymentsList() {
+            const filtered = getFilteredPayments();
+            let html = '';
+            filtered.forEach((p) => {
+                let typeBadge = p.type === 'Customer' ? 'badge-customer' : (p.type === 'Wholesaler' ? 'badge-wholesaler' : 'badge-supplier');
+                html += `<tr>
+                    <td>${p.id}</td>
+                    <td>${p.date || 'N/A'}</td>
+                    <td>${p.name}</td>
+                    <td><span class="status-badge ${typeBadge}">${p.type}</span></td>
+                    <td>Rs. ${p.amount.toLocaleString()}</td>
+                    <td>${p.description || '-'}</td>
+                    <td><button class="action-btn btn-delete" onclick="deletePayment('${p.id}')">Delete</button></td>
+                </tr>`;
+            });
+            document.getElementById('paymentsTableBody').innerHTML = html || '<tr><td colspan="7">No payment records found.</td></tr>';
+            
+            // Summary Cards (Total income from Customer+Wholesaler, expense from Supplier)
+            const allPayments = payments;
+            const totalIncome = allPayments.filter(p => p.type === 'Customer' || p.type === 'Wholesaler').reduce((sum, p) => sum + p.amount, 0);
+            const totalExpense = allPayments.filter(p => p.type === 'Supplier').reduce((sum, p) => sum + p.amount, 0);
+            const netCashflow = totalIncome - totalExpense;
+            document.getElementById('paymentSummaryCards').innerHTML = `
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-icon">📥</div><div><h3>Total Income (Cust+Whole)</h3><div class="kpi-number">Rs. ${totalIncome.toLocaleString()}</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">📤</div><div><h3>Total Expense (Supplier)</h3><div class="kpi-number">Rs. ${totalExpense.toLocaleString()}</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">⚖️</div><div><h3>Net Cash Flow</h3><div class="kpi-number">Rs. ${netCashflow.toLocaleString()}</div></div></div>
+                    <div class="kpi-card"><div class="kpi-icon">💳</div><div><h3>Total Transactions</h3><div class="kpi-number">${payments.length}</div></div></div>
+                </div>
+            `;
+        }
+
+        function deletePayment(payId) {
+            if(confirm('Delete this payment record?')) {
+                payments = payments.filter(p => p.id !== payId);
+                renderPaymentsList();
+                populateYearFilter();
+            }
+        }
+
+        // ========== RENDER ALL FUNCTIONS ==========
+        function renderAll() {
+            renderOrders(); 
+            renderProducts(); 
+            renderCustomers(); 
+            renderWholesalers(); 
+            renderSuppliers(); 
+            renderPaymentsList(); 
+            renderReports(); 
+            renderDashboard();
+            populateYearFilter();
+        }
+        
+        function renderOrders() { 
+            let html = ''; 
+            orders.forEach((o,i)=>{ 
+                html+=`<tr><td>${o.id}</td><td>${o.name}</td><td>${o.type}</td><td>${o.product}</td><td>${o.qty} kg</td><td>Rs. ${o.total.toLocaleString()}</td><td><span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span></td><td><button class="action-btn btn-edit" onclick="editOrder(${i})">Edit</button><button class="action-btn btn-delete" onclick="deleteOrder(${i})">Delete</button></td></tr>`; 
+            }); 
+            document.getElementById('ordersTableBody').innerHTML = html; 
+            let recentHtml = orders.slice(0,5).map(o=>`<tr><td>${o.id}</td><td>${o.name}</td><td>Rs. ${o.total.toLocaleString()}</td><td><span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span></td></tr>`).join(''); 
+            document.getElementById('recentOrdersTable').innerHTML = recentHtml; 
+            document.getElementById('dashTotalOrders').innerHTML = orders.length; 
+        }
+        
+        function renderProducts() { 
+            let html = ''; 
+            products.forEach((p,i)=>{ 
+                let statusText = p.stock <=0?'Critical':(p.stock<p.minStock?'Low Stock':'In Stock'); 
+                let bgColor = p.stock<p.minStock?'#f39c12':'#2ecc71'; 
+                if(p.stock<=0) bgColor='#e74c3c'; 
+                html+=`<tr><td>${p.code}</td><td>${p.name}</td><td>${p.category}</td><td>Rs. ${p.price}</td><td>${p.stock} kg</td><td><span class="status-badge" style="background:${bgColor}">${statusText}</span></td><td><button class="action-btn btn-edit" onclick="editProduct(${i})">Edit</button><button class="action-btn btn-delete" onclick="deleteProduct(${i})">Delete</button></td></tr>`; 
+            }); 
+            document.getElementById('productsTableBody').innerHTML = html; 
+            let lowStock = products.filter(p=>p.stock<p.minStock).length; 
+            document.getElementById('dashLowStock').innerHTML = lowStock; 
+            let topProducts = [...products].sort((a,b)=>(500 - a.stock)-(500 - b.stock)).slice(0,3); 
+            document.getElementById('topProductsTable').innerHTML = topProducts.map(p=>`<tr><td>${p.name}</td><td>${Math.max(0,500-p.stock)} kg sold</td><td>Rs. ${(p.price * Math.max(0,500-p.stock)).toLocaleString()}</td></tr>`).join(''); 
+        }
+        
+        function renderCustomers() { 
+            let html = ''; 
+            customers.forEach((c,i)=>{ 
+                html+=`<tr><td>${c.id}</td><td>${c.name}</td><td>${c.email}</td><td>${c.phone}</td><td>${c.orders}</td><td>Rs. ${c.totalSpent.toLocaleString()}</td><td><button class="action-btn btn-edit" onclick="editCustomer(${i})">Edit</button><button class="action-btn btn-delete" onclick="deleteCustomer(${i})">Delete</button></td></tr>`; 
+            }); 
+            document.getElementById('customersTableBody').innerHTML = html; 
+            document.getElementById('dashCustomers').innerHTML = customers.length; 
+        }
+        
+        function renderWholesalers() { 
+            let html = ''; 
+            wholesalers.forEach((w,i)=>{ 
+                html+=`<tr><td>${w.id}</td><td>${w.name}</td><td>${w.email}</td><td>${w.phone}</td><td>${w.orders}</td><td>Rs. ${w.totalSpent.toLocaleString()}</td><td><button class="action-btn btn-edit" onclick="editWholesaler(${i})">Edit</button><button class="action-btn btn-delete" onclick="deleteWholesaler(${i})">Delete</button></td></tr>`; 
+            }); 
+            document.getElementById('wholesalersTableBody').innerHTML = html; 
+            document.getElementById('dashWholesalers').innerHTML = wholesalers.length; 
+        }
+        
+        function renderSuppliers() { 
+            let html = ''; 
+            suppliers.forEach((s,i)=>{ 
+                html+=`<tr><td>${s.id}</td><td>${s.name}</td><td>${s.contact}</td><td>${s.email}</td><td>${s.phone}</td><td>${s.materials}</td><td>Rs. ${s.ordersCost.toLocaleString()}</td><td><button class="action-btn btn-edit" onclick="editSupplier(${i})">Edit</button><button class="action-btn btn-delete" onclick="deleteSupplier(${i})">Delete</button></td></tr>`; 
+            }); 
+            document.getElementById('suppliersTableBody').innerHTML = html; 
+            document.getElementById('dashSuppliers').innerHTML = suppliers.length; 
+        }
+        
+        function renderReports() { 
+            let reports = ['📊 Summary Report', '🔄 Returns Report', '⚡ Fast/Slow Items', '💰 Outstanding Payments', '📈 Sales Performance', '📦 Stock Report', '👥 Customer Report', '🏪 Wholesaler Report', '🚚 Supplier Report']; 
+            document.getElementById('reportsGrid').innerHTML = reports.map(r => `<div class="report-item" onclick="alert('${r} - Coming Soon')"><div style="font-size:28px;">${r.split(' ')[0]}</div>${r}</div>`).join(''); 
+        }
+        
+        function renderDashboard() { 
+            let totalRevenue = customers.reduce((s,c)=>s+c.totalSpent,0) + wholesalers.reduce((s,w)=>s+w.totalSpent,0) - suppliers.reduce((s,sup)=>s+sup.ordersCost,0); 
+            document.querySelector('.kpi-card:nth-child(2) .kpi-number').innerHTML = `Rs. ${totalRevenue.toLocaleString()}`; 
+        }
+
+        // CRUD operations (delete/edit handlers)
+        function deleteOrder(i) { if(confirm('Delete order?')){ orders.splice(i,1); renderOrders(); renderDashboard(); } }
+        function deleteProduct(i) { if(confirm('Delete product?')){ products.splice(i,1); renderProducts(); renderDashboard(); } }
+        function deleteSupplier(i) { if(confirm('Delete supplier?')){ suppliers.splice(i,1); renderSuppliers(); renderDashboard(); } }
+        function deleteCustomer(i) { if(confirm('Delete customer?')){ customers.splice(i,1); renderCustomers(); renderDashboard(); } }
+        function deleteWholesaler(i) { if(confirm('Delete wholesaler?')){ wholesalers.splice(i,1); renderWholesalers(); renderDashboard(); } }
+        function editOrder(i) { alert('Edit order: ' + orders[i].id); } 
+        function editProduct(i) { alert('Edit product: ' + products[i].name); } 
+        function editCustomer(i) { alert('Edit customer: ' + customers[i].name); } 
+        function editWholesaler(i) { alert('Edit wholesaler: ' + wholesalers[i].name); } 
+        function editSupplier(i) { alert('Edit supplier: ' + suppliers[i].name); }
+        
+        function showSection(section) { 
+            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active')); 
+            document.getElementById(section + 'Section').classList.add('active'); 
+        }
+        
+        function logout() { if(confirm('Logout?')) window.location.href = 'index.html'; }
+        
+        document.getElementById('currentDate').innerHTML = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        renderAll();
+    </script>
+</body>
+</html>

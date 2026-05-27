@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📆 Monthly Summary Report - Pearl Land</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f5f0e6; padding: 30px; }
+        .report-container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .company-header { background: linear-gradient(135deg, #0c320d, #3a873c); color: white; padding: 25px 30px; text-align: center; }
+        .report-title { background: #f8f9fa; padding: 15px 30px; text-align: center; border-bottom: 1px solid #e0e0e0; }
+        .report-title h2 { color: #8B4513; font-size: 22px; }
+        .info-bar { padding: 15px 30px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .action-bar { padding: 15px 30px; display: flex; gap: 15px; flex-wrap: wrap; background: #faf7f2; }
+        .btn { padding: 8px 20px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; }
+        .btn-print { background: #8B4513; color: white; }
+        .btn-pdf { background: #dc3545; color: white; }
+        .btn-back { background: #6c757d; color: white; text-decoration: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 25px 30px; background: #f8f9fa; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; text-align: center; border-left: 4px solid #D2691E; }
+        .stat-number { font-size: 28px; font-weight: 700; color: #8B4513; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .data-table th { background: #f5ede2; padding: 12px; text-align: left; }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+        .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; background: #2ecc71; color: white; display: inline-block; }
+        .chart { display: flex; align-items: flex-end; gap: 20px; height: 200px; background: #fef9f0; padding: 20px; border-radius: 12px; margin: 20px 0; }
+        .bar { flex: 1; background: #D2691E; border-radius: 5px 5px 0 0; text-align: center; color: white; padding-top: 5px; font-size: 12px; }
+        .signature-section { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; padding: 20px 30px; border-top: 1px dashed #ddd; }
+        .signature-line { border-bottom: 1px solid #aaa; margin: 5px 0; width: 100%; }
+        @media print { .action-bar { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="company-header"><h1>PEARL LAND COMMODITIES (PVT) LTD</h1><p>Monthly Sales Performance Report</p></div>
+        <div class="report-title"><h2>MONTHLY SUMMARY REPORT - MARCH 2026</h2></div>
+        <div class="info-bar"><span><strong>📅 Report Date:</strong> <span id="currentDate"></span></span><span><strong>📆 Period:</strong> March 1, 2026 - March 31, 2026</span></div>
+        <div class="action-bar"><button class="btn btn-print" onclick="window.print()">🖨️ Print Report</button><button class="btn btn-pdf" onclick="window.print()">📄 Save as PDF</button><a href="managerdashboard.html" class="btn btn-back">← Back</a></div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><h4>Total Orders</h4><div class="stat-number" id="totalOrders">0</div></div>
+            <div class="stat-card"><h4>Total Revenue</h4><div class="stat-number" id="totalRevenue">Rs. 0</div></div>
+            <div class="stat-card"><h4>Avg Order Value</h4><div class="stat-number" id="avgOrder">Rs. 0</div></div>
+            <div class="stat-card"><h4>Growth</h4><div class="stat-number" id="growth">+12.5%</div></div>
+        </div>
+
+        <div class="chart" id="chart"></div>
+
+        <table class="data-table"><thead><tr><th>Date</th><th>Orders</th><th>Sales Amount</th><th>Collections</th><th>Top Product</th><th>Status</th></tr></thead><tbody id="monthlyTable"></tbody></table>
+
+        <div class="signature-section">
+            <div><div class="signature-line"></div><div class="signature-label">Prepared By: ____________________</div></div>
+            <div><div class="signature-line"></div><div class="signature-label">Approved By: ____________________</div></div>
+            <div><div class="signature-line"></div><div class="signature-label">Date: <span id="signatureDate"></span></div></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        document.getElementById('signatureDate').textContent = new Date().toLocaleDateString();
+        
+        const monthly = [
+            { date: 'Mar 1', orders: 8, sales: 125000, collections: 118000, top: 'Turmeric', status: 'Good' },
+            { date: 'Mar 2', orders: 6, sales: 98000, collections: 92000, top: 'Chili', status: 'Good' },
+            { date: 'Mar 3', orders: 10, sales: 156000, collections: 148000, top: 'Cinnamon', status: 'Excellent' },
+            { date: 'Mar 4', orders: 5, sales: 72000, collections: 68000, top: 'Pepper', status: 'Average' }
+        ];
+        
+        const totalOrders = monthly.reduce((s, d) => s + d.orders, 0);
+        const totalRevenue = monthly.reduce((s, d) => s + d.sales, 0);
+        document.getElementById('totalOrders').textContent = totalOrders;
+        document.getElementById('totalRevenue').textContent = `Rs. ${totalRevenue.toLocaleString()}`;
+        document.getElementById('avgOrder').textContent = `Rs. ${Math.round(totalRevenue / totalOrders).toLocaleString()}`;
+        
+        let chartHtml = '';
+        monthly.forEach(d => { let height = (d.sales / 200000) * 150; chartHtml += `<div class="bar" style="height: ${height}px;">${Math.round(d.sales/1000)}k</div>`; });
+        document.getElementById('chart').innerHTML = chartHtml;
+        
+        let tableHtml = '';
+        monthly.forEach(d => { tableHtml += `<tr><td>${d.date}</td><td>${d.orders}</td><td>Rs. ${d.sales.toLocaleString()}</td><td>Rs. ${d.collections.toLocaleString()}</td><td>${d.top}</td><td><span class="badge">${d.status}</span></td></tr>`; });
+        document.getElementById('monthlyTable').innerHTML = tableHtml;
+    </script>
+</body>
+</html>

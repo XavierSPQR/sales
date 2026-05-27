@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Performance Report - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f0e6 0%, #fff5e6 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Main Report Container */
+        .report-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.12);
+            overflow: hidden;
+            border: 1px solid rgba(210, 105, 30, 0.2);
+        }
+
+        /* ===== Report Header ===== */
+        .report-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            padding: 20px 25px;
+            text-align: center;
+        }
+
+        .report-header h1 {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+        }
+
+        .report-header h2 {
+            font-size: 1.2em;
+            font-weight: 400;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 0.8em;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .report-meta span {
+            margin: 0 12px;
+            display: inline-block;
+        }
+
+        /* ===== Action Bar ===== */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            background: #faf7f2;
+            border-bottom: 1px solid #f0e0d0;
+        }
+
+        .btn {
+            padding: 6px 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(135deg, #A0522D, #E67E22);
+            transform: translateY(-1px);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: linear-gradient(135deg, #a8231a, #c0392b);
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            color: white;
+            text-decoration: none;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #6c7a7d, #7f8c8d);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Report Content ===== */
+        .report-content {
+            padding: 20px;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #faf7f2;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #D2691E;
+            font-size: 0.75em;
+            color: #4a3729;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-bar strong {
+            color: #8B4513;
+        }
+
+        /* ===== Summary Cards - Smaller ===== */
+        .customer-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #fff5e6, #fff);
+            padding: 10px 8px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #f0e0d0;
+        }
+
+        .summary-card h3 {
+            color: #8B4513;
+            font-size: 0.7em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .summary-card .value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .summary-card .small {
+            font-size: 0.6em;
+            color: #666;
+        }
+
+        /* Section Headers */
+        .section-header {
+            color: #8B4513;
+            font-size: 0.9em;
+            margin: 15px 0 8px 0;
+            padding-bottom: 4px;
+            border-bottom: 2px solid #D2691E;
+            display: inline-block;
+        }
+
+        /* ===== Tables - Compact & Proper ===== */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.7em;
+            border: 1px solid #f0e0d0;
+        }
+
+        .report-table thead {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+        }
+
+        .report-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.7em;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .report-table th:last-child {
+            border-right: none;
+        }
+
+        .report-table td {
+            padding: 8px;
+            border-bottom: 1px solid #f0e0d0;
+            color: #333;
+        }
+
+        .report-table tbody tr:hover {
+            background: #fff5e6;
+        }
+
+        .report-table tbody tr:nth-child(even) {
+            background: #faf7f2;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.65em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success { background: #2ecc71; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+        .badge-info { background: #3498db; color: white; }
+
+        /* Payment Summary */
+        .payment-summary {
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #D2691E;
+        }
+
+        /* Report Footer */
+        .report-footer {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-top: 1px solid #f0e0d0;
+            display: flex;
+            justify-content: space-between;
+            background: #faf7f2;
+            border-radius: 10px;
+            font-size: 0.65em;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .signature-line {
+            width: 100px;
+            border-bottom: 1px solid #8B4513;
+            margin: 3px 0;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .action-bar, .btn-back { display: none; }
+            .report-container { box-shadow: none; border: 1px solid #ddd; }
+            .report-header { background: #8B4513 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        @media (max-width: 900px) {
+            .customer-summary { grid-template-columns: repeat(2, 1fr); }
+            .report-table { font-size: 0.65em; }
+            .report-table th, .report-table td { padding: 6px 4px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .report-content { padding: 12px; }
+            .info-bar { flex-direction: column; }
+            .action-bar { justify-content: center; flex-wrap: wrap; }
+            .report-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+            <h1>🌶️ PEARL LAND COMMODITIES (PVT) LTD</h1>
+            <h2>CUSTOMER PERFORMANCE REPORT</h2>
+            <div class="report-meta">
+                <span>📅 Period: March 2026</span>
+                <span>👥 Active Customers: 89</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Report</button>
+            <button class="btn btn-pdf" onclick="window.print()">📥 Save as PDF</button>
+            <a href="managerdashboard.html" class="btn-back">← Back to Dashboard</a>
+        </div>
+
+        <div class="report-content">
+            <!-- Info Bar -->
+            <div class="info-bar">
+                <span><strong>Analysis Period:</strong> March 1, 2026 - March 31, 2026</span>
+                <span><strong>Total Customers:</strong> 156</span>
+                <span><strong>Active This Month:</strong> 89</span>
+                <span><strong>Report ID:</strong> CPR-202604-001</span>
+            </div>
+
+            <!-- Customer Summary Cards -->
+            <div class="customer-summary">
+                <div class="summary-card"><h3>Total Customers</h3><div class="value">156</div><div class="small">+12 this month</div></div>
+                <div class="summary-card"><h3>Active Customers</h3><div class="value">89</div><div class="small">57% of total</div></div>
+                <div class="summary-card"><h3>Total Sales</h3><div class="value">Rs. 1.2M</div><div class="small">This month</div></div>
+                <div class="summary-card"><h3>Avg Order Value</h3><div class="value">Rs. 8,450</div><div class="small">Per customer</div></div>
+            </div>
+
+            <!-- Top Customers Table -->
+            <div class="section-header">👑 TOP 10 CUSTOMERS BY SALES</div>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Code</th>
+                        <th>Customer Name</th>
+                        <th>Type</th>
+                        <th>Orders</th>
+                        <th>Total Sales (LKR)</th>
+                        <th>Avg Order</th>
+                        <th>Last Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>C001</td><td>Saman Perera - Retail</td><td>Retailer</td><td>12</td><td>125,000</td><td>10,417</td><td>2026-03-28</td></tr>
+                    <tr><td>2</td><td>C002</td><td>Nimali Stores</td><td>Wholesale</td><td>8</td><td>98,000</td><td>12,250</td><td>2026-03-30</td></tr>
+                    <tr><td>3</td><td>C015</td><td>Laksiri Groceries</td><td>Retailer</td><td>10</td><td>87,500</td><td>8,750</td><td>2026-03-29</td></tr>
+                    <tr><td>4</td><td>C008</td><td>City Supermarket</td><td>Wholesale</td><td>5</td><td>76,000</td><td>15,200</td><td>2026-03-25</td></tr>
+                    <tr><td>5</td><td>C022</td><td>Kamal Fernando</td><td>Retailer</td><td>9</td><td>68,500</td><td>7,611</td><td>2026-03-31</td></tr>
+                    <tr><td>6</td><td>C045</td><td>Lanka Grocers</td><td>Wholesale</td><td>6</td><td>62,000</td><td>10,333</td><td>2026-03-27</td></tr>
+                    <tr><td>7</td><td>C078</td><td>Sunil Enterprises</td><td>Retailer</td><td>11</td><td>58,500</td><td>5,318</td><td>2026-03-26</td></tr>
+                    <tr><td>8</td><td>C092</td><td>Colombo Traders</td><td>Export</td><td>4</td><td>52,000</td><td>13,000</td><td>2026-03-22</td></tr>
+                    <tr><td>9</td><td>C112</td><td>Ruwan Stores</td><td>Retailer</td><td>7</td><td>48,000</td><td>6,857</td><td>2026-03-24</td></tr>
+                    <tr><td>10</td><td>C128</td><td>Hemasiri Marketing</td><td>Wholesale</td><td>3</td><td>45,000</td><td>15,000</td><td>2026-03-20</td></tr>
+                </tbody>
+            </table>
+
+            <!-- Payment Behavior Analysis (Risk Level Removed) -->
+            <div class="section-header">💰 PAYMENT BEHAVIOR ANALYSIS</div>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Payment Category</th>
+                        <th>Customers</th>
+                        <th>Outstanding (LKR)</th>
+                        <th>Avg Days Overdue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>On-Time Payers</td><td>78</td><td>45,000</td><td>0 days</td></tr>
+                    <tr><td>Late Payers (1-15 days)</td><td>12</td><td>85,000</td><td>8 days</td></tr>
+                    <tr><td>Late Payers (15-30 days)</td><td>5</td><td>42,000</td><td>22 days</td></tr>
+                    <tr><td>Defaulters (>30 days)</td><td>3</td><td>28,000</td><td>45 days</td></tr>
+                </tbody>
+            </table>
+
+            <!-- Summary Note -->
+            <div class="payment-summary">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center;">
+                    <div><strong>Total Outstanding</strong><br>Rs. 200,000</div>
+                    <div><strong>Top Customer Share</strong><br>10.4%</div>
+                    <div><strong>New Customers</strong><br>+12 this month</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="report-footer">
+                <div>
+                    <p><strong>Prepared By:</strong> ____________________</p>
+                    <div class="signature-line"></div>
+                    <p>Sales Manager</p>
+                </div>
+                <div>
+                    <p><strong>Approved By:</strong> ____________________</p>
+                    <div class="signature-line"></div>
+                    <p>Marketing Director</p>
+                </div>
+                <div>
+                    <p><strong>Date:</strong> <span id="footerDate"></span></p>
+                    <p><strong>Next Review:</strong> 2026-04-30</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        document.getElementById('footerDate').textContent = dateStr;
+    </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outstanding Payments - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f0e6 0%, #fff5e6 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Main Report Container */
+        .report-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.12);
+            overflow: hidden;
+            border: 1px solid rgba(210, 105, 30, 0.2);
+        }
+
+        /* ===== Report Header ===== */
+        .report-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            padding: 20px 25px;
+            text-align: center;
+        }
+
+        .report-header h1 {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+        }
+
+        .report-header h2 {
+            font-size: 1.2em;
+            font-weight: 400;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 0.8em;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .report-meta span {
+            margin: 0 12px;
+            display: inline-block;
+        }
+
+        /* ===== Action Bar ===== */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            background: #faf7f2;
+            border-bottom: 1px solid #f0e0d0;
+        }
+
+        .btn {
+            padding: 6px 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(135deg, #A0522D, #E67E22);
+            transform: translateY(-1px);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: linear-gradient(135deg, #a8231a, #c0392b);
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            color: white;
+            text-decoration: none;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #6c7a7d, #7f8c8d);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Report Content ===== */
+        .report-content {
+            padding: 20px;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #faf7f2;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #D2691E;
+            font-size: 0.75em;
+            color: #4a3729;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-bar strong {
+            color: #8B4513;
+        }
+
+        /* ===== Summary Cards - Smaller ===== */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #fff5e6, #fff);
+            padding: 10px 8px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #f0e0d0;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.05);
+        }
+
+        .summary-card h3 {
+            color: #8B4513;
+            font-size: 0.7em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .summary-card .value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .summary-card .small {
+            font-size: 0.6em;
+            color: #666;
+        }
+
+        /* ===== Aging Analysis - Smaller ===== */
+        .aging-analysis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .aging-box {
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .aging-box h4 {
+            font-size: 0.7em;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .aging-box .amount {
+            font-size: 1em;
+            font-weight: 700;
+        }
+
+        .aging-box.current { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .aging-box.overdue-30 { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .aging-box.overdue-60 { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .aging-box.overdue-90 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        /* Section Headers */
+        .section-header {
+            color: #8B4513;
+            font-size: 0.9em;
+            margin: 15px 0 8px 0;
+            padding-bottom: 4px;
+            border-bottom: 2px solid #D2691E;
+            display: inline-block;
+        }
+
+        /* ===== Tables - Compact ===== */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.7em;
+        }
+
+        .report-table thead {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+        }
+
+        .report-table th {
+            padding: 8px 6px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.7em;
+        }
+
+        .report-table td {
+            padding: 6px;
+            border-bottom: 1px solid #f0e0d0;
+            color: #333;
+        }
+
+        .report-table tbody tr:hover {
+            background: #fff5e6;
+        }
+
+        .report-table tbody tr:nth-child(even) {
+            background: #faf7f2;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.65em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success { background: #2ecc71; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+        .badge-danger { background: #e74c3c; color: white; }
+        .badge-info { background: #3498db; color: white; }
+
+        /* Total Section */
+        .total-section {
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 3px solid #D2691E;
+        }
+
+        .total-section .amount {
+            font-size: 1em;
+            font-weight: 700;
+        }
+
+        /* Report Footer */
+        .report-footer {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-top: 1px solid #f0e0d0;
+            display: flex;
+            justify-content: space-between;
+            background: #faf7f2;
+            border-radius: 10px;
+            font-size: 0.65em;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .signature-line {
+            width: 100px;
+            border-bottom: 1px solid #8B4513;
+            margin: 3px 0;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .action-bar, .btn-back { display: none; }
+            .report-container { box-shadow: none; border: 1px solid #ddd; }
+            .report-header { background: #8B4513 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        @media (max-width: 900px) {
+            .summary-cards { grid-template-columns: repeat(2, 1fr); }
+            .aging-analysis { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .report-content { padding: 12px; }
+            .info-bar { flex-direction: column; }
+            .action-bar { justify-content: center; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+            <h1>🌶️ PEARL LAND COMMODITIES (PVT) LTD</h1>
+            <h2>OUTSTANDING PAYMENTS / DEBTORS REPORT</h2>
+            <div class="report-meta">
+                <span>📅 As of: 2026-03-12</span>
+                <span>💰 Total Outstanding: Rs. 185,000</span>
+                <span>👥 Active Debtors: 15</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Report</button>
+            <button class="btn btn-pdf" onclick="window.print()">📥 Save as PDF</button>
+            <a href="managerdashboard.html" class="btn-back">← Back to Dashboard</a>
+        </div>
+
+        <div class="report-content">
+            <!-- Info Bar -->
+            <div class="info-bar">
+                <span><strong>Report Date:</strong> March 12, 2026</span>
+                <span><strong>Total Debtors:</strong> 15 Customers</span>
+                <span><strong>Report ID:</strong> OPR-20260312-001</span>
+                <span><strong>Currency:</strong> LKR</span>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card"><h3>Total Outstanding</h3><div class="value">Rs. 185,000</div><div class="small">15 customers</div></div>
+                <div class="summary-card"><h3>Current (Not Due)</h3><div class="value">Rs. 45,000</div><div class="small">24%</div></div>
+                <div class="summary-card"><h3>Overdue</h3><div class="value">Rs. 140,000</div><div class="small">76%</div></div>
+                <div class="summary-card"><h3>Avg. Days Overdue</h3><div class="value">18 days</div><div class="small">Weighted avg</div></div>
+            </div>
+
+            <!-- Aging Analysis -->
+            <div class="aging-analysis">
+                <div class="aging-box current"><h4>Current</h4><div class="amount">Rs. 45,000</div><div>24%</div></div>
+                <div class="aging-box overdue-30"><h4>1-30 Days</h4><div class="amount">Rs. 72,000</div><div>39%</div></div>
+                <div class="aging-box overdue-60"><h4>31-60 Days</h4><div class="amount">Rs. 42,000</div><div>23%</div></div>
+                <div class="aging-box overdue-90"><h4>60+ Days</h4><div class="amount">Rs. 26,000</div><div>14%</div></div>
+            </div>
+
+            <!-- Detailed Debtors Table -->
+            <div class="section-header">📋 DETAILED DEBTORS LIST</div>
+            <table class="report-table">
+                <thead><tr><th>Code</th><th>Customer Name</th><th>Invoice #</th><th>Due Date</th><th>Amount</th><th>Days Overdue</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>C001</td><td>Saman Perera</td><td>INV-2026-0125</td><td>2026-02-25</td><td>25,000</td><td>15 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>C002</td><td>Nimali Stores</td><td>INV-2026-0142</td><td>2026-03-11</td><td>42,000</td><td>1 day</td><td><span class="badge badge-warning">Due Soon</span></td></tr>
+                    <tr><td>C015</td><td>Laksiri Groceries</td><td>INV-2026-0108</td><td>2026-01-30</td><td>18,000</td><td>42 days</td><td><span class="badge badge-danger">Critical</span></td></tr>
+                    <tr><td>C008</td><td>City Supermarket</td><td>INV-2026-0135</td><td>2026-03-05</td><td>35,000</td><td>7 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>C022</td><td>Kamal Fernando</td><td>INV-2026-0115</td><td>2026-01-20</td><td>12,000</td><td>52 days</td><td><span class="badge badge-danger">Critical</span></td></tr>
+                    <tr><td>C031</td><td>Colombo Traders</td><td>INV-2026-0150</td><td>2026-03-16</td><td>28,000</td><td>Not due</td><td><span class="badge badge-success">Current</span></td></tr>
+                </tbody>
+            </table>
+
+            <!-- Summary by Supplier -->
+            <div class="section-header">🚚 SUMMARY BY SUPPLIER</div>
+            <table class="report-table">
+                <thead><tr><th>Supplier Code</th><th>Supplier Name</th><th>PO Number</th><th>Due Date</th><th>Amount (LKR)</th><th>Days Overdue</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>S001</td><td>Lanka Spices</td><td>PO-2026-008</td><td>2026-02-20</td><td>45,000</td><td>20 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>S002</td><td>Kalutara Farmers</td><td>PO-2026-012</td><td>2026-03-05</td><td>32,500</td><td>7 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>S003</td><td>Matale Growers</td><td>PO-2026-015</td><td>2026-03-10</td><td>28,000</td><td>2 days</td><td><span class="badge badge-warning">Due Soon</span></td></tr>
+                    <tr><td>S004</td><td>Jaffna Exports</td><td>PO-2026-020</td><td>2026-03-20</td><td>55,000</td><td>Not due</td><td><span class="badge badge-success">Current</span></td></tr>
+                    <tr style="background:#fff3cd"><td colspan="4"><strong>TOTAL</strong></td><td><strong>160,500</strong></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+
+            <!-- Summary by Wholesaler -->
+            <div class="section-header">🏪 SUMMARY BY WHOLESALER</div>
+            <table class="report-table">
+                <thead><tr><th>Wholesaler Code</th><th>Company Name</th><th>Invoice #</th><th>Due Date</th><th>Amount (LKR)</th><th>Days Overdue</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>W001</td><td>Lanka Traders</td><td>INV-W-025</td><td>2026-02-28</td><td>38,500</td><td>12 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>W002</td><td>City Wholesale</td><td>INV-W-032</td><td>2026-03-08</td><td>42,000</td><td>4 days</td><td><span class="badge badge-warning">Overdue</span></td></tr>
+                    <tr><td>W003</td><td>Southern Wholesalers</td><td>INV-W-018</td><td>2026-02-15</td><td>22,000</td><td>25 days</td><td><span class="badge badge-danger">Critical</span></td></tr>
+                    <tr><td>W004</td><td>Kandy Bulk Traders</td><td>INV-W-040</td><td>2026-03-18</td><td>35,000</td><td>Not due</td><td><span class="badge badge-success">Current</span></td></tr>
+                    <tr style="background:#fff3cd"><td colspan="4"><strong>TOTAL</strong></td><td><strong>137,500</strong></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+
+            <!-- Total Section - Compact -->
+            <div class="total-section">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">
+                    <div><strong>Total Outstanding</strong><br><span class="amount">Rs. 185,000</span></div>
+                    <div><strong>Supplier Payables</strong><br><span class="amount">Rs. 160,500</span></div>
+                    <div><strong>Wholesaler Receivables</strong><br><span class="amount">Rs. 137,500</span></div>
+                    <div><strong>Collection Rate</strong><br><span class="amount">71%</span></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="report-footer">
+                <div><p><strong>Prepared By:</strong> ____________________</p><div class="signature-line"></div><p>Accounts Receivable Clerk</p></div>
+                <div><p><strong>Approved By:</strong> ____________________</p><div class="signature-line"></div><p>Finance Manager</p></div>
+                <div><p><strong>Date:</strong> <span id="footerDate"></span></p><p><strong>Next Review:</strong> 2026-03-19</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        document.getElementById('footerDate').textContent = dateStr;
+    </script>
+</body>
+</html>

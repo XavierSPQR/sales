@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 Wholesaler Registration | Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --brand-brown: #6b3f2a;
+            --brand-tan: #b68b6e;
+            --brand-sand: #f2e1c0;
+            --brand-cream: #faf6ed;
+            --brand-green: #3f6a4a;
+            --brand-gold: #c49a6c;
+            --error: #b91c1c;
+            --success: #1e7b4c;
+            --focus-ring: 0 0 0 3px rgba(180, 130, 90, 0.3);
+        }
+
+        body {
+            background: linear-gradient(145deg, #1f3b2c 0%, #2a4b37 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M60 80 L80 40 L100 70 L120 30 L140 60 L160 20 L170 50 L150 90 L120 100 L90 120 L50 110 L40 80 Z" fill="none" stroke="%23dbb484" stroke-width="3"/><circle cx="70" cy="140" r="8" fill="%23dbb484"/><circle cx="140" cy="150" r="12" fill="%23dbb484"/><circle cx="40" cy="170" r="6" fill="%23dbb484"/><path d="M30 40 Q50 20 80 30" stroke="%23a67b5b" stroke-width="4" fill="none"/></svg>');
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .register-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 680px;
+            background: rgba(255, 252, 245, 0.98);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 30px 50px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(200, 160, 120, 0.3);
+            border: 1px solid var(--brand-gold);
+            animation: cardEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes cardEnter {
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .decoration-leaf {
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.15;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .leaf-1 { top: -30px; left: -30px; transform: rotate(-25deg); }
+        .leaf-2 { bottom: -30px; right: -30px; transform: rotate(120deg) scaleX(-1); }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--brand-brown), #4f3a27);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-header p {
+            color: var(--brand-tan);
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .badge-buyer {
+            background: var(--brand-green);
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-top: 0.5rem;
+            border: 1px solid #e6c7a2;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--brand-brown);
+            border-bottom: 2px dashed var(--brand-gold);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (max-width: 580px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .register-card { padding: 1.8rem; }
+        }
+
+        .field {
+            margin-bottom: 1.2rem;
+        }
+
+        .field label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #4d3e2e;
+            margin-bottom: 0.3rem;
+        }
+
+        .field label i { font-style: normal; color: var(--brand-gold); }
+
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: white;
+            border: 1.5px solid #e5d5c0;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            outline: none;
+        }
+
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: var(--brand-gold);
+            box-shadow: var(--focus-ring);
+        }
+
+        .field input::placeholder { color: #c2b19e; }
+
+        .phone-hint {
+            font-size: 0.75rem;
+            color: #7b6b58;
+            margin-top: 0.2rem;
+            margin-left: 0.5rem;
+        }
+
+        .password-reqs {
+            background: #f6ede2;
+            padding: 1rem 1.2rem;
+            border-radius: 20px;
+            margin: 0.8rem 0 1rem;
+            font-size: 0.85rem;
+        }
+
+        .password-reqs ul {
+            list-style: none;
+            margin-top: 0.4rem;
+        }
+
+        .password-reqs li {
+            margin: 0.3rem 0;
+            color: #5f5a54;
+            transition: color 0.2s;
+        }
+
+        .req-met { color: var(--success); font-weight: 500; }
+        .req-met::before { content: "✓ "; }
+        .req-pending::before { content: "○ "; }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--brand-green);
+            margin-top: 2px;
+        }
+
+        .checkbox-group label { font-weight: 400; color: #2e2a24; }
+
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(125deg, var(--brand-brown), #8b5e3c);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 1.1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 1.8rem 0 1rem;
+            box-shadow: 0 10px 15px -5px rgba(80, 45, 20, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            border: 1px solid #e9c8a7;
+        }
+
+        .btn-register:hover {
+            background: linear-gradient(125deg, #7b4d2e, #a57649);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 20px -8px #4f3f2e;
+        }
+
+        .footer-link {
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px dashed var(--brand-tan);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-link a {
+            color: var(--brand-brown);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .footer-link a:hover { text-decoration: underline; }
+
+        .alert {
+            background: #f1dedb;
+            color: var(--error);
+            padding: 0.9rem 1.2rem;
+            border-radius: 50px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-weight: 500;
+            border-left: 5px solid var(--error);
+        }
+
+        .alert-success {
+            background: #dff0e4;
+            color: var(--success);
+            display: none;
+            border-left: 5px solid var(--success);
+        }
+
+        .spice-emoji-large { font-size: 2rem; line-height: 1; }
+    </style>
+</head>
+<body>
+    <div class="decoration-leaf leaf-1">🌾🌽</div>
+    <div class="decoration-leaf leaf-2">🌶️🧄</div>
+
+    <main class="register-card">
+        <div class="brand-header">
+            <div class="spice-emoji-large">🧑‍🌾</div>
+            <h1>Pearl Land Commodities</h1>
+            <p><span>🇱🇰</span> Trusted since 1985 · spices · grains · export quality</p>
+            <div class="badge-buyer">WHOLESALER REGISTRATION</div>
+        </div>
+
+        <h2>📋 Create your wholesaler account</h2>
+
+        <div id="errorBox" class="alert">⚠️ <span id="errorMessage"></span></div>
+        <div id="successBox" class="alert alert-success">✅ <span id="successMessage">Registration successful! Redirecting to login ...</span></div>
+
+        <form id="buyerRegisterForm">
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>👤</i> First name <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="text" id="firstName" placeholder="Nimal" required>
+                </div>
+                <div class="field">
+                    <label><i>👤</i> Last name <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="text" id="lastName" placeholder="Perera" required>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>📧</i> Email address <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="email" id="email" placeholder="wholesaler@example.com" required>
+                </div>
+                <div class="field">
+                    <label><i>📞</i> Phone (Sri Lanka) <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="tel" id="phone" placeholder="07X-XXXXXXX" required>
+                    <div class="phone-hint">format: 077-1234567</div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label><i>🏠</i> Business address <span style="color:var(--brand-brown);">*</span></label>
+                <input type="text" id="addressLine" placeholder="No, street, village" required>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>📍</i> City <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="text" id="city" placeholder="Kandy" required>
+                </div>
+                <div class="field">
+                    <label><i>🗺️</i> District</label>
+                    <select id="district">
+                        <option value="Colombo">Colombo</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kilinochchi">Kilinochchi</option>
+                        <option value="Mannar">Mannar</option>
+                        <option value="Vavuniya">Vavuniya</option>
+                        <option value="Mullaitivu">Mullaitivu</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Ampara">Ampara</option>
+                        <option value="Trincomalee">Trincomalee</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Puttalam">Puttalam</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Moneragala">Moneragala</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Kegalle">Kegalle</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>🏢</i> Business Type</label>
+                    <select id="buyerType">
+                        <option value="retailer">Retailer</option>
+                        <option value="wholesaler">Wholesaler</option>
+                        <option value="exporter">Exporter</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label><i>🏭</i> Company Name</label>
+                    <input type="text" id="companyName" placeholder="Your company name">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>🆔</i> NIC / Passport (optional)</label>
+                    <input type="text" id="nic" placeholder="e.g. 992345678V">
+                </div>
+            </div>
+
+            <!-- Username and Password Fields - ADDED -->
+            <div class="grid-2">
+                <div class="field">
+                    <label><i>🔐</i> Username <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="text" id="username" placeholder="nimal_perera" required>
+                </div>
+                <div class="field">
+                    <label><i>🔑</i> Password <span style="color:var(--brand-brown);">*</span></label>
+                    <input type="password" id="password" placeholder="········" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label><i>✓</i> Confirm password <span style="color:var(--brand-brown);">*</span></label>
+                <input type="password" id="confirmPassword" placeholder="········" required>
+            </div>
+
+            <div class="password-reqs">
+                <strong>🔒 password must include:</strong>
+                <ul id="reqList">
+                    <li id="reqLength" class="req-pending">at least 6 characters</li>
+                    <li id="reqNumber" class="req-pending">at least one number</li>
+                    <li id="reqUpper" class="req-pending">one uppercase letter</li>
+                    <li id="reqMatch" class="req-pending">passwords match</li>
+                </ul>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="termsCheckbox" required>
+                <label for="termsCheckbox">I agree to the <a href="#" style="color: var(--brand-brown);">wholesaler terms</a> & <a href="#" style="color: var(--brand-brown);">privacy policy</a> <span style="color:var(--brand-brown);">*</span></label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="offersCheckbox">
+                <label for="offersCheckbox">📬 I'd like to receive market updates & new harvest alerts</label>
+            </div>
+
+            <button type="submit" class="btn-register"><span>🌾</span> Register as Wholesaler <span>🧺</span></button>
+        </form>
+
+        <div class="footer-link">
+            Already have an account? <a href="index.html">Log in to your account</a>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            const form = document.getElementById('buyerRegisterForm');
+            const password = document.getElementById('password');
+            const confirm = document.getElementById('confirmPassword');
+            const phoneInput = document.getElementById('phone');
+            const errorBox = document.getElementById('errorBox');
+            const errorMessageSpan = document.getElementById('errorMessage');
+            const successBox = document.getElementById('successBox');
+            
+            const reqLength = document.getElementById('reqLength');
+            const reqNumber = document.getElementById('reqNumber');
+            const reqUpper = document.getElementById('reqUpper');
+            const reqMatch = document.getElementById('reqMatch');
+
+            function updatePasswordReqs() {
+                const pwd = password.value;
+                const conf = confirm.value;
+
+                if (pwd.length >= 6) {
+                    reqLength.className = 'req-met';
+                } else {
+                    reqLength.className = 'req-pending';
+                }
+
+                if (/\d/.test(pwd)) {
+                    reqNumber.className = 'req-met';
+                } else {
+                    reqNumber.className = 'req-pending';
+                }
+
+                if (/[A-Z]/.test(pwd)) {
+                    reqUpper.className = 'req-met';
+                } else {
+                    reqUpper.className = 'req-pending';
+                }
+
+                if (pwd && conf && pwd === conf) {
+                    reqMatch.className = 'req-met';
+                } else {
+                    reqMatch.className = 'req-pending';
+                }
+            }
+
+            password.addEventListener('input', updatePasswordReqs);
+            confirm.addEventListener('input', updatePasswordReqs);
+
+            phoneInput.addEventListener('input', function(e) {
+                let digits = e.target.value.replace(/\D/g, '');
+                if (digits.length > 10) digits = digits.slice(0, 10);
+                if (digits.length > 3) {
+                    e.target.value = digits.slice(0, 3) + '-' + digits.slice(3, 10);
+                } else {
+                    e.target.value = digits;
+                }
+            });
+
+            function showError(text) {
+                errorBox.style.display = 'block';
+                errorMessageSpan.innerText = text;
+                successBox.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function showSuccessAndRedirect() {
+                errorBox.style.display = 'none';
+                successBox.style.display = 'block';
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                let phone = document.getElementById('phone').value.trim();
+                const address = document.getElementById('addressLine').value.trim();
+                const city = document.getElementById('city').value.trim();
+                const district = document.getElementById('district').value;
+                const buyerType = document.getElementById('buyerType').value;
+                const companyName = document.getElementById('companyName').value.trim();
+                const nic = document.getElementById('nic').value.trim();
+                const username = document.getElementById('username').value.trim();
+                const pwd = password.value;
+                const pwdConfirm = confirm.value;
+                const termsAccepted = document.getElementById('termsCheckbox').checked;
+                const wantsOffers = document.getElementById('offersCheckbox').checked;
+
+                if (!firstName || !lastName || !email || !phone || !address || !city || !username || !pwd || !pwdConfirm) {
+                    showError('All fields marked with * must be filled.');
+                    return;
+                }
+
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    showError('Enter a valid email address (e.g., name@domain.com).');
+                    return;
+                }
+
+                const phoneDigits = phone.replace(/\D/g, '');
+                const phoneRegex = /^(07|7)\d{8}$/;
+                if (!phoneRegex.test(phoneDigits)) {
+                    showError('Enter a valid Sri Lankan mobile number (e.g., 077-1234567 or 771234567).');
+                    return;
+                }
+
+                if (pwd.length < 6) {
+                    showError('Password must be at least 6 characters.');
+                    return;
+                }
+
+                if (!/\d/.test(pwd)) {
+                    showError('Password must contain at least one number.');
+                    return;
+                }
+                if (!/[A-Z]/.test(pwd)) {
+                    showError('Password must contain at least one uppercase letter.');
+                    return;
+                }
+
+                if (pwd !== pwdConfirm) {
+                    showError('Passwords do not match.');
+                    return;
+                }
+
+                if (!termsAccepted) {
+                    showError('You must agree to the Terms and Privacy Policy.');
+                    return;
+                }
+
+                // Save to localStorage with password
+                const buyerData = {
+                    role: 'wholesaler',
+                    firstName,
+                    lastName,
+                    email,
+                    phone: phoneDigits,
+                    address,
+                    city,
+                    district,
+                    buyerType,
+                    companyName,
+                    nic: nic || null,
+                    username: username,
+                    password: pwd,  // ✅ Password saved
+                    wantsOffers,
+                    registeredAt: new Date().toISOString()
+                };
+
+                let buyers = JSON.parse(localStorage.getItem('pearlLand_buyers') || '[]');
+                const existingUser = buyers.find(b => b.username === username || b.email === email);
+                if (existingUser) {
+                    showError('Username or email already registered. Please log in.');
+                    return;
+                }
+
+                buyers.push(buyerData);
+                localStorage.setItem('pearlLand_buyers', JSON.stringify(buyers));
+                
+                console.log('Wholesaler registered:', buyerData);
+
+                showSuccessAndRedirect();
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+
+            updatePasswordReqs();
+
+            const allInputs = form.querySelectorAll('input, select, textarea');
+            allInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    errorBox.style.display = 'none';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

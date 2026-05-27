@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Sales Performance Report - Pearl Land</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f5f0e6; padding: 30px; }
+        .report-container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .company-header { background: linear-gradient(135deg, #0c320d, #3a873c); color: white; padding: 25px 30px; text-align: center; }
+        .report-title { background: #f8f9fa; padding: 15px 30px; text-align: center; border-bottom: 1px solid #e0e0e0; }
+        .report-title h2 { color: #8B4513; font-size: 22px; }
+        .action-bar { padding: 15px 30px; display: flex; gap: 15px; background: #faf7f2; }
+        .btn { padding: 8px 20px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; }
+        .btn-print { background: #8B4513; color: white; }
+        .btn-back { background: #6c757d; color: white; text-decoration: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 25px 30px; background: #f8f9fa; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; text-align: center; border-left: 4px solid #D2691E; }
+        .stat-number { font-size: 28px; font-weight: 700; color: #8B4513; }
+        .data-table { width: 100%; border-collapse: collapse; padding: 20px; }
+        .data-table th { background: #f5ede2; padding: 12px; text-align: left; }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+        .chart { display: flex; align-items: flex-end; gap: 20px; height: 200px; background: #fef9f0; padding: 20px; border-radius: 12px; margin: 20px; }
+        .bar { flex: 1; background: #D2691E; border-radius: 5px 5px 0 0; text-align: center; color: white; padding-top: 5px; font-size: 11px; }
+        .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; display: inline-block; }
+        .badge-success { background: #2ecc71; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+        .signature-section { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; padding: 20px 30px; border-top: 1px dashed #ddd; }
+        .signature-line { border-bottom: 1px solid #aaa; margin: 5px 0; width: 100%; }
+        @media print { .action-bar { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="company-header"><h1>PEARL LAND COMMODITIES (PVT) LTD</h1><p>Sales Performance Analysis</p></div>
+        <div class="report-title"><h2>📈 SALES PERFORMANCE REPORT</h2></div>
+        <div class="action-bar"><button class="btn btn-print" onclick="window.print()">🖨️ Print Report</button><a href="managerdashboard.html" class="btn btn-back">← Back</a></div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><h4>Total Sales (MTD)</h4><div class="stat-number" id="totalSales">Rs. 0</div></div>
+            <div class="stat-card"><h4>Wholesale</h4><div class="stat-number" id="wholesale">0%</div></div>
+            <div class="stat-card"><h4>Retail</h4><div class="stat-number" id="retail">0%</div></div>
+            <div class="stat-card"><h4>Growth</h4><div class="stat-number" id="growth">+0%</div></div>
+        </div>
+
+        <div class="chart" id="chart"></div>
+
+        <table class="data-table"><thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Type</th><th>Amount</th><th>Status</th> </thead><tbody id="salesTable"></tbody> </table>
+
+        <div class="signature-section">
+            <div><div class="signature-line"></div><div class="signature-label">Prepared By: ____________________</div></div>
+            <div><div class="signature-line"></div><div class="signature-label">Approved By: ____________________</div></div>
+            <div><div class="signature-line"></div><div class="signature-label">Date: <span id="currentDate"></span></div></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        
+        const sales = [
+            { id: 'ORD-001', date: '2026-03-10', customer: 'Saman Perera', type: 'Wholesale', amount: 190000, status: 'Delivered' },
+            { id: 'ORD-002', date: '2026-03-12', customer: 'Nimali Stores', type: 'Retail', amount: 117000, status: 'Processing' },
+            { id: 'ORD-003', date: '2026-03-15', customer: 'City Market', type: 'Wholesale', amount: 54000, status: 'Delivered' }
+        ];
+        
+        const monthlySales = [450000, 520000, 680000, 610000, 720000, 580000];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        const total = sales.reduce((s, o) => s + o.amount, 0);
+        document.getElementById('totalSales').textContent = `Rs. ${total.toLocaleString()}`;
+        document.getElementById('wholesale').textContent = '68%';
+        document.getElementById('retail').textContent = '32%';
+        document.getElementById('growth').textContent = '+12.5%';
+        
+        let chartHtml = '';
+        monthlySales.forEach((s, i) => { let height = (s / 800000) * 150; chartHtml += `<div class="bar" style="height: ${height}px;">${months[i]}<br>${Math.round(s/1000)}k</div>`; });
+        document.getElementById('chart').innerHTML = chartHtml;
+        
+        let tableHtml = '';
+        sales.forEach(o => { tableHtml += `<tr><td>${o.id}</td><td>${o.date}</td><td>${o.customer}</td><td>${o.type}</td><td>Rs. ${o.amount.toLocaleString()}</td><td><span class="badge ${o.status === 'Delivered' ? 'badge-success' : 'badge-warning'}">${o.status}</span></td> </tr>`; });
+        document.getElementById('salesTable').innerHTML = tableHtml;
+    </script>
+</body>
+</html>

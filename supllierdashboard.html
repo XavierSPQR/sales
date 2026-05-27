@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pearl Land Commodities - Supplier Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #A0522D;
+            --primary-orange: #D2691E;
+            --secondary-orange: #FF8C00;
+            --cream: #FFF5E6;
+            --white: #ffffff;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --pending-bg: #fff3cd;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--cream) 0%, #fff 100%);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0d5cc;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #f0e0d0;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #8B4513;
+            border: 3px solid white;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            font-size: 12px;
+            opacity: 0.9;
+            color: #8B4513;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--primary-brown);
+            color: var(--white);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--secondary-orange);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--secondary-brown);
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu .icon {
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .sidebar-footer a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .content-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 6px solid var(--primary-orange);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .content-header h1 {
+            color: var(--primary-brown);
+            font-size: 24px;
+        }
+
+        .role-badge {
+            background: var(--primary-brown);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .analytics-card {
+            background: white;
+            padding: 18px 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            border-bottom: 4px solid var(--primary-orange);
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .analytics-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: var(--primary-brown);
+        }
+
+        .analytics-card h3 {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .analytics-number {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-brown);
+            margin-bottom: 3px;
+        }
+
+        .analytics-small {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .analytics-trend-up {
+            color: var(--success);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 18px 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 4px solid var(--primary-orange);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            width: 55px;
+            height: 55px;
+            background: var(--cream);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-details h3 {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .stat-number {
+            color: var(--primary-brown);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* Low Stock Table Styles */
+        .low-stock-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 6px solid var(--danger);
+        }
+
+        .low-stock-section .section-title {
+            color: var(--danger);
+            border-bottom-color: var(--danger);
+        }
+
+        .badge-lowstock {
+            background: var(--danger);
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            background: white;
+            border: 2px solid var(--primary-orange);
+            border-radius: 30px;
+            color: var(--primary-brown);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-brown);
+            border-color: var(--primary-brown);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .data-table thead {
+            background: var(--primary-brown);
+            color: white;
+        }
+
+        .data-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--cream);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success { background: var(--success); color: white; }
+        .badge-warning { background: var(--warning); color: white; }
+        .badge-info { background: var(--info); color: white; }
+        .badge-pending { background: #e67e22; color: white; }
+        .badge-danger { background: var(--danger); color: white; }
+        
+        .btn-secondary {
+            background: var(--primary-orange);
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            margin: 2px;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--secondary-orange);
+        }
+        
+        .btn-sm { padding: 3px 8px; font-size: 10px; }
+        
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 6px solid var(--success);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--primary-brown);
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0d5cc;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .section-title {
+            color: var(--primary-brown);
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed var(--primary-orange);
+            padding-bottom: 8px;
+        }
+        
+        .pending-request {
+            background: var(--pending-bg);
+        }
+        
+        .info-note {
+            background: #e8f4fd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #0066cc;
+            border-left: 4px solid #0066cc;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; }
+            .analytics-grid, .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🚚 Pearl Land</h2>
+                <p>Supplier Portal</p>
+            </div>
+            <div class="profile-section">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name">Sapuni Divyanjana</div>
+                <div class="profile-email">sapuni@gmail.com</div>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a onclick="showDashboard()" class="active" id="navDashboard"><span class="icon">🏠</span> Dashboard</a></li>
+                <li><a onclick="showTab('materials')" id="navMaterials"><span class="icon">🌾</span> Raw Materials</a></li>
+                <li><a onclick="showTab('orders')" id="navOrders"><span class="icon">📦</span> Purchase Orders</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div>🚚 Supplier</div>
+                <div style="font-size:12px;" id="supplierName">Lanka Spices</div>
+                <a href="index.html">🚪 Logout</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Welcome, <span id="welcomeSupplier">Lanka Spices</span>! 🚚</h1>
+                <div class="role-badge">🚚 Supplier</div>
+            </div>
+
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboardView" style="display: block;">
+                <div class="analytics-grid">
+                    <div class="analytics-card"><div class="analytics-icon">📊</div><h3>Total Orders (Monthly)</h3><div class="analytics-number">24</div><div class="analytics-small">This Month</div><div class="analytics-trend-up">↑ 12% vs last month</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">📅</div><h3>Total Orders (Yearly)</h3><div class="analytics-number">156</div><div class="analytics-small">2026 YTD</div><div class="analytics-trend-up">↑ 8% vs last year</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">⏳</div><h3>Pending Orders</h3><div class="analytics-number">28</div><div class="analytics-small">18% pending</div><div class="analytics-trend-up">↓ 5% from last month</div></div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon">🌾</div><div class="stat-details"><h3>Materials Supplied</h3><div class="stat-number">12</div><p>Active products</p></div></div>
+                    <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Pending Orders</h3><div class="stat-number">28</div><p>Awaiting delivery</p></div></div>
+                    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Total Payments</h3><div class="stat-number">Rs. 1.2M</div><p>Received</p></div></div>
+                </div>
+
+                <!-- LOW STOCK ITEMS TABLE - Added as requested -->
+                <div class="low-stock-section">
+                    <div class="section-title">⚠️ Low Stock Items (Need Reorder)</div>
+                    <div class="info-note">
+                        💡 <strong>Note:</strong> Please check these low stock items below. If you can supply these materials, go to <strong>"Raw Materials"</strong> tab and submit a new request.
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Material Name</th><th>Category</th><th>Current Stock (kg)</th><th>Min Required (kg)</th><th>Shortage (kg)</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="lowStockTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn" onclick="showTab('materials')">🌾 Raw Materials</button>
+                <button class="tab-btn" onclick="showTab('orders')">📦 Purchase Orders</button>
+                <button class="tab-btn" onclick="showTab('payments')">💰 Payment History</button>
+            </div>
+
+            <!-- Raw Materials Tab -->
+            <div id="tab-materials" class="tab-content">
+                <div class="info-note">
+                    📋 <strong>Instructions:</strong> Check the Dashboard's "Low Stock Items" table first. Then submit a request for materials that are running low.
+                </div>
+                <div class="form-container">
+                    <div class="section-title">➕ Request New Raw Material</div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Material Name</label><input type="text" id="matName" placeholder="e.g., Turmeric Roots"></div>
+                        <div class="form-group"><label>Category</label><select id="matCategory"><option>Spice</option><option>Herb</option><option>Vegetable</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Price per kg (LKR)</label><input type="number" id="matPrice" placeholder="200.00"></div>
+                        <div class="form-group"><label>Stock (kg)</label><input type="number" id="matStock" placeholder="1000"></div>
+                    </div>
+                    <button class="btn-secondary" onclick="requestRawMaterial()">📤 Submit Request</button>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div class="section-title">📋 My Raw Material Requests</div>
+                    <table class="data-table">
+                        <thead><tr><th>Material</th><th>Category</th><th>Price/kg</th><th>Stock</th><th>Total Value</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="rawMaterialsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Purchase Orders Tab -->
+            <div id="tab-orders" class="tab-content">
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div class="section-title">📋 Purchase Orders</div>
+                    <table class="data-table">
+                        <thead><tr><th>PO Number</th><th>Material</th><th>Quantity</th><th>Order Date</th><th>Amount</th><th>Payment Status</th><th>Order Status</th></tr></thead>
+                        <tbody id="purchaseOrdersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment History Tab -->
+            <div id="tab-payments" class="tab-content">
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div class="section-title">💰 Payment History</div>
+                    <table class="data-table">
+                        <thead><tr><th>Payment ID</th><th>PO Number</th><th>Material</th><th>Amount</th><th>Payment Date</th><th>Status</th></tr></thead>
+                        <tbody id="paymentsHistoryBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Low Stock Items Data (items that need reordering)
+        let lowStockItems = [
+            { name: 'Cinnamon Sticks', category: 'Spice', currentStock: 400, minRequired: 800, shortage: 400 },
+            { name: 'Black Pepper', category: 'Spice', currentStock: 150, minRequired: 500, shortage: 350 },
+            { name: 'Cardamom', category: 'Whole Spice', currentStock: 80, minRequired: 200, shortage: 120 },
+            { name: 'Cloves', category: 'Spice', currentStock: 45, minRequired: 150, shortage: 105 }
+        ];
+
+        // Raw Material Requests - status can be 'Pending' or 'Approved'
+        let rawMaterialRequests = [
+            { id: 1, name: 'Turmeric Roots', category: 'Spice', price: 200, stock: 2500, status: 'Approved' },
+            { id: 2, name: 'Chili Peppers', category: 'Spice', price: 180, stock: 1200, status: 'Approved' },
+            { id: 3, name: 'Cinnamon Sticks', category: 'Spice', price: 350, stock: 400, status: 'Pending' }
+        ];
+
+        // Purchase Orders
+        let purchaseOrders = [
+            { id: 'PO-2026-001', material: 'Turmeric Roots', qty: 500, orderDate: '2026-03-15', amount: 100000, paymentStatus: 'Pending', orderStatus: 'Pending' },
+            { id: 'PO-2026-002', material: 'Chili Peppers', qty: 300, orderDate: '2026-03-16', amount: 54000, paymentStatus: 'Paid', orderStatus: 'Delivered' },
+            { id: 'PO-2026-003', material: 'Cinnamon Sticks', qty: 200, orderDate: '2026-03-17', amount: 70000, paymentStatus: 'Processing', orderStatus: 'Processing' }
+        ];
+
+        let payments = [
+            { id: 'PAY-001', poNumber: 'PO-2026-002', material: 'Chili Peppers', amount: 54000, date: '2026-03-24', status: 'Paid' }
+        ];
+
+        // Render Low Stock Table in Dashboard
+        function renderLowStockTable() {
+            let tbody = document.getElementById('lowStockTableBody');
+            tbody.innerHTML = '';
+            lowStockItems.forEach(item => {
+                tbody.innerHTML += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${item.currentStock} kg</td>
+                    <td>${item.minRequired} kg</td>
+                    <td><span class="badge badge-danger">${item.shortage} kg</span></td>
+                    <td><button class="btn-secondary btn-sm" onclick="requestFromLowStock('${item.name}')">📝 Request Now</button></td>
+                </tr>`;
+            });
+        }
+
+        // Quick request from low stock item
+        function requestFromLowStock(materialName) {
+            // Switch to raw materials tab
+            showTab('materials');
+            // Pre-fill the material name
+            document.getElementById('matName').value = materialName;
+            // Scroll to form
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            alert(`Please fill price and stock details for ${materialName} and submit the request.`);
+        }
+
+        function renderRawMaterials() {
+            let tbody = document.getElementById('rawMaterialsBody');
+            tbody.innerHTML = '';
+            rawMaterialRequests.forEach(req => {
+                let statusBadge = req.status === 'Approved' ? 
+                    '<span class="badge badge-success">✓ Approved</span>' : 
+                    '<span class="badge badge-warning">⏳ Pending (Stock Clerk)</span>';
+                
+                let actionBtn = req.status === 'Pending' ? 
+                    `<button class="btn-secondary btn-sm" onclick="cancelRequest(${req.id})">Cancel Request</button>` : 
+                    `<span class="badge badge-info">Locked</span>`;
+                
+                tbody.innerHTML += `<tr class="${req.status === 'Pending' ? 'pending-request' : ''}">
+                    <td>${req.name}</td>
+                    <td>${req.category}</td>
+                    <td>Rs. ${req.price}</td>
+                    <td>${req.stock} kg</td>
+                    <td>Rs. ${(req.price * req.stock).toLocaleString()}</td>
+                    <td>${statusBadge}</td>
+                    <td>${actionBtn}</td>
+                </tr>`;
+            });
+        }
+
+        function requestRawMaterial() {
+            let name = document.getElementById('matName').value.trim();
+            let category = document.getElementById('matCategory').value;
+            let price = parseFloat(document.getElementById('matPrice').value);
+            let stock = parseFloat(document.getElementById('matStock').value);
+            
+            if (!name || isNaN(price) || isNaN(stock) || price <= 0 || stock <= 0) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+            
+            let newId = rawMaterialRequests.length + 1;
+            rawMaterialRequests.push({
+                id: newId,
+                name: name,
+                category: category,
+                price: price,
+                stock: stock,
+                status: 'Pending'
+            });
+            renderRawMaterials();
+            
+            document.getElementById('matName').value = '';
+            document.getElementById('matPrice').value = '';
+            document.getElementById('matStock').value = '';
+            
+            alert('Raw material request submitted! Stock Clerk will review and approve.');
+        }
+
+        function cancelRequest(id) {
+            if (confirm('Cancel this pending request?')) {
+                rawMaterialRequests = rawMaterialRequests.filter(r => r.id !== id);
+                renderRawMaterials();
+            }
+        }
+
+        function renderPurchaseOrders() {
+            let tbody = document.getElementById('purchaseOrdersBody');
+            tbody.innerHTML = '';
+            purchaseOrders.forEach(po => {
+                let paymentBadge = po.paymentStatus === 'Paid' ? 
+                    '<span class="badge badge-success">Paid</span>' : 
+                    (po.paymentStatus === 'Processing' ? '<span class="badge badge-info">Processing</span>' : '<span class="badge badge-warning">Pending</span>');
+                
+                let orderBadge = po.orderStatus === 'Delivered' ? 
+                    '<span class="badge badge-success">Delivered</span>' : 
+                    (po.orderStatus === 'Processing' ? '<span class="badge badge-info">Processing</span>' : '<span class="badge badge-warning">Pending</span>');
+                
+                tbody.innerHTML += `<tr>
+                    <td>${po.id}</td>
+                    <td>${po.material}</td>
+                    <td>${po.qty} kg</td>
+                    <td>${po.orderDate}</td>
+                    <td>Rs. ${po.amount.toLocaleString()}</td>
+                    <td>${paymentBadge}</td>
+                    <td>${orderBadge}</td>
+                </tr>`;
+            });
+        }
+
+        function renderPaymentHistory() {
+            let tbody = document.getElementById('paymentsHistoryBody');
+            tbody.innerHTML = '';
+            if(payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">No payment records</td></tr>';
+                return;
+            }
+            payments.forEach(p => {
+                tbody.innerHTML += `<tr>
+                    <td>${p.id}</td>
+                    <td>${p.poNumber}</td>
+                    <td>${p.material}</td>
+                    <td>Rs. ${p.amount.toLocaleString()}</td>
+                    <td>${p.date || '-'}</td>
+                    <td><span class="badge badge-success">${p.status}</span></td>
+                </tr>`;
+            });
+        }
+
+        function showDashboard() {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('dashboardView').style.display = 'block';
+            document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+            document.getElementById('navDashboard').classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            renderLowStockTable(); // Refresh low stock table
+        }
+        
+        function showTab(tabName) {
+            document.getElementById('dashboardView').style.display = 'none';
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(event && event.target) event.target.classList.add('active');
+            
+            document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+            if(tabName === 'materials') document.getElementById('navMaterials').classList.add('active');
+            else if(tabName === 'orders') document.getElementById('navOrders').classList.add('active');
+        }
+        
+        function init() {
+            renderLowStockTable();
+            renderRawMaterials();
+            renderPurchaseOrders();
+            renderPaymentHistory();
+            showDashboard();
+        }
+        
+        init();
+    </script>
+</body>
+</html>

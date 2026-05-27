@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📝 Customer Registration - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #A0522D;
+            --primary-orange: #D2691E;
+            --secondary-orange: #FF8C00;
+            --cream: #FFF5E6;
+            --white: #ffffff;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        body::after {
+            content: "👥👥👥";
+            font-size: 200px;
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            opacity: 0.12;
+            transform: rotate(-10deg);
+            white-space: nowrap;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .bg-decoration {
+            content: "🌿🌶️🌿";
+            font-size: 180px;
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            opacity: 0.12;
+            transform: rotate(15deg);
+            white-space: nowrap;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 620px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 40px 38px;
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--primary-orange);
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .spice-icon {
+            font-size: 55px;
+            margin-bottom: 8px;
+            animation: gentleFloat 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .brand-section h1 {
+            color: var(--primary-brown);
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-section p {
+            color: var(--primary-orange);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        h2 {
+            color: var(--primary-brown);
+            margin-bottom: 28px;
+            text-align: center;
+            font-size: 22px;
+            border-bottom: 2px dashed var(--primary-orange);
+            padding-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: var(--primary-brown);
+            margin-bottom: 6px;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #EBDCCB;
+            border-radius: 14px;
+            font-size: 14px;
+            background: #FEFAF5;
+            transition: all 0.25s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.15);
+            background: #FFFFFF;
+        }
+
+        /* Password requirements - collapsible / optional view */
+        .password-requirements-wrapper {
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .toggle-requirements-btn {
+            background: none;
+            border: none;
+            color: var(--primary-orange);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 0;
+            transition: 0.2s;
+        }
+
+        .toggle-requirements-btn:hover {
+            color: var(--primary-brown);
+            text-decoration: underline;
+        }
+
+        .password-requirements {
+            background: var(--cream);
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #5A3A28;
+            border-left: 4px solid var(--primary-orange);
+            margin-top: 8px;
+            display: none;
+        }
+
+        .password-requirements.show {
+            display: block;
+        }
+
+        .password-requirements ul {
+            margin-left: 20px;
+            margin-top: 6px;
+            list-style: none;
+        }
+
+        .password-requirements li {
+            margin-bottom: 4px;
+            transition: color 0.2s;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0 12px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-brown);
+        }
+
+        .checkbox-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #3E2A1F;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(115deg, #7B3F12, #C45F1C);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 14px rgba(100, 50, 15, 0.25);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(115deg, #6A3510, #B25415);
+            box-shadow: 0 12px 22px rgba(139, 69, 19, 0.35);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 2px dashed #E4CBB1;
+        }
+
+        .login-link a {
+            color: var(--primary-brown);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-orange);
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .back-home a {
+            color: #A05E2C;
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.85;
+            transition: 0.2s;
+        }
+
+        .back-home a:hover {
+            color: var(--primary-orange);
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #FFEBEA;
+            color: #C73D23;
+            padding: 12px 16px;
+            border-radius: 50px;
+            margin-bottom: 22px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+            font-size: 13px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .success-message {
+            background: #E6F4EA;
+            color: #1E6F3F;
+            padding: 12px 16px;
+            border-radius: 50px;
+            margin-bottom: 22px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+            font-size: 13px;
+            border-left: 5px solid #2ecc71;
+        }
+
+        @media (max-width: 620px) {
+            .register-container {
+                padding: 30px 20px;
+                margin: 16px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-decoration"></div>
+
+    <div class="register-container">
+        <div class="brand-section">
+            <div class="spice-icon">👤🌶️</div>
+            <h1>Pearl Land Commodities</h1>
+            <p>Join as a Valued Customer</p>
+        </div>
+
+        <h2>📋 Customer Registration</h2>
+
+        <div class="error-message" id="errorMessage">
+            ⚠️ Please fill all required fields correctly.
+        </div>
+
+        <div class="success-message" id="successMessage">
+            ✅ Registration successful! Redirecting to login...
+        </div>
+
+        <form id="registerForm" onsubmit="return handleRegistration(event)">
+            <!-- Personal Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name *</label>
+                    <input type="text" id="firstName" placeholder="e.g., Kamal" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name *</label>
+                    <input type="text" id="lastName" placeholder="e.g., Perera" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="email" placeholder="customer@example.com" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" placeholder="071-2345678" required>
+                </div>
+                <!-- Customer Type field removed as requested -->
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Address *</label>
+                <textarea id="address" rows="2" placeholder="Street address, building, landmark" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City *</label>
+                    <input type="text" id="city" placeholder="e.g., Colombo, Kandy" required>
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="postal" placeholder="e.g., 10000">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Preferred Spice Categories (Optional)</label>
+                <input type="text" id="spicePreferences" placeholder="e.g., Chili, Turmeric, Cinnamon, Pepper">
+            </div>
+
+            <!-- Account Credentials -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Username *</label>
+                    <input type="text" id="username" placeholder="Choose unique username" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="password" placeholder="Create strong password" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Confirm Password *</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                </div>
+            </div>
+
+            <!-- Password requirements - optional view (toggle button) -->
+            <div class="password-requirements-wrapper">
+                <button type="button" id="toggleRequirementsBtn" class="toggle-requirements-btn">
+                    📋 Show password requirements
+                </button>
+                <div id="passwordRequirementsBox" class="password-requirements">
+                    <strong>🔐 Password must contain:</strong>
+                    <ul>
+                        <li id="req-length">○ At least 8 characters</li>
+                        <li id="req-number">○ At least one number (0-9)</li>
+                        <li id="req-uppercase">○ At least one uppercase letter (A-Z)</li>
+                        <li id="req-match">○ Passwords match</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#" style="color: var(--primary-brown); font-weight:600;">Terms & Conditions</a> and <a href="#" style="color: var(--primary-brown); font-weight:600;">Privacy Policy</a> *</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="newsletter">
+                <label for="newsletter">📧 Subscribe to spice offers & seasonal discounts</label>
+            </div>
+
+            <button type="submit" class="register-btn">🌶️ Create Customer Account</button>
+        </form>
+
+        <!-- Login and Home Links -->
+        <div class="login-link">
+            Already have an account? <a href="index.html">Sign in here</a>
+        </div>
+        <div class="back-home">
+            <a href="homepage.html">← Back to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        const phoneInput = document.getElementById('phone');
+        const usernameInput = document.getElementById('username');
+        const toggleBtn = document.getElementById('toggleRequirementsBtn');
+        const requirementsBox = document.getElementById('passwordRequirementsBox');
+
+        // Toggle password requirements visibility (optional view)
+        let requirementsVisible = false;
+        toggleBtn.addEventListener('click', function() {
+            if (requirementsVisible) {
+                requirementsBox.classList.remove('show');
+                toggleBtn.innerHTML = '📋 Show password requirements';
+                requirementsVisible = false;
+            } else {
+                requirementsBox.classList.add('show');
+                toggleBtn.innerHTML = '🔒 Hide password requirements';
+                requirementsVisible = true;
+            }
+        });
+
+        // Real-time password validation (still runs in background to show correct hints when visible)
+        function validatePasswordStrength() {
+            let password = passwordInput.value;
+            let confirm = confirmInput.value;
+
+            const lengthReq = document.getElementById('req-length');
+            if (password.length >= 8) {
+                lengthReq.style.color = '#2e7d32';
+                lengthReq.innerHTML = '✓ At least 8 characters';
+            } else {
+                lengthReq.style.color = '#b85c1a';
+                lengthReq.innerHTML = '○ At least 8 characters';
+            }
+
+            const numberReq = document.getElementById('req-number');
+            if (/\d/.test(password)) {
+                numberReq.style.color = '#2e7d32';
+                numberReq.innerHTML = '✓ Contains a number';
+            } else {
+                numberReq.style.color = '#b85c1a';
+                numberReq.innerHTML = '○ At least one number';
+            }
+
+            const upperReq = document.getElementById('req-uppercase');
+            if (/[A-Z]/.test(password)) {
+                upperReq.style.color = '#2e7d32';
+                upperReq.innerHTML = '✓ Uppercase letter';
+            } else {
+                upperReq.style.color = '#b85c1a';
+                upperReq.innerHTML = '○ At least one uppercase letter';
+            }
+
+            const matchReq = document.getElementById('req-match');
+            if (password && confirm && password === confirm) {
+                matchReq.style.color = '#2e7d32';
+                matchReq.innerHTML = '✓ Passwords match';
+            } else {
+                matchReq.style.color = '#b85c1a';
+                matchReq.innerHTML = '○ Passwords match';
+            }
+        }
+
+        passwordInput.addEventListener('input', validatePasswordStrength);
+        confirmInput.addEventListener('input', validatePasswordStrength);
+
+        // Sri Lankan phone formatting (user friendly)
+        phoneInput.addEventListener('input', function(e) {
+            let raw = e.target.value.replace(/\D/g, '');
+            if (raw.length > 10) raw = raw.slice(0, 10);
+            if (raw.length > 7) {
+                e.target.value = raw.slice(0, 3) + '-' + raw.slice(3, 7) + '-' + raw.slice(7);
+            } else if (raw.length > 3) {
+                e.target.value = raw.slice(0, 3) + '-' + raw.slice(3);
+            } else {
+                e.target.value = raw;
+            }
+        });
+
+        // Helper: show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '❌ ' + message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 4000);
+        }
+
+        function showSuccess() {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.style.display = 'block';
+        }
+
+        // Main registration handler (customer type removed)
+        function handleRegistration(event) {
+            event.preventDefault();
+
+            // Gather values
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            let phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmInput.value;
+            const termsAccepted = document.getElementById('terms').checked;
+            const spicePreferences = document.getElementById('spicePreferences').value.trim();
+            const newsletter = document.getElementById('newsletter').checked;
+            const postalCode = document.getElementById('postal').value.trim();
+
+            // Validation
+            if (!firstName || !lastName || !email || !phone || !address || !city || !username || !password || !confirmPassword) {
+                showError('All fields marked with * are required.');
+                return false;
+            }
+
+            // Email format
+            const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address (e.g., name@domain.com).');
+                return false;
+            }
+
+            // Phone validation: allow formats 07x-xxxxxxx or 0712345678 after cleaning
+            const cleanPhone = phone.replace(/-/g, '');
+            const phoneRegex = /^(07[0-9]{8}|0[1-9][0-9]{8})$/;
+            if (!phoneRegex.test(cleanPhone)) {
+                showError('Please enter a valid Sri Lankan phone number (e.g., 071-2345678 or 0771234567).');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match. Please re-enter.');
+                return false;
+            }
+
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters long.');
+                return false;
+            }
+
+            if (!/\d/.test(password)) {
+                showError('Password must contain at least one numeric digit.');
+                return false;
+            }
+
+            if (!/[A-Z]/.test(password)) {
+                showError('Password must contain at least one uppercase letter (A-Z).');
+                return false;
+            }
+
+            if (!termsAccepted) {
+                showError('You must agree to the Terms & Conditions and Privacy Policy.');
+                return false;
+            }
+
+            // Check if username already exists in localStorage (prevent duplicate)
+            let existingCustomers = JSON.parse(localStorage.getItem('customers') || '[]');
+            const userExists = existingCustomers.some(cust => cust.username === username);
+            if (userExists) {
+                showError('Username already taken. Please choose a different username.');
+                return false;
+            }
+
+            // Create customer object (customer type field completely removed)
+            const newCustomer = {
+                id: Date.now(),
+                firstName: firstName,
+                lastName: lastName,
+                fullName: firstName + " " + lastName,
+                email: email,
+                phone: cleanPhone,
+                address: address,
+                city: city,
+                postalCode: postalCode,
+                username: username,
+                password: password,      // Demo storage (in real app, hash before storing)
+                spicePreferences: spicePreferences || "General",
+                newsletterSubscribed: newsletter,
+                registeredDate: new Date().toISOString(),
+                accountStatus: "active"
+            };
+
+            // Store in localStorage
+            existingCustomers.push(newCustomer);
+            localStorage.setItem('customers', JSON.stringify(existingCustomers));
+
+            // Optional: store last registered username for welcome message
+            localStorage.setItem('lastRegisteredCustomer', username);
+
+            // Show success and redirect to login page (index.html)
+            showSuccess();
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+
+            return false;
+        }
+
+        // Username availability check on blur (nice UX)
+        usernameInput.addEventListener('blur', function() {
+            const username = usernameInput.value.trim();
+            if (username.length < 3) return;
+            let customers = JSON.parse(localStorage.getItem('customers') || '[]');
+            if (customers.some(c => c.username === username)) {
+                showError('⚠️ Username already exists. Try another one.');
+                usernameInput.style.borderColor = '#e74c3c';
+            } else {
+                usernameInput.style.borderColor = '#2ecc71';
+            }
+        });
+
+        // Reset border when typing username
+        usernameInput.addEventListener('input', function() {
+            usernameInput.style.borderColor = '#EBDCCB';
+        });
+
+        // On load: hide error/success, run initial password validation (optional)
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            validatePasswordStrength();
+            // Ensure requirements box is hidden initially (optional view)
+            requirementsBox.classList.remove('show');
+            requirementsVisible = false;
+            toggleBtn.innerHTML = '📋 Show password requirements';
+        });
+    </script>
+</body>
+
+</html>

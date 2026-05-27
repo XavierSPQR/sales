@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📅 Daily Summary Report - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f5f0e6;
+            padding: 30px;
+        }
+
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-header {
+            background: linear-gradient(135deg, #0c320d, #3a873c);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .company-header h1 {
+            font-size: 28px;
+        }
+
+        .company-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .report-title {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .report-title h2 {
+            color: #8B4513;
+            font-size: 22px;
+        }
+
+        .info-bar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .action-bar {
+            padding: 15px 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #faf7f2;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-print {
+            background: #8B4513;
+            color: white;
+        }
+
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 25px 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid #D2691E;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8B4513;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding: 20px 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #8B4513;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #f5ede2;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 30px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #aaa;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 11px;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+
+        @media print {
+
+            .action-bar,
+            .btn-print,
+            .btn-pdf,
+            .btn-back {
+                display: none;
+            }
+
+            body {
+                padding: 0;
+                background: white;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .stats-grid,
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="report-container">
+        <div class="company-header">
+            <h1>PEARL LAND COMMODITIES (PVT) LTD</h1>
+            <p>No 301/2, Medikele, Kadanhena, Horana | Tel: +94 342 259 403</p>
+        </div>
+        <div class="report-title">
+            <h2>DAILY SALES SUMMARY REPORT</h2>
+        </div>
+        <div class="info-bar">
+            <span><strong>📅 Date:</strong> <span id="reportDate"></span></span>
+            <span><strong>📆 Day:</strong> <span id="reportDay"></span></span>
+            <span><strong>⏰ Report Time:</strong> <span id="reportTime"></span></span>
+        </div>
+        <div class="action-bar">
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Report</button>
+            <button class="btn btn-pdf" onclick="window.print()">📄 Save as PDF</button>
+            <a href="managerdashboard.html" class="btn btn-back">← Back to Dashboard</a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Total Orders</h4>
+                <div class="stat-number" id="totalOrders">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Total Sales</h4>
+                <div class="stat-number" id="totalSales">Rs. 0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Total Collections</h4>
+                <div class="stat-number" id="totalCollections">Rs. 0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Pending</h4>
+                <div class="stat-number" id="pendingAmount">Rs. 0</div>
+            </div>
+        </div>
+
+        <div class="two-columns">
+            <div>
+                <div class="section-title">📊 SALES SUMMARY</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Time</th>
+                            <th>Items</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTable"></tbody>
+                </table>
+            </div>
+            <div>
+                <div class="section-title">💰 COLLECTION SUMMARY</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Customer</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="collectionTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="signature-section">
+            <div>
+                <div class="signature-line"></div>
+                <div class="signature-label">Prepared By: ____________________</div>
+                <div class="signature-label">(Signature)</div>
+            </div>
+            <div>
+                <div class="signature-line"></div>
+                <div class="signature-label">Approved By: ____________________</div>
+                <div class="signature-label">(Signature)</div>
+            </div>
+            <div>
+                <div class="signature-line"></div>
+                <div class="signature-label">Date: <span id="signatureDate"></span> | Time: <span
+                        id="signatureTime"></span></div>
+            </div>
+        </div>
+        <div class="footer">This is a computer-generated document. No signature required for electronic copies.</div>
+    </div>
+
+    <script>
+        const now = new Date();
+        document.getElementById('reportDate').textContent = now.toLocaleDateString();
+        document.getElementById('reportDay').textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+        document.getElementById('reportTime').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('signatureDate').textContent = now.toLocaleDateString();
+        document.getElementById('signatureTime').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+        const sales = [
+            { id: 'ORD-001', customer: 'Saman Perera', time: '09:30 AM', items: 'Turmeric Powder', qty: 5, amount: 2500, status: 'Delivered' },
+            { id: 'ORD-002', customer: 'Nimali Stores', time: '10:15 AM', items: 'Chili Powder', qty: 3, amount: 1200, status: 'Processing' },
+            { id: 'ORD-003', customer: 'City Supermarket', time: '11:45 AM', items: 'Cinnamon', qty: 2, amount: 1600, status: 'Delivered' },
+            { id: 'ORD-004', customer: 'Laksiri Groceries', time: '02:30 PM', items: 'Black Pepper', qty: 4, amount: 3120, status: 'Delivered' }
+        ];
+        const collections = [
+            { id: 'PAY-001', customer: 'Saman Perera', method: 'Cash', amount: 2500, status: 'Completed' },
+            { id: 'PAY-002', customer: 'City Supermarket', method: 'Bank Transfer', amount: 1600, status: 'Completed' },
+            { id: 'PAY-003', customer: 'Laksiri Groceries', method: 'Cash', amount: 3120, status: 'Completed' }
+        ];
+
+        const totalSales = sales.reduce((s, o) => s + o.amount, 0);
+        const totalCollected = collections.reduce((s, c) => s + c.amount, 0);
+        document.getElementById('totalOrders').textContent = sales.length;
+        document.getElementById('totalSales').textContent = `Rs. ${totalSales.toLocaleString()}`;
+        document.getElementById('totalCollections').textContent = `Rs. ${totalCollected.toLocaleString()}`;
+        document.getElementById('pendingAmount').textContent = `Rs. ${(totalSales - totalCollected).toLocaleString()}`;
+
+        let salesHtml = '';
+        sales.forEach(o => { salesHtml += `<tr><td>${o.id}</td><td>${o.customer}</td><td>${o.time}</td><td>${o.items}</td><td>${o.qty} kg</td><td>Rs. ${o.amount}</td><td><span class="badge ${o.status === 'Delivered' ? 'badge-success' : 'badge-warning'}">${o.status}</span></td></tr>`; });
+        document.getElementById('salesTable').innerHTML = salesHtml;
+
+        let collHtml = '';
+        collections.forEach(c => { collHtml += `<tr><td>${c.id}</td><td>${c.customer}</td><td>${c.method}</td><td>Rs. ${c.amount}</td><td><span class="badge badge-success">${c.status}</span></td></tr>`; });
+        document.getElementById('collectionTable').innerHTML = collHtml;
+    </script>
+</body>
+
+</html>

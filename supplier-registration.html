@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚚 Supplier Registration - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #A0522D;
+            --primary-orange: #D2691E;
+            --secondary-orange: #FF8C00;
+            --cream: #FFF5E6;
+            --white: #ffffff;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        body::after {
+            content: "🚚🚚🚚";
+            font-size: 200px;
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            opacity: 0.15;
+            transform: rotate(-10deg);
+            white-space: nowrap;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .bg-decoration {
+            content: "🌿🌿🌿";
+            font-size: 180px;
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            opacity: 0.15;
+            transform: rotate(15deg);
+            white-space: nowrap;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-orange);
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-section h1 {
+            color: var(--primary-brown);
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .brand-section p {
+            color: var(--primary-orange);
+            font-size: 14px;
+        }
+
+        h2 {
+            color: var(--primary-brown);
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 22px;
+            border-bottom: 2px dashed var(--primary-orange);
+            padding-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-brown);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E6D5B8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-brown), var(--primary-orange));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--primary-orange);
+        }
+
+        .login-link a {
+            color: var(--primary-brown);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-orange);
+            text-decoration: underline;
+        }
+
+        /* Back to Home Link */
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            color: var(--primary-brown);
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .back-home a:hover {
+            color: var(--primary-orange);
+            text-decoration: underline;
+            opacity: 1;
+        }
+
+        .error-message {
+            background: #FFE4E1;
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .register-container {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-decoration"></div>
+
+    <div class="register-container">
+        <div class="brand-section">
+            <div class="spice-icon" style="font-size: 50px; margin-bottom: 10px;">🚚</div>
+            <h1>Pearl Land Commodities</h1>
+            <p>Supplier Registration</p>
+        </div>
+
+        <h2>📝 Supplier Registration Form</h2>
+
+        <div class="error-message" id="errorMessage">
+            Please fill all required fields correctly.
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Registration successful! Redirecting to your dashboard...
+        </div>
+
+        <form id="registerForm" onsubmit="return handleRegistration(event)">
+            <!-- Company Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Company Name *</label>
+                    <input type="text" id="companyName" placeholder="Enter company name" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Person *</label>
+                    <input type="text" id="contactPerson" placeholder="Full name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="email" placeholder="company@example.com" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" placeholder="071-1234567" required>
+                </div>
+                <div class="form-group">
+                    <label>Business Type</label>
+                    <select id="businessType">
+                        <option value="Spice Supplier">Spice Supplier</option>
+                        <option value="Raw Material">Raw Material Supplier</option>
+                        <option value="Packaging">Packaging Supplier</option>
+                        <option value="Transport">Transport Service</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Address *</label>
+                <textarea id="address" rows="2" placeholder="Street address, City" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City *</label>
+                    <input type="text" id="city" placeholder="e.g., Colombo" required>
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="postal" placeholder="e.g., 12000">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Materials Supplied</label>
+                    <input type="text" id="materials" placeholder="e.g., Turmeric, Chili">
+                </div>
+                <div class="form-group">
+                    <label>Payment Terms</label>
+                    <select id="paymentTerms">
+                        <option value="30 Days">30 Days</option>
+                        <option value="45 Days">45 Days</option>
+                        <option value="60 Days">60 Days</option>
+                        <option value="Cash">Cash on Delivery</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Account Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Username *</label>
+                    <input type="text" id="username" placeholder="Choose username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="password" placeholder="Create password" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Confirm Password *</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#" style="color: var(--primary-brown);">Terms and
+                        Conditions</a> and <a href="#" style="color: var(--primary-brown);">Supplier Agreement</a>
+                    *</label>
+            </div>
+
+            <button type="submit" class="register-btn">🚚 Register as Supplier</button>
+        </form>
+
+        <!-- Login Link - Navigates to login page -->
+        <div class="login-link">
+            Already have an account? <a href="index.html">Login here</a>
+        </div>
+
+        <!-- Back to Home Link - Navigates to homepage -->
+        <div class="back-home">
+            <a href="homepage.html">← Back to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+
+        function validatePassword() {
+            let password = document.getElementById('password').value;
+            let confirm = document.getElementById('confirmPassword').value;
+
+            if (password.length < 6) {
+                document.getElementById('password').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('password').style.borderColor = '#2ecc71';
+            }
+
+            if (confirm && password !== confirm) {
+                document.getElementById('confirmPassword').style.borderColor = '#e74c3c';
+            } else if (confirm) {
+                document.getElementById('confirmPassword').style.borderColor = '#2ecc71';
+            }
+        }
+
+        document.getElementById('phone').addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,7})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+        });
+
+        function handleRegistration(event) {
+            event.preventDefault();
+
+            let companyName = document.getElementById('companyName').value;
+            let contactPerson = document.getElementById('contactPerson').value;
+            let email = document.getElementById('email').value;
+            let phone = document.getElementById('phone').value;
+            let address = document.getElementById('address').value;
+            let city = document.getElementById('city').value;
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            let terms = document.getElementById('terms').checked;
+
+            if (!companyName || !contactPerson || !email || !phone || !address || !city || !username || !password || !confirmPassword) {
+                alert('Please fill all required fields');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return false;
+            }
+
+            if (!terms) {
+                alert('Please agree to Terms and Conditions');
+                return false;
+            }
+
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Current code
+            let suppliers = JSON.parse(localStorage.getItem('suppliers') || '[]');
+            let newSupplier = {
+                id: suppliers.length + 1,
+                companyName: companyName,
+                contactPerson: contactPerson,
+                email: email,
+                phone: phone,
+                address: address,
+                city: city,
+                username: username,
+                password: password,  // ⚠️ Password save කරනවා
+                businessType: document.getElementById('businessType').value,
+                materials: document.getElementById('materials').value,
+                paymentTerms: document.getElementById('paymentTerms').value,
+                registeredDate: new Date().toISOString()
+            };
+            suppliers.push(newSupplier);
+            localStorage.setItem('suppliers', JSON.stringify(suppliers));
+
+            // Store current user for auto-login
+            localStorage.setItem('currentSupplier', JSON.stringify(newSupplier));
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userRole', 'supplier');
+            localStorage.setItem('username', username);
+
+            // Redirect to supplier dashboard after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'supplier-dashboard.html';
+            }, 2000);
+
+            return false;
+        }
+    </script>
+</body>
+
+</html>
