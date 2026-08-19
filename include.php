@@ -1,7 +1,12 @@
 <?php
-// includes/auth.php
+// include.php
+// Authentication and authorization helper functions.
+// Uses the Database singleton class for all DB operations.
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/classes/Database.php';
+
+// Get the database connection from the singleton
+$pdo = Database::getInstance()->getConnection();
 
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
@@ -38,7 +43,7 @@ function requireRole($role) {
 function getCurrentUser() {
     if (!isLoggedIn()) return null;
     
-    global $pdo;
+    $pdo = Database::getInstance()->getConnection();
     $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     return $stmt->fetch();

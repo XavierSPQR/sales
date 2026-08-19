@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 Pearl Land Commodities - Customer Portal | Island-Wide + Worldwide Shipping</title>
+    <title>🌿 Pearl Land Commodities - Customer Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -29,6 +30,10 @@
             --sale-red: #ff5722;
             --local-shipping: #2E7D32;
             --intl-shipping: #6A1B9A;
+            --rejected-red: #c62828;
+            --rejected-light: #ffebee;
+            --cod-color: #FFA000;
+            --online-color: #2196F3;
         }
 
         body {
@@ -57,7 +62,6 @@
             z-index: 1;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: rgba(46, 125, 50, 0.95);
@@ -68,7 +72,7 @@
             height: 100vh;
             overflow-y: auto;
             z-index: 10;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
             border-right: 1px solid var(--accent-green);
         }
 
@@ -141,6 +145,7 @@
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .sidebar-menu a:hover,
@@ -160,7 +165,7 @@
             left: 20px;
             right: 20px;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             text-align: center;
         }
@@ -173,13 +178,13 @@
             padding: 8px;
             border-radius: 8px;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .sidebar-footer a:hover {
             background: var(--danger);
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: 280px;
@@ -197,7 +202,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-left: 6px solid var(--primary-green);
             flex-wrap: wrap;
             gap: 15px;
@@ -249,32 +254,36 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 25px;
+            padding: 20px;
             border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             transition: transform 0.3s;
             border-bottom: 4px solid var(--primary-green);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
         }
 
+        .stat-card.rejected-card {
+            border-bottom-color: var(--rejected-red);
+        }
+
         .stat-icon {
-            font-size: 40px;
-            width: 70px;
-            height: 70px;
+            font-size: 32px;
+            width: 55px;
+            height: 55px;
             background: var(--light-green);
             border-radius: 12px;
             display: flex;
@@ -283,18 +292,29 @@
             color: var(--dark-green);
         }
 
+        .stat-icon.rejected-icon {
+            background: var(--rejected-light);
+            color: var(--rejected-red);
+        }
+
         .stat-details h3 {
             color: #444;
-            font-size: 18px;
-            margin-bottom: 8px;
-            letter-spacing: 0.02em;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .stat-details h3.rejected-text {
+            color: var(--rejected-red);
         }
 
         .stat-number {
             color: var(--dark-green);
-            font-size: 34px;
+            font-size: 24px;
             font-weight: 700;
-            line-height: 1.1;
+        }
+
+        .stat-number.rejected-number {
+            color: var(--rejected-red);
         }
 
         .tabs {
@@ -314,6 +334,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
 
         .tab-btn.active {
@@ -328,6 +349,32 @@
             color: white;
         }
 
+        .tab-btn .badge {
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            padding: 1px 8px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        .tab-btn.filter-rejected {
+            border-color: var(--rejected-red);
+            color: var(--rejected-red);
+        }
+
+        .tab-btn.filter-rejected.active {
+            background: var(--rejected-red);
+            border-color: var(--rejected-red);
+            color: white;
+        }
+
+        .tab-btn.filter-rejected:hover {
+            background: var(--rejected-red);
+            border-color: var(--rejected-red);
+            color: white;
+        }
+
         .tab-content {
             display: none;
         }
@@ -338,8 +385,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .products-grid {
@@ -354,7 +407,7 @@
             backdrop-filter: blur(10px);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
             border: 1px solid var(--light-green);
             position: relative;
@@ -376,15 +429,7 @@
             font-weight: bold;
             font-size: 14px;
             z-index: 2;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .discount-badge::before {
-            content: "⚡";
-            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .product-image {
@@ -512,11 +557,12 @@
 
         .orders-table {
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-collapse: collapse;
         }
 
         .orders-table thead {
@@ -525,75 +571,141 @@
         }
 
         .orders-table th {
-            padding: 15px;
+            padding: 14px 12px;
             text-align: left;
             font-weight: 600;
+            font-size: 13px;
         }
 
         .orders-table td {
-            padding: 15px;
+            padding: 13px 12px;
             border-bottom: 1px solid var(--light-green);
+            font-size: 13px;
+            vertical-align: middle;
         }
 
         .orders-table tbody tr:hover {
-            background: var(--light-green);
+            background: #f1f8f1;
         }
 
         .order-status {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status-delivered {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-processing {
+            background: var(--warning);
+            color: white;
+        }
+
+        .status-shipped {
+            background: var(--info);
+            color: white;
+        }
+
+        .status-pending-approval {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .status-rejected {
+            background: var(--rejected-red);
+            color: white;
+            animation: pulseRejected 1.5s ease-in-out infinite;
+        }
+
+        .status-paid {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-pending {
+            background: #FFA000;
+            color: white;
+        }
+
+        .status-complete {
+            background: #1B5E20;
+            color: white;
+        }
+
+        .payment-badge {
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
             font-weight: 600;
             display: inline-block;
         }
 
-        .status-delivered { background: var(--success); color: white; }
-        .status-processing { background: var(--warning); color: white; }
-        .status-shipped { background: var(--info); color: white; }
-        .status-returned { background: var(--danger); color: white; }
-
-        .delivery-status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+        .payment-badge.cod {
+            background: var(--cod-color);
+            color: white;
         }
 
-        .delivery-status-card {
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 16px;
-            padding: 18px;
+        .payment-badge.online {
+            background: var(--online-color);
+            color: white;
         }
 
-        .delivery-status-card h3 {
-            margin: 0 0 10px;
-            font-size: 1rem;
-            color: var(--light-green);
+        @keyframes pulseRejected {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+                background: #d32f2f;
+            }
         }
 
-        .delivery-status-card p {
-            margin: 0;
-            font-size: 1.6rem;
+        .orders-table tbody tr.rejected-order {
+            background: var(--rejected-light);
+            border-left: 4px solid var(--rejected-red);
+        }
+
+        .orders-table tbody tr.rejected-order:hover {
+            background: #ffcdd2;
+        }
+
+        .orders-table tbody tr.completed-order {
+            background: #e8f5e9;
+        }
+
+        .orders-table tbody tr.completed-order:hover {
+            background: #c8e6c9;
+        }
+
+        .rejected-tag {
+            background: var(--rejected-red);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
             font-weight: 700;
+            margin-left: 5px;
+            animation: pulseRejected 1.5s ease-in-out infinite;
         }
 
-        .action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin: 2px;
+        .complete-tag {
+            background: #1B5E20;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 5px;
         }
 
-        .btn-view { background: var(--info); color: white; }
-        .btn-return { background: var(--danger); color: white; }
-        .btn-view:hover, .btn-return:hover { transform: scale(1.05); }
-
-        /* Updated Cart Sidebar with Combined Shipping Options */
+        /* ===== CART SIDEBAR ===== */
         .cart-sidebar {
             position: fixed;
             right: -450px;
@@ -602,14 +714,16 @@
             height: 100vh;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             transition: right 0.3s ease;
             padding: 20px;
             overflow-y: auto;
         }
 
-        .cart-sidebar.open { right: 0; }
+        .cart-sidebar.open {
+            right: 0;
+        }
 
         .cart-header {
             display: flex;
@@ -620,8 +734,17 @@
             margin-bottom: 20px;
         }
 
-        .cart-header h3 { color: var(--dark-green); }
-        .close-cart { background: none; border: none; font-size: 30px; cursor: pointer; color: var(--danger); }
+        .cart-header h3 {
+            color: var(--dark-green);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--danger);
+        }
 
         .cart-item {
             display: flex;
@@ -641,14 +764,111 @@
             font-size: 30px;
         }
 
-        .cart-item-details { flex: 1; }
-        .cart-item-name { font-weight: 600; color: var(--dark-green); }
-        .cart-item-price { color: var(--primary-green); font-weight: 600; }
-        .cart-item-remove { color: var(--danger); cursor: pointer; font-size: 20px; }
+        .cart-item-details {
+            flex: 1;
+        }
 
-        /* Shipping Sections */
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+
+        .cart-item-price {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* ========================================
+                   PAYMENT METHOD SECTION IN CART SIDEBAR
+                   ======================================== */
+        .payment-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .payment-section .payment-title {
+            font-weight: 700;
+            color: var(--dark-green);
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .payment-options-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .payment-opt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            flex: 1;
+            min-width: 120px;
+            transition: all 0.3s;
+        }
+
+        .payment-opt:hover {
+            border-color: var(--primary-green);
+        }
+
+        .payment-opt.selected {
+            border-color: var(--primary-green);
+            background: var(--light-green);
+        }
+
+        .payment-opt input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-green);
+            cursor: pointer;
+        }
+
+        .payment-opt .opt-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+
+        .payment-opt .opt-desc {
+            font-size: 10px;
+            color: #888;
+            display: block;
+        }
+
+        .payment-info-text {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-green);
+            font-size: 12px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .payment-info-text.online-info {
+            border-left-color: var(--online-color);
+            color: var(--online-color);
+        }
+
         .shipping-container {
-            margin: 20px 0;
+            margin: 15px 0;
             border-radius: 12px;
         }
 
@@ -661,8 +881,17 @@
             margin-top: 15px;
         }
 
-        .local-category { border-left-color: var(--local-shipping); background: #e8f5e9; color: var(--local-shipping); }
-        .intl-category { border-left-color: var(--intl-shipping); background: #f3e5f5; color: var(--intl-shipping); }
+        .local-category {
+            border-left-color: var(--local-shipping);
+            background: #e8f5e9;
+            color: var(--local-shipping);
+        }
+
+        .intl-category {
+            border-left-color: var(--intl-shipping);
+            background: #f3e5f5;
+            color: var(--intl-shipping);
+        }
 
         .delivery-option-card {
             background: white;
@@ -724,7 +953,7 @@
             padding: 20px 0;
             border-top: 2px solid var(--light-green);
             text-align: right;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--dark-green);
         }
@@ -738,7 +967,13 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: var(--dark-green);
         }
 
         .free-shipping-note {
@@ -749,58 +984,6 @@
             font-size: 12px;
             text-align: center;
             color: #e65100;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: white;
-            margin: 50px auto;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 16px;
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary-green);
-        }
-
-        .modal-header h2 { color: var(--dark-green); }
-        .close-modal { font-size: 30px; cursor: pointer; color: var(--danger); }
-
-        .profile-field {
-            margin-bottom: 15px;
-        }
-
-        .profile-field label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark-green);
-            margin-bottom: 5px;
-        }
-
-        .profile-field input, .profile-field textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid var(--light-green);
-            border-radius: 8px;
         }
 
         .return-form {
@@ -821,354 +1004,1876 @@
             color: var(--dark-green);
         }
 
-        .form-group select, .form-group input {
+        .form-group select,
+        .form-group input {
             width: 100%;
             padding: 10px;
             border: 2px solid var(--light-green);
             border-radius: 8px;
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-green);
+        }
+
+        .modal-header h2 {
+            color: var(--dark-green);
+        }
+
+        .close-modal {
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--danger);
+            background: none;
+            border: none;
+        }
+
+        .profile-field {
+            margin-bottom: 15px;
+        }
+
+        .profile-field label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark-green);
+            margin-bottom: 5px;
+        }
+
+        .profile-field input,
+        .profile-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--light-green);
+            border-radius: 8px;
+        }
+
+        .info-tip {
+            background: #e8f5e9;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-green);
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+
+        .info-tip.rejected-tip {
+            background: var(--rejected-light);
+            border-left-color: var(--rejected-red);
+            color: var(--rejected-red);
+        }
+
+        .status-pipeline {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            min-width: 70px;
+        }
+
+        .pipeline-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border: 2px solid #ccc;
+            background: #f5f5f5;
+            color: #aaa;
+        }
+
+        .pipeline-dot.done {
+            background: #4CAF50;
+            border-color: #388e3c;
+            color: white;
+        }
+
+        .pipeline-dot.active {
+            background: #FFA000;
+            border-color: #f57c00;
+            color: white;
+        }
+
+        .pipeline-dot.rejected {
+            background: var(--rejected-red);
+            border-color: #b71c1c;
+            color: white;
+            animation: pulseRejected 1.5s ease-in-out infinite;
+        }
+
+        .pipeline-dot.complete {
+            background: #1B5E20;
+            border-color: #0d3d0d;
+            color: white;
+        }
+
+        .pipeline-label {
+            font-size: 9px;
+            color: #666;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .pipeline-label.done {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .pipeline-label.active {
+            color: #e65100;
+            font-weight: 600;
+        }
+
+        .pipeline-label.rejected {
+            color: var(--rejected-red);
+            font-weight: 700;
+        }
+
+        .pipeline-label.complete {
+            color: #1B5E20;
+            font-weight: 700;
+        }
+
+        .pipeline-arrow {
+            color: #ccc;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pipeline-arrow.done {
+            color: #4CAF50;
+        }
+
+        .pipeline-arrow.complete {
+            color: #1B5E20;
+        }
+
+        .pipeline-arrow.rejected {
+            color: var(--rejected-red);
+        }
+
+        .refresh-btn {
+            background: var(--secondary-green);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .refresh-btn:hover {
+            background: var(--dark-green);
+        }
+
+        .btn-profile {
+            background: var(--accent-green);
+            color: var(--dark-green);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-profile:hover {
+            background: #66bb6a;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #c62828;
+        }
+
+        .email-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1B5E20;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: none;
+            animation: slideUp 0.5s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .email-notification .email-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .email-notification.rejected-notif {
+            background: var(--rejected-red);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .notification-badge {
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+
+        /* ===== NEW: LIVE STATUS INDICATOR ===== */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(76, 175, 80, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulseLive 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseLive {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* ===== NEW: STATUS UPDATE FLASH ===== */
+        @keyframes flashRow {
+            0% { background: #fff9c4; }
+            100% { background: inherit; }
+        }
+
+        .flash-update {
+            animation: flashRow 2s ease;
+        }
+
+        /* ===== NEW: TOAST CONTAINER ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-left: 5px solid var(--success);
+            animation: slideInRight 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast.error {
+            border-left-color: var(--rejected-red);
+        }
+
+        .toast .toast-icon {
+            font-size: 24px;
+        }
+
+        .toast .toast-content {
+            flex: 1;
+        }
+
+        .toast .toast-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .toast .toast-message {
+            font-size: 13px;
+            color: #666;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         @media (max-width: 768px) {
-            .sidebar { width: 100%; height: auto; position: relative; }
-            .main-content { margin-left: 0; }
-            .cart-sidebar { width: 100%; right: -100%; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .email-notification {
+                width: 90%;
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .payment-options-row {
+                flex-direction: column;
+            }
+
+            .payment-opt {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="dashboard-container">
-    <div class="sidebar">
-        <div class="sidebar-header"><h2>🌿 Pearl Land</h2><p>Premium Spices | Local & Global Delivery</p></div>
-        <div class="profile-section">
-            <div class="profile-avatar">👤</div>
-            <div class="profile-name">Saman Perera</div>
-            <div class="profile-email">saman@gmail.com</div>
-            <button onclick="openProfileModal()" style="background: var(--accent-green); color: var(--dark-green); border: none; padding: 8px 20px; border-radius: 20px; margin-top: 10px; cursor: pointer; font-weight: 600;">👤 View Profile</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" onclick="showTab(event, 'dashboard')" class="active" id="navDashboard"><span class="icon">🏠</span> Dashboard</a></li>
-            <li><a href="#" onclick="showTab(event, 'products')" id="navProducts"><span class="icon">🌶️</span> Products</a></li>
-            <li><a href="#" onclick="showTab(event, 'orders')" id="navOrders"><span class="icon">📦</span> My Orders</a></li>
-            <li><a href="#" onclick="showTab(event, 'returns')" id="navReturns"><span class="icon">🔄</span> Returns</a></li>
-            <li><a href="#" onclick="openCart()"><span class="icon">🛒</span> Cart <span class="cart-count" id="cartCount">0</span></a></li>
-        </ul>
-        <div class="sidebar-footer"><div>🌿 Customer</div><a href="index.html">🚪 Logout</a></div>
-    </div>
-
-    <div class="main-content">
-        <div class="content-header">
-            <h1>Welcome back, Saman! 🌿 </h1>
-            <div class="header-actions"><button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count" id="headerCartCount">0</span></button></div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab(event, 'dashboard')" id="tabBtn-dashboard">📊 Dashboard</button>
-            <button class="tab-btn" onclick="showTab(event, 'products')" id="tabBtn-products">🌶️ Products</button>
-            <button class="tab-btn" onclick="showTab(event, 'orders')" id="tabBtn-orders">📦 My Orders</button>
-            <button class="tab-btn" onclick="showTab(event, 'returns')" id="tabBtn-returns">🔄 Returns</button>
-        </div>
-
-        <div id="tab-dashboard" class="tab-content active">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Total Orders</h3><div class="stat-number" id="totalOrders">12</div></div></div>
-                <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Total Spent</h3><div class="stat-number" id="totalSpent">Rs. 125,000</div></div></div>
-                <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-details"><h3>Pending Orders</h3><div class="stat-number" id="pendingOrders">2</div></div></div>
-                <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-details"><h3>Loyalty Points</h3><div class="stat-number" id="loyaltyPoints">1,250</div></div></div>
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🌿 Pearl Land</h2>
+                <p>Premium Spices | Local & Global Delivery</p>
             </div>
-            <h2 style="color: #dce4da; font-size: 2.2rem; margin: 30px 0 20px;">Recent Orders</h2>
-            <table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody id="recentOrders"></tbody></table>
-        </div>
-
-        <div id="tab-products" class="tab-content"><div class="products-grid" id="productsGrid"></div></div>
-
-        <div id="tab-orders" class="tab-content">
-            <table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody id="allOrders"></tbody></table>
-        </div>
-
-        <div id="tab-returns" class="tab-content">
-            <h2 style="color: #e7f1e8; margin-bottom: 20px;">Request Return</h2>
-            <div class="return-form">
-                <div class="form-group"><label>Select Order</label><select id="returnOrder" onchange="loadReturnItems()"><option value="">Select Order</option></select></div>
-                <div class="form-group"><label>Select Items to Return</label><div id="returnItems"></div></div>
-                <div class="form-group"><label>Reason for Return</label><select id="returnReason"><option value="Damaged">Damaged Product</option><option value="Expired">Expired</option><option value="Wrong">Wrong Item</option><option value="Quality">Quality Issue</option><option value="Other">Other Reason</option></select></div>
-                <button class="add-to-cart" onclick="submitReturn()">Submit Return Request</button>
+            <div class="profile-section">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name" id="customerProfileName">Loading...</div>
+                <div class="profile-email" id="customerProfileEmail">Loading...</div>
+                <button class="btn-profile" onclick="openProfileModal()">👤 View Profile</button>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
             </div>
-            <h2 style="color: #e7f1e8; margin: 40px 0 20px;">Return History</h2>
-            <table class="orders-table"><thead><tr><th>Return ID</th><th>Order ID</th><th>Items</th><th>Reason</th><th>Status</th></tr></thead><tbody id="returnHistory"></tbody></table>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showTab(event,'dashboard')" class="active" id="navDashboard"><span
+                            class="icon">🏠</span> Dashboard <span class="notification-badge" id="dashNotif"
+                            style="display:none;">●</span></a></li>
+                <li><a href="#" onclick="showTab(event,'products')" id="navProducts"><span class="icon">🌶️</span>
+                        Products</a></li>
+                <li><a href="#" onclick="showTab(event,'orders')" id="navOrders"><span class="icon">📦</span> My
+                        Orders <span class="notification-badge" id="orderNotif" style="display:none;">●</span></a></li>
+                <li><a href="#" onclick="showTab(event,'returns')" id="navReturns"><span class="icon">🔄</span>
+                        Returns</a></li>
+                <li><a href="#" onclick="openCart()"><span class="icon">🛒</span> Cart <span class="cart-count"
+                            id="cartCount">0</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div>🌿 <span id="customerRoleLabel">Customer</span></div>
+                <a href="#" onclick="logout()">🚪 Logout</a>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Updated Cart Sidebar with Island-Wide + Worldwide Shipping Options -->
-<div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header"><h3>Your Cart 🛒</h3><span class="close-cart" onclick="closeCart()">&times;</span></div>
-    <div id="cartItems"></div>
-    
-    <!-- Combined Shipping Options -->
-    <div class="shipping-container">
-        <div class="shipping-category local-category">🇱🇰 Island-Wide Delivery (Sri Lanka)</div>
-        <div id="localShippingOptions"></div>
-        
-        <div class="shipping-category intl-category">🌍 Worldwide International Shipping</div>
-        <div id="intlShippingOptions"></div>
-        
-        <div id="freeShippingNote" class="free-shipping-note"></div>
-    </div>
-    
-    <div class="cart-total" id="cartTotal">Total: Rs. 0</div>
-    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
-</div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="content-header">
+                <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap;">
+                    <h1 id="welcomeMessage">Welcome back! 🌿</h1>
+                    <span class="live-indicator">
+                        <span class="live-dot"></span>
+                        Live Updates
+                    </span>
+                </div>
+                <div class="header-actions">
+                    <button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count"
+                            id="headerCartCount">0</span></button>
+                </div>
+            </div>
 
-<div class="modal" id="profileModal"><div class="modal-content"><div class="modal-header"><h2>My Profile</h2><span class="close-modal" onclick="closeProfileModal()">&times;</span></div><div class="profile-field"><label>Full Name</label><input type="text" id="profileName" value="Saman Perera"></div><div class="profile-field"><label>Email</label><input type="email" id="profileEmail" value="saman@gmail.com"></div><div class="profile-field"><label>Phone</label><input type="text" id="profilePhone" value="071-1234567"></div><div class="profile-field"><label>Address</label><textarea id="profileAddress" rows="3">No 123, Galle Road, Colombo 03</textarea></div><div class="profile-field"><label>City</label><input type="text" id="profileCity" value="Colombo"></div><button class="add-to-cart" onclick="updateProfile()">Update Profile</button></div></div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab(event,'dashboard')" id="tabBtn-dashboard">📊
+                    Dashboard</button>
+                <button class="tab-btn" onclick="showTab(event,'products')" id="tabBtn-products">🌶️ Products</button>
+                <button class="tab-btn" onclick="showTab(event,'orders')" id="tabBtn-orders">📦 My Orders <span
+                        class="badge" id="orderBadge" style="display:none;">0</span></button>
+                <button class="tab-btn" onclick="showTab(event,'returns')" id="tabBtn-returns">🔄 Returns</button>
+            </div>
 
-<script>
-    // --- Products with DISCOUNTS ---
-    let products = [
-        { id: 1, name: 'Turmeric Powder', category: 'Spice', pricePerKg: 500, image: 'turmric.jpeg', stock: 100, discount: 0 },
-        { id: 2, name: 'Chili Powder', category: 'Spice', pricePerKg: 400, image: 'Chili.jpeg', stock: 50, discount: 0 },
-        { id: 3, name: 'Coriander Powder', category: 'Spice', pricePerKg: 450, image: 'Coriander.jpeg', stock: 75, discount: 0 },
-        { id: 4, name: 'Pepper Powder', category: 'Spice', pricePerKg: 600, image: 'Pepperp.jpeg', stock: 30, discount: 15 },
-        { id: 5, name: 'Cinnamon Powder', category: 'Spice', pricePerKg: 800, image: 'cinnomon.jpeg', stock: 40, discount: 20 },
-        { id: 6, name: 'Cardamom', category: 'Whole Spice', pricePerKg: 2000, image: 'cardamom.jpeg', stock: 20, discount: 10 },
-        { id: 7, name: 'Curry Powder', category: 'Blend', pricePerKg: 350, image: 'currypowder.jpeg', stock: 150, discount: 0 }
-    ];
-
-    // Combined Shipping Zones: Island Wide + Worldwide
-    const shippingZones = [
-        // Island Wide (Sri Lanka Local)
-        { id: 'local_std', category: 'local', name: 'Standard Delivery', days: '3-5 days', basePrice: 250, freeThreshold: 5000, region: 'Sri Lanka' },
-        { id: 'local_express', category: 'local', name: 'Express Delivery', days: '1-2 days', basePrice: 550, freeThreshold: 8000, region: 'Sri Lanka' },
-        { id: 'local_premium', category: 'local', name: 'Premium Same-Day', days: 'Same day (Metro)', basePrice: 850, freeThreshold: null, region: 'Sri Lanka' },
-        // Worldwide International
-        { id: 'asia', category: 'intl', name: 'Asia Pacific', days: '5-8 days', basePrice: 1200, freeThreshold: 15000, region: 'International' },
-        { id: 'usa_canada', category: 'intl', name: 'USA & Canada', days: '7-12 days', basePrice: 2500, freeThreshold: 25000, region: 'International' },
-        { id: 'europe', category: 'intl', name: 'Europe', days: '6-10 days', basePrice: 2200, freeThreshold: 22000, region: 'International' },
-        { id: 'rest_world', category: 'intl', name: 'Rest of World', days: '10-15 days', basePrice: 3000, freeThreshold: 30000, region: 'International' }
-    ];
-
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let selectedZoneId = localStorage.getItem('selectedShippingZone') || 'local_std';
-    let orders = [
-        { id: 'ORD-001', date: '2026-03-15', items: [{ productId: 1, name: 'Turmeric Powder', quantity: 5, price: 500 }], total: 2500, status: 'Delivered', shippingZone: 'Standard Delivery', shippingFee: 250 },
-        { id: 'ORD-002', date: '2026-03-16', items: [{ productId: 2, name: 'Chili Powder', quantity: 3, price: 400 }], total: 1200, status: 'Processing', shippingZone: 'Standard Delivery', shippingFee: 250 },
-        { id: 'ORD-003', date: '2026-03-14', items: [{ productId: 3, name: 'Coriander Powder', quantity: 2, price: 450 }], total: 900, status: 'Shipped', shippingZone: 'Standard Delivery', shippingFee: 250 }
-    ];
-    let returns = [{ id: 'RET-001', orderId: 'ORD-001', items: 'Turmeric Powder', reason: 'Damaged', status: 'Approved' }];
-
-    function getDiscountedPrice(product) {
-        return product.discount > 0 ? product.pricePerKg * (1 - product.discount / 100) : product.pricePerKg;
-    }
-
-    function getPriceDisplay(product) {
-        let final = getDiscountedPrice(product);
-        return { final, original: product.pricePerKg, discountPercent: product.discount, hasDiscount: product.discount > 0 };
-    }
-
-    function getShippingZone() { return shippingZones.find(z => z.id === selectedZoneId); }
-
-    function getShippingFee() {
-        const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
-        const zone = getShippingZone();
-        if (!zone) return 0;
-        if (zone.freeThreshold && subtotal >= zone.freeThreshold) return 0;
-        return zone.basePrice;
-    }
-
-    function renderShippingOptions() {
-        const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
-        let localHtml = '', intlHtml = '';
-        
-        shippingZones.forEach(zone => {
-            const isFree = (zone.freeThreshold && subtotal >= zone.freeThreshold);
-            const displayPrice = isFree ? 0 : zone.basePrice;
-            const priceText = isFree ? 'FREE Shipping' : `Rs. ${displayPrice.toFixed(2)}`;
-            const isSelected = selectedZoneId === zone.id;
-            
-            const optionHtml = `
-                <div class="delivery-option-card ${isSelected ? 'selected' : ''}" onclick="selectZone('${zone.id}')">
-                    <div class="delivery-option-left">
-                        <input type="radio" name="shippingZone" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();selectZone('${zone.id}')">
-                        <div>
-                            <div class="delivery-name">${zone.name}</div>
-                            <div class="delivery-desc">📦 ${zone.days} • ${zone.region === 'Sri Lanka' ? 'Island-Wide Delivery' : 'International Shipping'}</div>
+            <!-- DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-details">
+                            <h3>Total Orders</h3>
+                            <div class="stat-number" id="totalOrders">0</div>
                         </div>
                     </div>
-                    <div class="delivery-price">${priceText} ${isFree ? '<span class="free-tag">FREE</span>' : ''}</div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-details">
+                            <h3>Completed</h3>
+                            <div class="stat-number" id="completedOrders">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card rejected-card">
+                        <div class="stat-icon rejected-icon">❌</div>
+                        <div class="stat-details">
+                            <h3 class="rejected-text">Rejected</h3>
+                            <div class="stat-number rejected-number" id="rejectedOrders">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-details">
+                            <h3>Pending</h3>
+                            <div class="stat-number" id="pendingOrders">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-details">
+                            <h3>Total Spent</h3>
+                            <div class="stat-number" id="totalSpent">Rs. 0</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="userMessagesArea" style="margin-bottom:16px;"></div>
+                <h2 style="color:#dce4da;font-size:1.8rem;margin:24px 0 16px;">📋 Recent Orders</h2>
+                <div style="overflow-x:auto;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Manager</th>
+                                <th>Delivery</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrders"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PRODUCTS TAB -->
+            <div id="tab-products" class="tab-content">
+                <div class="products-grid" id="productsGrid"></div>
+            </div>
+
+            <!-- MY ORDERS TAB -->
+            <div id="tab-orders" class="tab-content">
+                <div class="info-tip" id="orderInfoTip">
+                    💡 <strong>How your order flows:</strong>
+                    You place order → <strong>Manager Approves/Rejects</strong> → <strong>Stock Clerk updates
+                        Delivery</strong> (Pending → Shipped → Delivered) → <strong>Account Clerk updates
+                        Payment</strong> (Pending → Processing → Paid) → <strong>✅ Order Complete!</strong>
+                    <br><br>
+                    ❌ If Manager <strong>Rejects</strong>, order will be cancelled immediately.
+                    <br><br>
+                    💳 <strong>Payment Methods:</strong> Cash on Delivery (Pay on delivery) | Online Payment (Pay now)
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+                    <div>
+                        <span style="color:#dce4da;font-weight:600;">📊 Filter:</span>
+                        <button onclick="filterOrders('all')" class="tab-btn" style="padding:6px 15px;font-size:12px;"
+                            id="filterAll">📋 All</button>
+                        <button onclick="filterOrders('complete')" class="tab-btn"
+                            style="padding:6px 15px;font-size:12px;" id="filterComplete">✅ Complete</button>
+                        <button onclick="filterOrders('pending')" class="tab-btn"
+                            style="padding:6px 15px;font-size:12px;" id="filterPending">⏳ Pending</button>
+                        <button onclick="filterOrders('rejected')" class="tab-btn filter-rejected"
+                            style="padding:6px 15px;font-size:12px;" id="filterRejected">❌ Rejected</button>
+                    </div>
+                    <button class="refresh-btn" onclick="refreshOrders()">🔄 Refresh Status</button>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Manager</th>
+                                <th>Delivery</th>
+                                <th>Payment</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allOrders"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RETURNS TAB -->
+            <div id="tab-returns" class="tab-content">
+                <h2 style="color:#e7f1e8;margin-bottom:20px;">Request Return</h2>
+                <div class="return-form">
+                    <div class="form-group"><label>Select Order</label><select id="returnOrder"
+                            onchange="loadReturnItems()">
+                            <option value="">Select Order</option>
+                        </select></div>
+                    <div class="form-group"><label>Select Items to Return</label>
+                        <div id="returnItems"></div>
+                    </div>
+                    <div class="form-group"><label>Reason for Return</label><select id="returnReason">
+                            <option value="Damaged">Damaged Product</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Wrong">Wrong Item</option>
+                            <option value="Quality">Quality Issue</option>
+                            <option value="Other">Other Reason</option>
+                        </select></div>
+                    <button class="add-to-cart" onclick="submitReturn()">Submit Return Request</button>
+                </div>
+                <h2 style="color:#e7f1e8;margin:40px 0 20px;">Return History</h2>
+                <div style="overflow-x:auto;">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Return ID</th>
+                                <th>Order ID</th>
+                                <th>Items</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="returnHistory"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+    CART SIDEBAR WITH PAYMENT OPTION
+    ======================================== -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart 🛒</h3>
+            <span class="close-cart" onclick="closeCart()">&times;</span>
+        </div>
+
+        <!-- Cart Items -->
+        <div id="cartItems"></div>
+
+        <!-- ===== PAYMENT METHOD SECTION ===== -->
+        <div class="payment-section">
+            <span class="payment-title">💳 Select Payment Method</span>
+            <div class="payment-options-row">
+                <div class="payment-opt selected" id="codOpt" onclick="selectPayment('cod')">
+                    <input type="radio" name="paymentMethod" value="cod" checked>
+                    <div>
+                        <div class="opt-label">💵 Cash on Delivery</div>
+                        <span class="opt-desc">Pay when you receive</span>
+                    </div>
+                </div>
+                <div class="payment-opt" id="onlineOpt" onclick="selectPayment('online')">
+                    <input type="radio" name="paymentMethod" value="online">
+                    <div>
+                        <div class="opt-label">💳 Online Payment</div>
+                        <span class="opt-desc">Pay now securely</span>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-info-text" id="paymentInfoText">
+                💡 Cash on Delivery: Pay when you receive the order
+            </div>
+        </div>
+
+        <!-- Shipping Options -->
+        <div class="shipping-container">
+            <div class="shipping-category local-category">🇱🇰 Island-Wide Delivery (Sri Lanka)</div>
+            <div id="localShippingOptions"></div>
+            <div class="shipping-category intl-category">🌍 Worldwide International Shipping</div>
+            <div id="intlShippingOptions"></div>
+            <div id="freeShippingNote" class="free-shipping-note"></div>
+        </div>
+
+        <!-- Cart Total & Checkout -->
+        <div class="cart-total" id="cartTotal">Total: Rs. 0</div>
+        <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>My Profile</h2><span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            </div>
+            <div class="profile-field"><label>Full Name</label><input type="text" id="profileName"></div>
+            <div class="profile-field"><label>Email</label><input type="email" id="profileEmail"></div>
+            <div class="profile-field"><label>Phone</label><input type="text" id="profilePhone"></div>
+            <div class="profile-field"><label>Address</label><textarea id="profileAddress" rows="3"></textarea></div>
+            <div class="profile-field"><label>City</label><input type="text" id="profileCity"></div>
+            <button class="add-to-cart" onclick="updateProfile()">Update Profile</button>
+        </div>
+    </div>
+
+    <!-- EMAIL NOTIFICATION -->
+    <div class="email-notification" id="emailNotification">
+        <span class="email-icon">📧</span>
+        <span id="emailNotificationText">Order Complete! Email sent to your inbox.</span>
+    </div>
+
+    <!-- ===== NEW: TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ===================================================
+        // ========== SESSION MANAGEMENT ==========
+        // ===================================================
+
+        function checkSession() {
+            try {
+                const session = JSON.parse(localStorage.getItem('user_session'));
+                if (!session || session.role !== 'customer') {
+                    window.location.href = 'login.html';
+                    return null;
+                }
+                return session;
+            } catch (e) {
+                window.location.href = 'login.html';
+                return null;
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user_session');
+                localStorage.removeItem('cart');
+                localStorage.removeItem('selectedShippingZone');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadCustomerFromSession() {
+            try {
+                const session = JSON.parse(localStorage.getItem('user_session'));
+
+                if (!session || session.role !== 'customer') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const fullName = session.full_name || session.first_name + ' ' + session.last_name || 'Customer';
+                const email = session.email || 'No email';
+                const phone = session.phone || '';
+                const address = session.address || '';
+                const city = session.city || '';
+
+                document.getElementById('customerProfileName').textContent = fullName;
+                document.getElementById('customerProfileEmail').textContent = email;
+                document.getElementById('customerRoleLabel').textContent = 'Customer';
+
+                document.getElementById('profileName').value = fullName;
+                document.getElementById('profileEmail').value = email;
+                document.getElementById('profilePhone').value = phone;
+                document.getElementById('profileAddress').value = address;
+                document.getElementById('profileCity').value = city;
+
+                const welcomeH1 = document.getElementById('welcomeMessage');
+                if (welcomeH1) {
+                    const firstName = session.first_name || fullName.split(' ')[0] || 'Customer';
+                    welcomeH1.innerHTML = `Welcome back, ${firstName}! 🌿`;
+                }
+
+                window.userId = session.id;
+                window.userSession = session;
+                window.customerUsername = session.username;
+                window.customerEmail = email;
+                window.customerFullName = fullName;
+
+                console.log('✅ Customer session loaded:', fullName);
+
+            } catch (e) {
+                console.error('Session load error:', e);
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ===================================================
+        // ========== TOAST NOTIFICATIONS ==========
+        // ===================================================
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+            
+            const icon = type === 'error' ? '❌' : '✅';
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${type === 'error' ? 'Alert' : 'Notification'}</div>
+                    <div class="toast-message">${message}</div>
                 </div>
             `;
             
-            if (zone.category === 'local') localHtml += optionHtml;
-            else intlHtml += optionHtml;
-        });
-        
-        document.getElementById('localShippingOptions').innerHTML = localHtml || '<div style="padding:10px;color:#999;">No local options</div>';
-        document.getElementById('intlShippingOptions').innerHTML = intlHtml || '<div style="padding:10px;color:#999;">Select international zone</div>';
-        
-        let noteHtml = '';
-        const zone = getShippingZone();
-        if (zone && zone.freeThreshold && subtotal >= zone.freeThreshold) {
-            noteHtml = `🎉 FREE ${zone.name} applied! Thank you for shopping with Pearl Land!`;
-        } else if (zone && zone.freeThreshold) {
-            noteHtml = `❤️ Add Rs. ${(zone.freeThreshold - subtotal).toFixed(2)} more to get FREE ${zone.name}!`;
-        } else {
-            noteHtml = 'Select a shipping method to see offers.';
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
         }
-        document.getElementById('freeShippingNote').innerHTML = noteHtml;
-        updateCartTotalDisplay();
-    }
 
-    function selectZone(zoneId) { selectedZoneId = zoneId; localStorage.setItem('selectedShippingZone', zoneId); renderShippingOptions(); }
+        // ===================================================
+        // ========== PAYMENT METHOD SELECTION ==========
+        // ===================================================
 
-    function updateCartTotalDisplay() {
-        const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
-        const shipping = getShippingFee();
-        const total = subtotal + shipping;
-        const zone = getShippingZone();
-        document.getElementById('cartTotal').innerHTML = `Subtotal: Rs. ${subtotal.toFixed(2)}<br>🚚 ${zone?.name || 'Shipping'}: Rs. ${shipping.toFixed(2)}<hr><strong>Total: Rs. ${total.toFixed(2)}</strong>`;
-    }
+        let selectedPaymentMethod = 'cod';
 
-    document.addEventListener('DOMContentLoaded', () => { loadProducts(); loadOrders(); loadReturns(); updateCartCount(); renderShippingOptions(); });
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
 
-    function showTab(evtOrTabName, tabName) {
-        let evt = null;
-        if (typeof tabName === 'undefined') {
-            tabName = evtOrTabName;
-        } else {
-            evt = evtOrTabName;
+            document.getElementById('codOpt').classList.remove('selected');
+            document.getElementById('onlineOpt').classList.remove('selected');
+
+            if (method === 'cod') {
+                document.getElementById('codOpt').classList.add('selected');
+                document.getElementById('codOpt').querySelector('input').checked = true;
+                document.getElementById('paymentInfoText').innerHTML =
+                    '💡 Cash on Delivery: Pay when you receive the order';
+                document.getElementById('paymentInfoText').className = 'payment-info-text';
+            } else {
+                document.getElementById('onlineOpt').classList.add('selected');
+                document.getElementById('onlineOpt').querySelector('input').checked = true;
+                document.getElementById('paymentInfoText').innerHTML =
+                    '💳 Online Payment: Pay now via credit card, debit card, or bank transfer';
+                document.getElementById('paymentInfoText').className = 'payment-info-text online-info';
+            }
         }
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
-        document.getElementById(`tab-${tabName}`).classList.add('active');
-        if (evt && evt.target) evt.target.classList.add('active');
-        const navMap = { dashboard: 'navDashboard', products: 'navProducts', orders: 'navOrders', returns: 'navReturns' };
-        const tabBtn = document.getElementById(`tabBtn-${tabName}`);
-        if (navMap[tabName]) document.getElementById(navMap[tabName]).classList.add('active');
-        if (tabBtn) tabBtn.classList.add('active');
-        if (tabName === 'products') loadProducts();
-        if (tabName === 'orders') loadOrders();
-    }
 
-    function loadProducts() {
-        let html = '';
-        products.forEach(p => {
-            const priceInfo = getPriceDisplay(p);
-            html += `<div class="product-card">
-                        ${priceInfo.hasDiscount ? `<div class="discount-badge">${priceInfo.discountPercent}% OFF</div>` : ''}
-                        <div class="product-image"><img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=Spice'"></div>
-                        <div class="product-details">
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-category">${p.category}</div>
-                            <div class="product-price">
-                                <span class="price-per-kg">Rs. ${priceInfo.final.toFixed(2)}</span>
-                                ${priceInfo.hasDiscount ? `<span class="old-price">Rs. ${priceInfo.original}</span><span class="discount-percent">-${priceInfo.discountPercent}%</span>` : ''}
-                                <span class="price-unit">/kg</span>
+        // ===================================================
+        // ========== EMAIL NOTIFICATION ==========
+        // ===================================================
+
+        function sendOrderCompleteEmail(order) {
+            const customerEmail = window.customerEmail || 'customer@example.com';
+            const customerName = window.customerFullName || 'Customer';
+
+            const subject = encodeURIComponent('✅ Order Complete - Pearl Land Commodities');
+            const itemsList = order.items.map(item =>
+                `${item.name} (${item.quantity}kg) - Rs. ${(item.pricePerKg * item.quantity).toFixed(2)}`
+            ).join('%0A');
+
+            const body = encodeURIComponent(
+                `Dear ${customerName},\n\n` +
+                `✅ Your order ${order.id} has been completed successfully!\n\n` +
+                `📋 Order Details:\n` +
+                `─────────────────────\n` +
+                `Order ID: ${order.id}\n` +
+                `Order Date: ${order.date}\n` +
+                `Shipping: ${order.shippingZone || 'Standard Delivery'}\n` +
+                `Payment Method: ${order.paymentMethod || 'Not Selected'}\n` +
+                `─────────────────────\n\n` +
+                `📦 Items:\n` +
+                `${itemsList}\n\n` +
+                `─────────────────────\n` +
+                `💰 Total: Rs. ${order.total.toFixed(2)}\n` +
+                `─────────────────────\n\n` +
+                `🎉 Thank you for shopping with Pearl Land Commodities!\n` +
+                `We hope you enjoy your premium spices.\n\n` +
+                `🌿 Pearl Land Commodities\n` +
+                `📍 No 308/4, Temple Road, Kadanhena, Horana\n` +
+                `📞 +94 342 259 403\n` +
+                `✉️ pearllandcommodities@gmail.com\n\n` +
+                `🔗 Track your order: https://pelcomo.com/track/${order.id}\n\n` +
+                `© 2026 Pearl Land Commodities (Pvt) Ltd. All rights reserved.`
+            );
+
+            window.open(`mailto:${customerEmail}?subject=${subject}&body=${body}`, '_blank');
+            showEmailNotification(`📧 Email sent to ${customerEmail}`, 'complete');
+        }
+
+        function sendOrderRejectedNotification(order) {
+            const customerEmail = window.customerEmail || 'customer@example.com';
+            const customerName = window.customerFullName || 'Customer';
+
+            const subject = encodeURIComponent('❌ Order Rejected - Pearl Land Commodities');
+            const itemsList = order.items.map(item =>
+                `${item.name} (${item.quantity}kg) - Rs. ${(item.pricePerKg * item.quantity).toFixed(2)}`
+            ).join('%0A');
+
+            const body = encodeURIComponent(
+                `Dear ${customerName},\n\n` +
+                `❌ We regret to inform you that your order ${order.id} has been REJECTED.\n\n` +
+                `📋 Order Details:\n` +
+                `─────────────────────\n` +
+                `Order ID: ${order.id}\n` +
+                `Order Date: ${order.date}\n` +
+                `Total: Rs. ${order.total.toFixed(2)}\n` +
+                `─────────────────────\n\n` +
+                `📦 Items:\n` +
+                `${itemsList}\n\n` +
+                `─────────────────────\n` +
+                `❌ Status: REJECTED\n` +
+                `─────────────────────\n\n` +
+                `💡 Reason: The order did not meet our approval criteria.\n` +
+                `Please contact our support team for more information.\n\n` +
+                `📞 Contact: +94 342 259 403\n` +
+                `✉️ Email: pearllandcommodities@gmail.com\n\n` +
+                `🌿 Pearl Land Commodities\n` +
+                `📍 No 308/4, Temple Road, Kadanhena, Horana\n\n` +
+                `© 2026 Pearl Land Commodities (Pvt) Ltd. All rights reserved.`
+            );
+
+            window.open(`mailto:${customerEmail}?subject=${subject}&body=${body}`, '_blank');
+            showEmailNotification(`📧 Rejection email sent to ${customerEmail}`, 'rejected');
+        }
+
+        function showEmailNotification(message, type) {
+            const notification = document.getElementById('emailNotification');
+            document.getElementById('emailNotificationText').textContent = message;
+
+            if (type === 'rejected') {
+                notification.classList.add('rejected-notif');
+            } else {
+                notification.classList.remove('rejected-notif');
+            }
+
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        function logEmailNotification(orderId, email, type) {
+            const emails = JSON.parse(localStorage.getItem('email_log') || '[]');
+            emails.push({
+                orderId: orderId,
+                email: email,
+                date: new Date().toISOString(),
+                type: type
+            });
+            localStorage.setItem('email_log', JSON.stringify(emails));
+        }
+
+        // ===================================================
+        // ========== CHECK ORDER STATUS ==========
+        // ===================================================
+
+        let lastStatusSnapshot = '';
+
+        function checkOrderCompletion(order) {
+            const isDelivered = order.deliveryStatus === 'Delivered';
+            const isPaid = order.paymentStatus === 'Paid' || order.paymentStatus === 'Processing (Paid)';
+            const isComplete = isDelivered && isPaid && order.status !== 'Rejected';
+
+            if (isComplete && order.status !== 'Complete') {
+                order.status = 'Complete';
+                order.completedAt = new Date().toISOString();
+                sendOrderCompleteEmail(order);
+                logEmailNotification(order.id, window.customerEmail, 'complete');
+                showToast('🎉 Order ' + order.id + ' is COMPLETE! Email sent.');
+                updateNotificationBadges();
+                return true;
+            }
+            return false;
+        }
+
+        function checkRejectedOrders() {
+            let newRejections = 0;
+            orders.forEach(order => {
+                if (order.status === 'Rejected' && !order.rejectionNotified) {
+                    order.rejectionNotified = true;
+                    newRejections++;
+
+                    sendOrderRejectedNotification(order);
+                    logEmailNotification(order.id, window.customerEmail, 'rejected');
+
+                    showToast(`❌ Order ${order.id} has been REJECTED by Manager!`, 'error');
+
+                    let messages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+                    messages.push({
+                        date: new Date().toISOString().split('T')[0],
+                        orderId: order.id,
+                        message: '❌ Your order has been REJECTED by the manager. Please contact support for more information.',
+                        recipientType: 'Customer',
+                        type: 'rejection'
+                    });
+                    localStorage.setItem('userMessages', JSON.stringify(messages));
+                    showUserMessages();
+                }
+            });
+            return newRejections;
+        }
+
+        function checkAllOrdersStatus() {
+            let completedCount = 0;
+            let rejectedCount = 0;
+
+            orders.forEach(order => {
+                if (checkOrderCompletion(order)) {
+                    completedCount++;
+                }
+                if (order.status === 'Rejected') {
+                    rejectedCount++;
+                }
+            });
+
+            checkRejectedOrders();
+            updateNotificationBadges();
+            return { completedCount, rejectedCount };
+        }
+
+        // ===================================================
+        // ========== PRODUCTS ==========
+        // ===================================================
+
+        let products = [
+            { id: 1, name: 'Turmeric Powder', category: 'Spice', pricePerKg: 500, image: 'image/turmeric.jpeg',
+                stock: 100, discount: 0 },
+            { id: 2, name: 'Chili Powder', category: 'Spice', pricePerKg: 400, image: 'image/Chili.jpeg', stock: 50,
+                discount: 0 },
+            { id: 3, name: 'Coriander Powder', category: 'Spice', pricePerKg: 450, image: 'image/Coriander.jpeg',
+                stock: 75, discount: 0 },
+            { id: 4, name: 'Pepper Powder', category: 'Spice', pricePerKg: 600, image: 'image/Pepperp.jpeg', stock: 30,
+                discount: 15 },
+            { id: 5, name: 'Cinnamon Powder', category: 'Spice', pricePerKg: 800, image: 'image/cinnomon.jpeg',
+                stock: 40, discount: 20 },
+            { id: 6, name: 'Cardamom', category: 'Whole Spice', pricePerKg: 2000, image: 'image/cardamom.jpeg',
+                stock: 20, discount: 10 },
+            { id: 7, name: 'Curry Powder', category: 'Blend', pricePerKg: 350, image: 'image/currypowder.jpeg',
+                stock: 150, discount: 0 }
+        ];
+
+        // ===================================================
+        // ========== SHIPPING ZONES ==========
+        // ===================================================
+
+        const shippingZones = [
+            { id: 'local_std', category: 'local', name: 'Standard Delivery', days: '3-5 days', basePrice: 250,
+                freeThreshold: 5000, region: 'Sri Lanka' },
+            { id: 'local_express', category: 'local', name: 'Express Delivery', days: '1-2 days', basePrice: 550,
+                freeThreshold: 8000, region: 'Sri Lanka' },
+            { id: 'local_premium', category: 'local', name: 'Premium Same-Day', days: 'Same day (Metro)',
+                basePrice: 850, freeThreshold: null, region: 'Sri Lanka' },
+            { id: 'asia', category: 'intl', name: 'Asia Pacific', days: '5-8 days', basePrice: 1200,
+                freeThreshold: 15000, region: 'International' },
+            { id: 'usa_canada', category: 'intl', name: 'USA & Canada', days: '7-12 days', basePrice: 2500,
+                freeThreshold: 25000, region: 'International' },
+            { id: 'europe', category: 'intl', name: 'Europe', days: '6-10 days', basePrice: 2200,
+                freeThreshold: 22000, region: 'International' },
+            { id: 'rest_world', category: 'intl', name: 'Rest of World', days: '10-15 days', basePrice: 3000,
+                freeThreshold: 30000, region: 'International' }
+        ];
+
+        // ===================================================
+        // ========== DATA ==========
+        // ===================================================
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let selectedZoneId = localStorage.getItem('selectedShippingZone') || 'local_std';
+        let orders = [];
+        let returns = [];
+        let currentFilter = 'all';
+
+        // ===================================================
+        // ========== PRICE HELPERS ==========
+        // ===================================================
+
+        function getDiscountedPrice(product) {
+            return product.discount > 0 ? product.pricePerKg * (1 - product.discount / 100) : product.pricePerKg;
+        }
+
+        function getPriceDisplay(product) {
+            let final = getDiscountedPrice(product);
+            return { final, original: product.pricePerKg, discountPercent: product.discount,
+                hasDiscount: product.discount > 0 };
+        }
+
+        // ===================================================
+        // ========== SHIPPING HELPERS ==========
+        // ===================================================
+
+        function getShippingZone() { return shippingZones.find(z => z.id === selectedZoneId); }
+
+        function getShippingFee() {
+            const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+            const zone = getShippingZone();
+            if (!zone) return 0;
+            if (zone.freeThreshold && subtotal >= zone.freeThreshold) return 0;
+            return zone.basePrice;
+        }
+
+        function renderShippingOptions() {
+            const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+            let localHtml = '',
+                intlHtml = '';
+            shippingZones.forEach(zone => {
+                const isFree = (zone.freeThreshold && subtotal >= zone.freeThreshold);
+                const displayPrice = isFree ? 0 : zone.basePrice;
+                const priceText = isFree ? 'FREE' : `Rs. ${displayPrice.toFixed(2)}`;
+                const isSelected = selectedZoneId === zone.id;
+                const optionHtml = `
+                            <div class="delivery-option-card ${isSelected ? 'selected' : ''}" onclick="selectZone('${zone.id}')">
+                                <div class="delivery-option-left">
+                                    <input type="radio" name="shippingZone" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();selectZone('${zone.id}')">
+                                    <div>
+                                        <div class="delivery-name">${zone.name}</div>
+                                        <div class="delivery-desc">📦 ${zone.days} • ${zone.region === 'Sri Lanka' ? 'Island-Wide' : 'International'}</div>
+                                    </div>
+                                </div>
+                                <div class="delivery-price">${priceText} ${isFree ? '<span class="free-tag">FREE</span>' : ''}</div>
+                            </div>`;
+                if (zone.category === 'local') localHtml += optionHtml;
+                else intlHtml += optionHtml;
+            });
+            document.getElementById('localShippingOptions').innerHTML = localHtml;
+            document.getElementById('intlShippingOptions').innerHTML = intlHtml;
+            const zone = getShippingZone();
+            let noteHtml = '';
+            if (zone && zone.freeThreshold && subtotal >= zone.freeThreshold) {
+                noteHtml = `🎉 FREE ${zone.name} applied! Thank you for shopping with Pearl Land!`;
+            } else if (zone && zone.freeThreshold) {
+                noteHtml = `❤️ Add Rs. ${(zone.freeThreshold - subtotal).toFixed(2)} more for FREE ${zone.name}!`;
+            } else {
+                noteHtml = 'Select a shipping method to see offers.';
+            }
+            document.getElementById('freeShippingNote').innerHTML = noteHtml;
+            updateCartTotalDisplay();
+        }
+
+        function selectZone(zoneId) {
+            selectedZoneId = zoneId;
+            localStorage.setItem('selectedShippingZone', zoneId);
+            renderShippingOptions();
+        }
+
+        function updateCartTotalDisplay() {
+            const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+            const shipping = getShippingFee();
+            const total = subtotal + shipping;
+            const zone = getShippingZone();
+            document.getElementById('cartTotal').innerHTML = `
+                        Subtotal: Rs. ${subtotal.toFixed(2)}<br>
+                        🚚 ${zone?.name || 'Shipping'}: Rs. ${shipping.toFixed(2)}
+                        <hr style="margin:8px 0;border-color:var(--light-green);">
+                        <strong>Total: Rs. ${total.toFixed(2)}</strong>`;
+        }
+
+        // ===================================================
+        // ========== SYNC ENGINE ==========
+        // ===================================================
+
+        function syncAllStatuses() {
+            try {
+                let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+                managerOrders.forEach(mo => {
+                    let o = orders.find(x => x.id === mo.id);
+                    if (o) {
+                        if (mo.status) o.status = mo.status;
+                        if (mo.deliveryStatus) o.deliveryStatus = mo.deliveryStatus;
+                        if (mo.paymentStatus) o.paymentStatus = mo.paymentStatus;
+                        if (mo.paymentMethod) o.paymentMethod = mo.paymentMethod;
+                        if (mo.paymentDate) o.paymentDate = mo.paymentDate;
+                    }
+                });
+
+                let linkedOrders = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+                linkedOrders.forEach(lo => {
+                    let o = orders.find(x => x.id === lo.id);
+                    if (o) {
+                        if (lo.deliveryStatus !== undefined) o.deliveryStatus = lo.deliveryStatus;
+                        if (lo.paymentStatus !== undefined) o.paymentStatus = lo.paymentStatus;
+                        if (lo.orderStatus !== undefined) o.status = lo.orderStatus;
+                        if (lo.paymentMethod) o.paymentMethod = lo.paymentMethod;
+                        if (lo.paymentDate) o.paymentDate = lo.paymentDate;
+                    }
+                });
+
+                checkRejectedOrders();
+                checkAllOrdersStatus();
+
+            } catch (e) { console.error('Sync error:', e); }
+        }
+
+        function pushOrdersToAllDashboards() {
+            let customerName = 'Customer';
+            try {
+                const session = JSON.parse(localStorage.getItem('user_session'));
+                if (session) {
+                    customerName = session.full_name || session.first_name + ' ' + session.last_name || 'Customer';
+                }
+            } catch (e) {}
+
+            let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+            orders.forEach(custOrder => {
+                let existing = managerOrders.find(o => o.id === custOrder.id);
+                const firstItem = custOrder.items && custOrder.items[0] ? custOrder.items[0] : null;
+                if (!existing) {
+                    managerOrders.push({
+                        id: custOrder.id,
+                        name: customerName,
+                        type: 'Customer',
+                        product: firstItem ? firstItem.name : 'Mixed Items',
+                        qty: firstItem ? firstItem.quantity : 0,
+                        price: firstItem ? (firstItem.pricePerKg || 0) : 0,
+                        total: custOrder.total,
+                        status: custOrder.status || 'Pending Approval',
+                        orderDate: custOrder.date,
+                        deliveryStatus: custOrder.deliveryStatus || 'Pending',
+                        paymentStatus: custOrder.paymentStatus || 'Pending',
+                        paymentMethod: custOrder.paymentMethod || 'Not Selected',
+                        paymentDate: custOrder.paymentDate || null,
+                        discountRequested: 0,
+                        discountApproved: false,
+                        shippingZone: custOrder.shippingZone || 'Standard Delivery',
+                        shippingFee: custOrder.shippingFee || 250,
+                        notes: ''
+                    });
+                } else {
+                    existing.status = custOrder.status;
+                    existing.paymentStatus = custOrder.paymentStatus;
+                    existing.paymentMethod = custOrder.paymentMethod;
+                    existing.paymentDate = custOrder.paymentDate;
+                }
+            });
+            localStorage.setItem('managerOrders', JSON.stringify(managerOrders));
+
+            let linkedOrders = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+            orders.forEach(custOrder => {
+                let existing = linkedOrders.find(o => o.id === custOrder.id);
+                const firstItem = custOrder.items && custOrder.items[0] ? custOrder.items[0] : null;
+                if (!existing) {
+                    linkedOrders.push({
+                        id: custOrder.id,
+                        name: customerName,
+                        type: 'Customer',
+                        product: firstItem ? firstItem.name : 'Mixed Items',
+                        qty: firstItem ? firstItem.quantity : 0,
+                        total: custOrder.total,
+                        orderStatus: custOrder.status || 'Pending Approval',
+                        paymentStatus: custOrder.paymentStatus || 'Pending',
+                        paymentMethod: custOrder.paymentMethod || 'Not Selected',
+                        paymentDate: custOrder.paymentDate || null,
+                        deliveryStatus: custOrder.deliveryStatus || 'Pending',
+                        orderDate: custOrder.date,
+                        shippingZone: custOrder.shippingZone || 'Standard Delivery'
+                    });
+                } else {
+                    existing.orderStatus = custOrder.status;
+                    existing.paymentStatus = custOrder.paymentStatus;
+                    existing.paymentMethod = custOrder.paymentMethod;
+                    existing.paymentDate = custOrder.paymentDate;
+                }
+            });
+            localStorage.setItem('linkedDashOrders', JSON.stringify(linkedOrders));
+        }
+
+        // ===================================================
+        // ========== REFRESH ORDERS - UPDATED ==========
+        // ===================================================
+
+        let previousOrderStates = {};
+
+        function refreshOrders() {
+            const oldOrders = JSON.parse(JSON.stringify(orders));
+            
+            syncAllStatuses();
+            pushOrdersToAllDashboards();
+            loadOrders();
+            
+            // Check for status changes and show notifications
+            orders.forEach((order, index) => {
+                const oldOrder = oldOrders.find(o => o.id === order.id);
+                if (oldOrder) {
+                    const statusChanged = oldOrder.status !== order.status;
+                    const deliveryChanged = oldOrder.deliveryStatus !== order.deliveryStatus;
+                    const paymentChanged = oldOrder.paymentStatus !== order.paymentStatus;
+                    
+                    if (statusChanged || deliveryChanged || paymentChanged) {
+                        let changes = [];
+                        if (statusChanged) changes.push(`Status: ${oldOrder.status} → ${order.status}`);
+                        if (deliveryChanged) changes.push(`Delivery: ${oldOrder.deliveryStatus} → ${order.deliveryStatus}`);
+                        if (paymentChanged) changes.push(`Payment: ${oldOrder.paymentStatus} → ${order.paymentStatus}`);
+                        
+                        if (order.status === 'Rejected') {
+                            showToast(`❌ Order ${order.id} REJECTED!`, 'error');
+                        } else if (order.status === 'Complete') {
+                            showToast(`🎉 Order ${order.id} COMPLETE!`);
+                        } else {
+                            showToast(`📦 Order ${order.id} updated: ${changes.join(', ')}`);
+                        }
+                    }
+                }
+            });
+            
+            showToast('✅ Status refreshed!');
+        }
+
+        // ===================================================
+        // ========== NOTIFICATION BADGES ==========
+        // ===================================================
+
+        function updateNotificationBadges() {
+            const completedOrders = orders.filter(o => o.status === 'Complete' || (o.deliveryStatus === 'Delivered' && o
+                .paymentStatus === 'Paid'));
+            const rejectedOrders = orders.filter(o => o.status === 'Rejected');
+
+            const orderBadge = document.getElementById('orderBadge');
+            const dashNotif = document.getElementById('dashNotif');
+            const orderNotif = document.getElementById('orderNotif');
+
+            const totalNotifications = completedOrders.length + rejectedOrders.length;
+
+            if (totalNotifications > 0) {
+                orderBadge.textContent = totalNotifications;
+                orderBadge.style.display = 'inline';
+                dashNotif.style.display = 'inline';
+                orderNotif.style.display = 'inline';
+            } else {
+                orderBadge.style.display = 'none';
+                dashNotif.style.display = 'none';
+                orderNotif.style.display = 'none';
+            }
+        }
+
+        // ===================================================
+        // ========== ORDER FILTER ==========
+        // ===================================================
+
+        function filterOrders(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.tab-btn.filter-rejected, .tab-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+
+            if (filter === 'all') document.getElementById('filterAll').classList.add('active');
+            else if (filter === 'complete') document.getElementById('filterComplete').classList.add('active');
+            else if (filter === 'pending') document.getElementById('filterPending').classList.add('active');
+            else if (filter === 'rejected') document.getElementById('filterRejected').classList.add('active');
+
+            loadOrders();
+        }
+
+        // ===================================================
+        // ========== TAB NAVIGATION ==========
+        // ===================================================
+
+        function showTab(evtOrTabName, tabName) {
+            let evt = null;
+            if (typeof tabName === 'undefined') { tabName = evtOrTabName; } else { evt = evtOrTabName; }
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            const navMap = { dashboard: 'navDashboard', products: 'navProducts', orders: 'navOrders',
+                returns: 'navReturns' };
+            const tabBtn = document.getElementById(`tabBtn-${tabName}`);
+            if (navMap[tabName]) document.getElementById(navMap[tabName]).classList.add('active');
+            if (tabBtn) tabBtn.classList.add('active');
+            if (tabName === 'products') loadProducts();
+            if (tabName === 'orders') { syncAllStatuses();
+                loadOrders(); }
+            if (evt && evt.target) evt.target.classList.add('active');
+        }
+
+        // ===================================================
+        // ========== PRODUCTS ==========
+        // ===================================================
+
+        function loadProducts() {
+            let html = '';
+            products.forEach(p => {
+                const pi = getPriceDisplay(p);
+                html += `<div class="product-card">
+                            ${pi.hasDiscount ? `<div class="discount-badge">⚡ ${pi.discountPercent}% OFF</div>` : ''}
+                            <div class="product-image"><img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=Spice'"></div>
+                            <div class="product-details">
+                                <div class="product-name">${p.name}</div>
+                                <div class="product-category">${p.category}</div>
+                                <div class="product-price">
+                                    <span class="price-per-kg">Rs. ${pi.final.toFixed(2)}</span>
+                                    ${pi.hasDiscount ? `<span class="old-price">Rs. ${pi.original}</span><span class="discount-percent">-${pi.discountPercent}%</span>` : ''}
+                                    <span class="price-unit">/kg</span>
+                                </div>
+                                ${pi.hasDiscount ? `<div class="savings-text">🔥 Save Rs. ${(pi.original - pi.final).toFixed(2)} per kg!</div>` : ''}
+                                <div class="quantity-selector">
+                                    <label>Qty (kg):</label>
+                                    <select id="qty-${p.id}" onchange="updateTotalPrice(${p.id})">${generateQuantityOptions()}</select>
+                                </div>
+                                <div class="total-price" id="total-${p.id}">Total: Rs. ${pi.final.toFixed(2)}</div>
+                                <button class="add-to-cart" onclick="addToCart(${p.id})">🛒 Add to Cart</button>
                             </div>
-                            ${priceInfo.hasDiscount ? `<div class="savings-text">🔥 Save Rs. ${(priceInfo.original - priceInfo.final).toFixed(2)} per kg!</div>` : ''}
-                            <div class="quantity-selector">
-                                <label>Quantity (kg):</label>
-                                <select id="qty-${p.id}" onchange="updateTotalPrice(${p.id})">${generateQuantityOptions()}</select>
+                        </div>`;
+            });
+            document.getElementById('productsGrid').innerHTML = html;
+            products.forEach(p => updateTotalPrice(p.id));
+        }
+
+        function generateQuantityOptions() {
+            let opts = '';
+            for (let i = 0.5; i <= 10; i += 0.5) opts += `<option value="${i}">${i} kg</option>`;
+            return opts;
+        }
+
+        function updateTotalPrice(productId) {
+            let qty = parseFloat(document.getElementById(`qty-${productId}`).value);
+            let product = products.find(p => p.id === productId);
+            let unit = getDiscountedPrice(product);
+            document.getElementById(`total-${productId}`).innerHTML = `Total: Rs. ${(qty * unit).toFixed(2)}`;
+        }
+
+        // ===================================================
+        // ========== CART ==========
+        // ===================================================
+
+        function addToCart(productId) {
+            let qty = parseFloat(document.getElementById(`qty-${productId}`).value);
+            let product = products.find(p => p.id === productId);
+            let unitPrice = getDiscountedPrice(product);
+            cart.push({ productId: product.id, name: product.name, quantity: qty, pricePerKg: unitPrice,
+                originalPricePerKg: product.pricePerKg, discountPercent: product.discount, total: qty * unitPrice });
+            updateCart();
+            showToast(`✅ ${product.name} added to cart!`);
+        }
+
+        function updateCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            displayCart();
+            renderShippingOptions();
+        }
+
+        function updateCartCount() {
+            let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+            document.getElementById('headerCartCount').textContent = count;
+        }
+
+        function displayCart() {
+            let html = '';
+            let subtotal = 0;
+            cart.forEach((item, index) => {
+                html += `<div class="cart-item">
+                            <div class="cart-item-image">🌶️</div>
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">${item.name}${item.discountPercent > 0 ? ` <span style="color:var(--sale-red);font-size:11px;">(${item.discountPercent}% off)</span>` : ''}</div>
+                                <div class="cart-item-price">${item.quantity} kg × Rs. ${item.pricePerKg.toFixed(2)}</div>
+                                <div>Rs. ${item.total.toFixed(2)}</div>
                             </div>
-                            <div class="total-price" id="total-${p.id}">Total: Rs. ${priceInfo.final.toFixed(2)}</div>
-                            <button class="add-to-cart" onclick="addToCart(${p.id})">🛒 Add to Cart</button>
-                        </div>
-                    </div>`;
-        });
-        document.getElementById('productsGrid').innerHTML = html;
-        products.forEach(p => { updateTotalPrice(p.id); });
-    }
+                            <div class="cart-item-remove" onclick="removeFromCart(${index})">&times;</div>
+                        </div>`;
+                subtotal += item.total;
+            });
+            if (cart.length === 0) html = '<p style="text-align:center;color:#666;padding:20px;">Your cart is empty</p>';
+            document.getElementById('cartItems').innerHTML = html;
+            updateCartTotalDisplay();
+        }
 
-    function generateQuantityOptions() {
-        let options = '';
-        for(let i = 0.5; i <= 10; i += 0.5) options += `<option value="${i}">${i} kg</option>`;
-        return options;
-    }
+        function removeFromCart(index) { cart.splice(index, 1);
+            updateCart(); }
 
-    function updateTotalPrice(productId) {
-        let qty = parseFloat(document.getElementById(`qty-${productId}`).value);
-        let product = products.find(p => p.id === productId);
-        let finalUnit = getDiscountedPrice(product);
-        document.getElementById(`total-${productId}`).innerHTML = `Total: Rs. ${(qty * finalUnit).toFixed(2)}`;
-    }
+        function openCart() { displayCart();
+            renderShippingOptions();
+            document.getElementById('cartSidebar').classList.add('open'); }
 
-    function addToCart(productId) {
-        let qty = parseFloat(document.getElementById(`qty-${productId}`).value);
-        let product = products.find(p => p.id === productId);
-        let unitPrice = getDiscountedPrice(product);
-        cart.push({ productId: product.id, name: product.name, quantity: qty, pricePerKg: unitPrice, originalPricePerKg: product.pricePerKg, discountPercent: product.discount, total: qty * unitPrice });
-        updateCart();
-        showNotification(`${product.name} added with ${product.discount > 0 ? product.discount+'% discount!' : 'best price!'}`);
-    }
+        function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); }
 
-    function updateCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartCount(); displayCart(); renderShippingOptions(); }
-    function updateCartCount() { let count = cart.reduce((sum, item) => sum + item.quantity, 0); document.getElementById('cartCount').textContent = count; document.getElementById('headerCartCount').textContent = count; }
-    
-    function displayCart() {
-        let html = ''; let total = 0;
-        cart.forEach((item, index) => {
-            html += `<div class="cart-item"><div class="cart-item-image">🌶️</div><div class="cart-item-details"><div class="cart-item-name">${item.name} ${item.discountPercent > 0 ? `(${item.discountPercent}% off)` : ''}</div><div class="cart-item-price">${item.quantity} kg x Rs. ${item.pricePerKg.toFixed(2)}</div><div>Rs. ${item.total.toFixed(2)}</div></div><div class="cart-item-remove" onclick="removeFromCart(${index})">&times;</div></div>`;
-            total += item.total;
+        // ===================================================
+        // ========== CHECKOUT WITH PAYMENT ==========
+        // ===================================================
+
+        function checkout() {
+            if (cart.length === 0) { showToast('Cart is empty!', 'error'); return; }
+
+            let zone = getShippingZone();
+            let shippingCharge = getShippingFee();
+            let subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+            let total = subtotal + shippingCharge;
+            let orderId = 'ORD-' + String(orders.length + 100).padStart(3, '0');
+
+            let paymentType = '';
+            let paymentStatus = '';
+
+            if (selectedPaymentMethod === 'cod') {
+                paymentType = 'Cash on Delivery';
+                paymentStatus = 'Pending (COD)';
+            } else {
+                paymentType = 'Online Payment';
+                paymentStatus = 'Processing';
+
+                const payNow = confirm(
+                    '💳 Online Payment\n\n' +
+                    'Order ID: ' + orderId + '\n' +
+                    'Total Amount: Rs. ' + total.toFixed(2) + '\n\n' +
+                    'Click OK to proceed with payment\n' +
+                    'Click Cancel to go back'
+                );
+
+                if (!payNow) {
+                    return;
+                }
+
+                showToast('⏳ Processing payment...');
+
+                setTimeout(() => {
+                    showToast('✅ Payment Successful! Order: ' + orderId);
+                }, 1500);
+
+                paymentStatus = 'Processing (Paid)';
+            }
+
+            let newOrder = {
+                id: orderId,
+                date: new Date().toISOString().split('T')[0],
+                items: cart.map(c => ({ ...c })),
+                total: total,
+                status: 'Pending Approval',
+                deliveryStatus: 'Pending',
+                paymentStatus: paymentStatus,
+                paymentMethod: paymentType,
+                shippingZone: zone.name,
+                shippingFee: shippingCharge,
+                rejectionNotified: false,
+                paymentDate: selectedPaymentMethod === 'online' ? new Date().toISOString() : null
+            };
+
+            orders.push(newOrder);
+            pushOrdersToAllDashboards();
+
+            showToast(`✅ Order placed! ID: ${orderId}`);
+            showToast(`💰 ${paymentType}: Rs. ${total.toFixed(2)}`);
+
+            cart = [];
+            updateCart();
+            closeCart();
+            loadOrders();
+            loadReturns();
+            showTab('orders');
+        }
+
+        // ===================================================
+        // ========== ORDERS ==========
+        // ===================================================
+
+        function buildPipeline(order) {
+            const managerStatus = order.status || 'Pending Approval';
+            const deliveryStatus = order.deliveryStatus || 'Pending';
+            const paymentStatus = order.paymentStatus || 'Pending';
+            const isRejected = managerStatus === 'Rejected';
+            const isComplete = order.status === 'Complete' || (deliveryStatus === 'Delivered' && paymentStatus === 'Paid' &&
+                !isRejected);
+
+            const s1 = { done: true, label: 'Placed', icon: '📋' };
+
+            let s2 = { done: false, active: false, label: 'Manager', icon: '👔' };
+            if (isRejected) {
+                s2 = { done: false, active: false, rejected: true, label: 'REJECTED ❌', icon: '🚫' };
+            } else if (managerStatus === 'Pending Approval') {
+                s2 = { done: false, active: true, label: 'Awaiting', icon: '⏳' };
+            } else {
+                s2 = { done: true, label: 'Approved ✅', icon: '✅' };
+            }
+
+            let s3 = { done: false, active: false, label: 'Delivery', icon: '🚚' };
+            if (isRejected) {
+                s3 = { done: false, rejected: true, label: 'Cancelled', icon: '❌' };
+            } else if (!isComplete) {
+                if (deliveryStatus === 'Shipped') s3 = { done: false, active: true, label: 'Shipped', icon: '🚚' };
+                if (deliveryStatus === 'Delivered') s3 = { done: true, label: 'Delivered', icon: '📦' };
+            } else if (isComplete) {
+                s3 = { done: true, label: 'Delivered', icon: '📦' };
+            }
+
+            let s4 = { done: false, active: false, label: 'Payment', icon: '💳' };
+            if (isRejected) {
+                s4 = { done: false, rejected: true, label: 'Cancelled', icon: '❌' };
+            } else if (!isComplete) {
+                if (paymentStatus === 'Processing' || paymentStatus === 'Processing (Paid)') s4 = { done: false,
+                    active: true, label: 'Processing', icon: '💳' };
+                if (paymentStatus === 'Paid') s4 = { done: true, label: 'Paid', icon: '💰' };
+            } else if (isComplete) {
+                s4 = { done: true, label: 'Paid', icon: '💰' };
+            }
+
+            let s5 = { done: false, active: false, label: 'Complete', icon: '🎉' };
+            if (isRejected) {
+                s5 = { done: false, rejected: true, label: 'REJECTED ❌', icon: '🚫' };
+            } else if (isComplete) {
+                s5 = { done: true, complete: true, label: 'Complete! ✅', icon: '🎉' };
+            } else {
+                s5 = { done: false, active: false, label: 'Pending', icon: '⏳' };
+            }
+
+            const steps = [s1, s2, s3, s4, s5];
+            let html = '<div class="status-pipeline">';
+            steps.forEach((step, i) => {
+                let cls = step.rejected ? 'rejected' : step.complete ? 'complete' : step.done ? 'done' : step
+                    .active ? 'active' : '';
+                html += `<div class="pipeline-step">
+                                <div class="pipeline-dot ${cls}">${step.icon}</div>
+                                <div class="pipeline-label ${cls}">${step.label}</div>
+                            </div>`;
+                if (i < steps.length - 1) {
+                    let arrCls = (steps[i].done && !steps[i + 1].rejected) ? 'done' : '';
+                    if (steps[i].complete) arrCls = 'complete';
+                    if (steps[i].rejected || steps[i + 1].rejected) arrCls = 'rejected';
+                    html += `<div class="pipeline-arrow ${arrCls}">›</div>`;
+                }
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function loadOrders() {
+            syncAllStatuses();
+
+            let recentHtml = '',
+                allHtml = '';
+            let completedCount = 0;
+            let rejectedCount = 0;
+
+            let filteredOrders = orders;
+            if (currentFilter === 'complete') {
+                filteredOrders = orders.filter(o => o.status === 'Complete' || (o.deliveryStatus === 'Delivered' && o
+                    .paymentStatus === 'Paid' && o.status !== 'Rejected'));
+            } else if (currentFilter === 'pending') {
+                filteredOrders = orders.filter(o => o.status !== 'Complete' && o.status !== 'Rejected' && !(o
+                    .deliveryStatus === 'Delivered' && o.paymentStatus === 'Paid'));
+            } else if (currentFilter === 'rejected') {
+                filteredOrders = orders.filter(o => o.status === 'Rejected');
+            }
+
+            orders.slice(-3).reverse().forEach(order => {
+                const isComplete = order.status === 'Complete' || (order.deliveryStatus === 'Delivered' && order
+                    .paymentStatus === 'Paid' && order.status !== 'Rejected');
+                const isRejected = order.status === 'Rejected';
+
+                if (isComplete) completedCount++;
+                if (isRejected) rejectedCount++;
+
+                let itemsStr = order.items.map(i => `${i.name} (${i.quantity}kg)`).join(', ');
+                let mgrClass = isRejected ? 'status-rejected' : getStatusClass(order.status);
+                let delClass = isRejected ? 'status-rejected' : (order.deliveryStatus === 'Delivered' ?
+                    'status-delivered' : order.deliveryStatus === 'Shipped' ? 'status-shipped' :
+                    'status-pending-approval');
+                let payClass = isRejected ? 'status-rejected' : (order.paymentStatus === 'Paid' ? 'status-paid' :
+                    order.paymentStatus === 'Processing' || order.paymentStatus === 'Processing (Paid)' ?
+                    'status-processing' : 'status-pending-approval');
+
+                let paymentBadge = '';
+                if (order.paymentMethod === 'Cash on Delivery') {
+                    paymentBadge =
+                        '<span class="payment-badge cod">💵 COD</span>';
+                } else if (order.paymentMethod === 'Online Payment') {
+                    paymentBadge =
+                        '<span class="payment-badge online">💳 Online</span>';
+                }
+
+                let statusText = isRejected ? '❌ REJECTED' : (isComplete ? '✅ Complete' : order.status || 'Pending');
+                let statusClass = isRejected ? 'status-rejected' : (isComplete ? 'status-complete' : mgrClass);
+                let rowClass = isRejected ? 'rejected-order' : (isComplete ? 'completed-order' : '');
+
+                recentHtml += `<tr class="${rowClass}">
+                                <td><strong>${order.id}</strong> ${isRejected ? '<span class="rejected-tag">❌ REJECTED</span>' : isComplete ? '<span class="complete-tag">✅ COMPLETE</span>' : ''}</td>
+                                <td>${order.date}</td>
+                                <td>${itemsStr}</td>
+                                <td><strong>Rs. ${Number(order.total).toLocaleString()}</strong></td>
+                                <td><span class="order-status ${mgrClass}">${isRejected ? '❌ Rejected' : order.status}</span></td>
+                                <td><span class="order-status ${delClass}">${isRejected ? '❌ Cancelled' : (order.deliveryStatus || 'Pending')}</span></td>
+                                <td>
+                                    <span class="order-status ${payClass}">${isRejected ? '❌ Cancelled' : (order.paymentStatus || 'Pending')}</span>
+                                    <br>${paymentBadge}
+                                    ${order.paymentDate ? '<div style="font-size:10px;color:#666;margin-top:2px;">📅 ' + new Date(order.paymentDate).toLocaleDateString() + '</div>' : ''}
+                                </td>
+                                <td><span class="order-status ${statusClass}">${statusText}</span></td>
+                            </tr>`;
+            });
+
+            filteredOrders.forEach(order => {
+                const firstItem = order.items && order.items[0] ? order.items[0] : null;
+                const productName = firstItem ? firstItem.name : 'Mixed Items';
+                const qtyKg = firstItem ? firstItem.quantity : 0;
+
+                const isComplete = order.status === 'Complete' || (order.deliveryStatus === 'Delivered' && order
+                    .paymentStatus === 'Paid' && order.status !== 'Rejected');
+                const isRejected = order.status === 'Rejected';
+
+                const managerStatus = isRejected ? 'Rejected ❌' : (isComplete ? 'Complete ✅' : (order.status ||
+                    'Pending Approval'));
+                const deliveryStatus = isRejected ? 'Cancelled ❌' : (order.deliveryStatus || 'Pending');
+                const paymentStatus = isRejected ? 'Cancelled ❌' : (order.paymentStatus || 'Pending');
+
+                let mgrClass = isRejected ? 'status-rejected' : (isComplete ? 'status-complete' : getStatusClass(order
+                    .status));
+                let delClass = isRejected ? 'status-rejected' : (deliveryStatus === 'Delivered' ? 'status-delivered' :
+                    deliveryStatus === 'Shipped' ? 'status-shipped' : 'status-pending-approval');
+                let payClass = isRejected ? 'status-rejected' : (paymentStatus === 'Paid' ? 'status-paid' :
+                    paymentStatus === 'Processing' || paymentStatus === 'Processing (Paid)' ? 'status-processing' :
+                    'status-pending-approval');
+
+                let paymentBadge = '';
+                if (order.paymentMethod === 'Cash on Delivery') {
+                    paymentBadge =
+                        '<span class="payment-badge cod">💵 COD</span>';
+                } else if (order.paymentMethod === 'Online Payment') {
+                    paymentBadge =
+                        '<span class="payment-badge online">💳 Online</span>';
+                }
+
+                const statusDisplay = isRejected ? '❌ REJECTED' : (isComplete ? '✅ Complete' : managerStatus);
+                const rowClass = isRejected ? 'rejected-order' : (isComplete ? 'completed-order' : '');
+
+                allHtml += `<tr class="${rowClass}">
+                                <td><strong>${order.id}</strong> ${isRejected ? '<span class="rejected-tag">❌ REJECTED</span>' : isComplete ? '<span class="complete-tag">✅ COMPLETE</span>' : ''}</td>
+                                <td>${order.date}</td>
+                                <td>${productName}</td>
+                                <td>${qtyKg} kg</td>
+                                <td><strong>Rs. ${Number(order.total).toLocaleString()}</strong></td>
+                                <td><span class="order-status ${mgrClass}">${statusDisplay}</span></td>
+                                <td><span class="order-status ${delClass}">${deliveryStatus}</span></td>
+                                <td>
+                                    <span class="order-status ${payClass}">${paymentStatus}</span>
+                                    <br>${paymentBadge}
+                                    ${order.paymentDate ? '<div style="font-size:10px;color:#666;margin-top:2px;">📅 ' + new Date(order.paymentDate).toLocaleDateString() + '</div>' : ''}
+                                </td>
+                                <td>${buildPipeline(order)}</td>
+                            </tr>`;
+            });
+
+            document.getElementById('recentOrders').innerHTML = recentHtml ||
+                '<tr><td colspan="8" style="text-align:center;color:#999;">No recent orders</td></tr>';
+            document.getElementById('allOrders').innerHTML = allHtml ||
+                '<tr><td colspan="9" style="text-align:center;color:#999;">No orders yet. Browse products and add to cart!</td></tr>';
+
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('completedOrders').textContent = completedCount;
+            document.getElementById('rejectedOrders').textContent = rejectedCount;
+
+            let totalSpent = orders.filter(o => o.status !== 'Rejected').reduce((sum, o) => sum + Number(o.total), 0);
+            document.getElementById('totalSpent').textContent = `Rs. ${totalSpent.toLocaleString()}`;
+            let pending = orders.filter(o => o.status === 'Processing' || o.status === 'Pending Approval').length;
+            document.getElementById('pendingOrders').textContent = pending;
+
+            updateNotificationBadges();
+        }
+
+        function getStatusClass(status) {
+            if (!status) return 'status-processing';
+            if (status === 'Complete') return 'status-complete';
+            if (status === 'Rejected') return 'status-rejected';
+            let s = status.toLowerCase().replace(/ /g, '-');
+            if (s.includes('delivered')) return 'status-delivered';
+            if (s.includes('shipped')) return 'status-shipped';
+            if (s.includes('pending')) return 'status-pending-approval';
+            if (s.includes('rejected')) return 'status-rejected';
+            if (s.includes('complete')) return 'status-complete';
+            return 'status-processing';
+        }
+
+        // ===================================================
+        // ========== RETURNS ==========
+        // ===================================================
+
+        function loadReturns() {
+            let html = '';
+            returns.forEach(r => {
+                html +=
+                    `<tr><td>${r.id}</td><td>${r.orderId}</td><td>${r.items}</td><td>${r.reason}</td><td><span class="order-status status-${r.status.toLowerCase()}">${r.status}</span></td></tr>`;
+            });
+            document.getElementById('returnHistory').innerHTML = html ||
+                '<tr><td colspan="5" style="text-align:center;color:#999;">No return history</td></tr>';
+            let options = '<option value="">Select Order</option>';
+            orders.forEach(o => { options += `<option value="${o.id}">${o.id} - Rs. ${o.total}</option>`; });
+            document.getElementById('returnOrder').innerHTML = options;
+        }
+
+        function loadReturnItems() {
+            let orderId = document.getElementById('returnOrder').value;
+            let order = orders.find(o => o.id === orderId);
+            if (order) {
+                let html = '';
+                order.items.forEach(item => { html +=
+                        `<div style="margin:10px 0;"><input type="checkbox" value="${item.productId}"> ${item.name} (${item.quantity}kg)</div>`
+                        ; });
+                document.getElementById('returnItems').innerHTML = html;
+            }
+        }
+
+        function submitReturn() {
+            let orderId = document.getElementById('returnOrder').value;
+            if (!orderId) { showToast('Please select an order!', 'error'); return; }
+            returns.push({ id: 'RET-' + String(returns.length + 1).padStart(3, '0'), orderId: orderId,
+                items: 'Selected items', reason: document.getElementById('returnReason').value, status: 'Pending' });
+            showToast('✅ Return request submitted!');
+            loadReturns();
+        }
+
+        // ===================================================
+        // ========== MESSAGES ==========
+        // ===================================================
+
+        function showUserMessages() {
+            try {
+                let messages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+                let html = '';
+                messages.filter(m => m.recipientType === 'Customer').reverse().forEach(m => {
+                    const isRejection = m.type === 'rejection';
+                    html +=
+                        `<div style="background:${isRejection ? '#ffebee' : '#fff'};padding:10px;border-radius:8px;margin-bottom:8px;border-left:4px solid ${isRejection ? '#c62828' : '#8B4513'};">
+                                    <strong>${m.date} — ${m.orderId}</strong>
+                                    <div style="margin-top:6px;color:${isRejection ? '#c62828' : '#333'};">${m.message}</div>
+                                </div>`;
+                });
+                if (html === '') html = '<div style="color:#aaa;font-size:13px;">No messages from manager.</div>';
+                document.getElementById('userMessagesArea').innerHTML = html;
+            } catch (e) {}
+        }
+
+        // ===================================================
+        // ========== PROFILE ==========
+        // ===================================================
+
+        function openProfileModal() { document.getElementById('profileModal').style.display = 'block'; }
+
+        function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+
+        function updateProfile() {
+            const session = JSON.parse(localStorage.getItem('user_session'));
+            if (session) {
+                session.full_name = document.getElementById('profileName').value;
+                session.email = document.getElementById('profileEmail').value;
+                session.phone = document.getElementById('profilePhone').value;
+                session.address = document.getElementById('profileAddress').value;
+                session.city = document.getElementById('profileCity').value;
+                localStorage.setItem('user_session', JSON.stringify(session));
+                loadCustomerFromSession();
+                showToast('✅ Profile updated successfully!');
+            }
+            closeProfileModal();
+        }
+
+        // ===================================================
+        // ========== INIT ==========
+        // ===================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const session = checkSession();
+            if (!session) return;
+
+            loadCustomerFromSession();
+
+            const savedOrders = localStorage.getItem('customer_orders');
+            if (savedOrders) {
+                orders = JSON.parse(savedOrders);
+            }
+
+            const savedReturns = localStorage.getItem('customer_returns');
+            if (savedReturns) {
+                returns = JSON.parse(savedReturns);
+            }
+
+            syncAllStatuses();
+            pushOrdersToAllDashboards();
+            showUserMessages();
+            loadOrders();
+            loadProducts();
+            loadReturns();
+            updateCartCount();
+            renderShippingOptions();
+
+            document.getElementById('filterAll').classList.add('active');
+
+            // ===== UPDATED: Auto refresh every 8 seconds =====
+            setInterval(() => {
+                syncAllStatuses();
+                pushOrdersToAllDashboards();
+                loadOrders();
+            }, 8000);
         });
-        if(cart.length === 0) html = '<p style="text-align: center; color: #666;">Your cart is empty</p>';
-        document.getElementById('cartItems').innerHTML = html;
-        updateCartTotalDisplay();
-    }
-    
-    function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
-    function openCart() { displayCart(); renderShippingOptions(); document.getElementById('cartSidebar').classList.add('open'); }
-    function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); }
-    
-    function checkout() {
-        if(cart.length === 0) { alert('Cart is empty!'); return; }
-        let zone = getShippingZone();
-        let shippingCharge = getShippingFee();
-        let subtotal = cart.reduce((sum, item) => sum + item.total, 0);
-        let total = subtotal + shippingCharge;
-        let orderId = 'ORD-' + String(orders.length + 1).padStart(3, '0');
-        orders.push({
-            id: orderId, date: new Date().toISOString().split('T')[0], items: [...cart], total: total, status: 'Processing', shippingZone: zone.name, shippingFee: shippingCharge
+
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('customer_orders', JSON.stringify(orders));
+            localStorage.setItem('customer_returns', JSON.stringify(returns));
         });
-        alert(`Order placed successfully!\nOrder ID: ${orderId}\nSubtotal: Rs. ${subtotal.toFixed(2)}\n🚚 ${zone.name}: Rs. ${shippingCharge.toFixed(2)}\nTotal: Rs. ${total.toFixed(2)}`);
-        cart = []; updateCart(); closeCart(); loadOrders(); loadReturns(); showTab('orders');
-    }
-    
-    function loadOrders() {
-        let recentHtml = '', allHtml = '';
-        orders.slice(-3).reverse().forEach(order => {
-            let items = order.items.map(i => `${i.name} (${i.quantity}kg)${i.discountPercent ? ` ${i.discountPercent}% off` : ''}`).join(', ');
-            recentHtml += `<tr><td>${order.id}</td><td>${order.date}</td><td>${items}</td><td>Rs. ${order.total}</td><td><span class="order-status status-${order.status.toLowerCase()}">${order.status}</span></td></tr>`;
-        });
-        orders.forEach(order => {
-            let items = order.items.map(i => `${i.name} (${i.quantity}kg)`).join(', ');
-            allHtml += `<tr><td>${order.id}</td><td>${order.date}</td><td>${items}</td><td>Rs. ${order.total}</td><td><span class="order-status status-${order.status.toLowerCase()}">${order.status}</span></td><td><button class="action-btn btn-view" onclick="viewOrder('${order.id}')">View</button><button class="action-btn btn-return" onclick="requestReturn('${order.id}')">Return</button></td></tr>`;
-        });
-        document.getElementById('recentOrders').innerHTML = recentHtml;
-        document.getElementById('allOrders').innerHTML = allHtml;
-        document.getElementById('totalOrders').textContent = orders.length;
-        let totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
-        document.getElementById('totalSpent').textContent = `Rs. ${totalSpent.toLocaleString()}`;
-        let pending = orders.filter(o => o.status === 'Processing').length;
-        document.getElementById('pendingOrders').textContent = pending;
-        document.getElementById('loyaltyPoints').textContent = Math.floor(totalSpent / 100);
-    }
-    
-    function loadReturns() {
-        let html = '';
-        returns.forEach(r => { html += `<tr><td>${r.id}</td><td>${r.orderId}</td><td>${r.items}</td><td>${r.reason}</td><td><span class="order-status status-${r.status.toLowerCase()}">${r.status}</span></td></tr>`; });
-        document.getElementById('returnHistory').innerHTML = html;
-        let options = '<option value="">Select Order</option>';
-        orders.forEach(o => { options += `<option value="${o.id}">${o.id} - Rs. ${o.total}</option>`; });
-        document.getElementById('returnOrder').innerHTML = options;
-    }
-    
-    function loadReturnItems() { let orderId = document.getElementById('returnOrder').value; let order = orders.find(o => o.id === orderId); if(order) { let html = ''; order.items.forEach(item => { html += `<div style="margin:10px 0;"><input type="checkbox" value="${item.productId}"> ${item.name} (${item.quantity}kg)</div>`; }); document.getElementById('returnItems').innerHTML = html; } }
-    function submitReturn() { alert('Return request submitted successfully!'); returns.push({ id: 'RET-' + String(returns.length + 1).padStart(3, '0'), orderId: document.getElementById('returnOrder').value, items: 'Selected items', reason: document.getElementById('returnReason').value, status: 'Pending' }); loadReturns(); }
-    function requestReturn(orderId) { showTab('returns'); document.getElementById('returnOrder').value = orderId; loadReturnItems(); }
-    function viewOrder(orderId) { alert(`Viewing order: ${orderId}`); }
-    function openProfileModal() { document.getElementById('profileModal').style.display = 'block'; }
-    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
-    function updateProfile() { alert('Profile updated successfully!'); closeProfileModal(); }
-    function showNotification(message) { alert(message); }
-</script>
+    </script>
 </body>
+
 </html>

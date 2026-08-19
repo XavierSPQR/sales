@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spice Manufacturing - Role Based Status Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .app-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1b4d3e 0%, #0f2e24 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .role-badge {
+            background: #2d6a4f;
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+
+        .role-selector {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .role-selector select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: #2d6a4f;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-links a {
+            display: block;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #2d6a4f;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .nav-links a:hover {
+            background: #194032;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .top-header {
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            gap: 10px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            color: #2d6a4f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+
+        th {
+            background: #2d6a4f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-pending {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-shipped {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-lowstock {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-instock {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-awaiting {
+            background: #e8d5ff;
+            color: #5e35b1;
+        }
+
+        .status-select {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 0.8em;
+            background: white;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .btn-update {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background: #d97706;
+        }
+
+        .btn-refresh {
+            background: #2d6a4f;
+            color: white;
+        }
+
+        .btn-refresh:hover {
+            background: #1b4d3e;
+        }
+
+        .stock-input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Manager approval badge in linked table */
+        .mgr-approved {
+            color: #2e7d32;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .mgr-rejected {
+            color: #c62828;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .mgr-pending {
+            color: #7b1fa2;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Sync indicator */
+        .sync-indicator {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+            }
+
+            th,
+            td {
+                font-size: 0.7em;
+                padding: 5px;
+            }
+
+            .stock-input {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🌿 Spice Co.</h2>
+                <p style="font-size:0.7em;opacity:0.8;">Manufacturing System</p>
+            </div>
+            <div class="user-info">
+                <div>👤 Logged in as</div>
+                <div><strong id="userName">Account Clerk</strong></div>
+                <div class="role-badge" id="userRole">ACCOUNT CLERK</div>
+            </div>
+            <div class="role-selector">
+                <label style="font-size:0.75em;opacity:0.8;">Switch Role</label>
+                <select id="roleSwitcher" onchange="switchRole()">
+                    <option value="account_clerk">💰 Account Clerk</option>
+                    <option value="stock_clerk">📦 Stock Clerk</option>
+                </select>
+            </div>
+            <div class="nav-links">
+                <a href="accountdashboard.html">Account Dashboard</a>
+                <a href="stockdashboard.html">Stock Dashboard</a>
+                
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-header">
+                <h1 id="pageTitle">Account Clerk Dashboard</h1>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <div class="sync-indicator">
+                        <div class="sync-dot"></div> Live sync with Customer Portal
+                    </div>
+                    <button class="btn btn-refresh" onclick="refreshFromCustomer()">🔄 Pull Latest Orders</button>
+                    <div id="dateTime" style="font-size:13px;color:#666;"></div>
+                </div>
+            </div>
+
+            <div id="dynamicContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // SHARED localStorage KEY: 'linkedDashOrders'
+        // This is what the customer portal writes to, and what we read.
+        // We also write back delivery/payment status changes here.
+        // ============================================================
+
+        // Fallback sample data (shown only if no customer orders exist yet)
+        const sampleOrders = [
+            { id: 'ORD-001', name: 'Saman Perera', type: 'Customer', product: 'Turmeric Powder', qty: 5, total: 2750, orderStatus: 'Delivered', paymentStatus: 'Paid', deliveryStatus: 'Delivered', orderDate: '2026-03-15' },
+            { id: 'ORD-002', name: 'Nimali Stores', type: 'Wholesaler', product: 'Black Pepper', qty: 150, total: 117000, orderStatus: 'Processing', paymentStatus: 'Pending', deliveryStatus: 'Pending', orderDate: '2026-03-16' },
+            { id: 'ORD-003', name: 'City Market', type: 'Customer', product: 'Chili Powder', qty: 100, total: 54000, orderStatus: 'Pending', paymentStatus: 'Pending', deliveryStatus: 'Pending', orderDate: '2026-03-14' },
+            { id: 'ORD-004', name: 'Lanka Traders', type: 'Wholesaler', product: 'Cinnamon', qty: 300, total: 285000, orderStatus: 'Processing', paymentStatus: 'Processing', deliveryStatus: 'Shipped', orderDate: '2026-03-13' }
+        ];
+
+        let inventory = [
+            { code: 'P001', product: 'Turmeric Powder', category: 'Spice', price: 500, stock: 450 },
+            { code: 'P002', product: 'Chili Powder', category: 'Spice', price: 400, stock: 15 },
+            { code: 'P003', product: 'Black Pepper', category: 'Spice', price: 780, stock: 8 },
+            { code: 'P004', product: 'Cinnamon Sticks', category: 'Spice', price: 950, stock: 320 },
+            { code: 'P005', product: 'Cardamom', category: 'Whole Spice', price: 2800, stock: 25 }
+        ];
+
+        let currentRole = 'account_clerk';
+        let orders = [];
+
+        // ============================================================
+        // LOAD ORDERS: merge customer orders + sample orders
+        // ============================================================
+        function loadOrders() {
+            let linked = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+            if (linked.length === 0) {
+                // first time: seed with sample data and save
+                orders = [...sampleOrders];
+                localStorage.setItem('linkedDashOrders', JSON.stringify(orders));
+            } else {
+                orders = linked;
+            }
+            // Also sync manager approval status from managerOrders
+            let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+            managerOrders.forEach(mo => {
+                let o = orders.find(x => x.id === mo.id);
+                if (o && mo.status) o.orderStatus = mo.status;
+            });
+        }
+
+        // ============================================================
+        // SAVE ORDERS: write back to localStorage so customer sees it
+        // ============================================================
+        function saveOrders() {
+            localStorage.setItem('linkedDashOrders', JSON.stringify(orders));
+        }
+
+        function refreshFromCustomer() {
+            loadOrders();
+            renderCurrentView();
+            showToast('✅ Orders pulled from Customer Portal!');
+        }
+
+        function getStockStatus(stock) {
+            if (stock <= 0) return 'Out of Stock';
+            if (stock < 20) return 'Low Stock';
+            return 'In Stock';
+        }
+
+        function getManagerBadge(orderStatus) {
+            if (!orderStatus) return '<span class="mgr-pending">⏳ Awaiting</span>';
+            let s = orderStatus.toLowerCase();
+            if (s.includes('rejected')) return '<span class="mgr-rejected">❌ Rejected</span>';
+            if (s.includes('pending approval')) return '<span class="mgr-pending">⏳ Awaiting</span>';
+            if (s.includes('pending')) return '<span class="mgr-pending">⏳ Awaiting</span>';
+            if (s.includes('delivered') || s.includes('shipped') || s.includes('processing'))
+                return '<span class="mgr-approved">✅ Approved</span>';
+            return '<span class="mgr-approved">✅ Approved</span>';
+        }
+
+        // ============================================================
+        // ACCOUNT CLERK VIEW
+        // Can update: Order Status + Payment Status
+        // ============================================================
+        function renderAccountClerkView() {
+            let html = `
+        <div class="section-card">
+            <div class="section-title">💰 Orders — Payment & Status Management</div>
+            <p style="font-size:12px;color:#888;margin-bottom:12px;">Account Clerk role: update Order Status and Payment Status. Changes sync to Customer Portal instantly.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th><th>Customer</th><th>Type</th><th>Product</th>
+                            <th>Qty</th><th>Total</th>
+                            <th>Manager Approval</th>
+                            <th>Order Status</th>
+                            <th>Payment Status</th>
+                            <th>Save</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            orders.forEach((order, idx) => {
+                html += `<tr>
+                <td><strong>${order.id}</strong></td>
+                <td>${order.name}</td>
+                <td><span style="background:#29b6f6;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">${order.type}</span></td>
+                <td>${order.product}</td>
+                <td>${order.qty} kg</td>
+                <td>Rs. ${Number(order.total).toLocaleString()}</td>
+                <td>${getManagerBadge(order.orderStatus)}</td>
+                <td>
+                    <select class="status-select" id="ac_orderstatus_${idx}">
+                        ${['Pending Approval', 'Processing', 'Shipped', 'Delivered', 'Rejected'].map(s =>
+                    `<option value="${s}" ${order.orderStatus === s ? 'selected' : ''}>${s}</option>`
+                ).join('')}
+                    </select>
+                </td>
+                <td>
+                    <select class="status-select" id="ac_payment_${idx}">
+                        ${['Pending', 'Processing', 'Paid'].map(s =>
+                    `<option value="${s}" ${order.paymentStatus === s ? 'selected' : ''}>${s}</option>`
+                ).join('')}
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-update" onclick="saveAccountClerk(${idx})">💾 Save</button>
+                </td>
+            </tr>`;
+            });
+
+            html += `</tbody></table></div></div>
+ 
+        <div class="section-card">
+            <div class="section-title">📦 Inventory Overview</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Code</th><th>Product</th><th>Category</th><th>Price/kg</th><th>Stock</th><th>Status</th></tr></thead>
+                    <tbody>
+                        ${inventory.map(item => `
+                            <tr>
+                                <td>${item.code}</td>
+                                <td>${item.product}</td>
+                                <td>${item.category}</td>
+                                <td>Rs. ${item.price}</td>
+                                <td>${item.stock} kg</td>
+                                <td><span class="status-badge ${getStockStatus(item.stock) === 'Low Stock' ? 'status-lowstock' : 'status-instock'}">${getStockStatus(item.stock)}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>`;
+
+            document.getElementById('dynamicContent').innerHTML = html;
+        }
+
+        // ============================================================
+        // STOCK CLERK VIEW
+        // Can update: Delivery Status + Stock levels
+        // ============================================================
+        function renderStockClerkView() {
+            let html = `
+        <div class="section-card">
+            <div class="section-title">📦 Orders — Delivery Status Management</div>
+            <p style="font-size:12px;color:#888;margin-bottom:12px;">Stock Clerk role: update Delivery Status (Pending → Shipped → Delivered). Changes sync to Customer Portal instantly.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th><th>Customer</th><th>Type</th><th>Product</th>
+                            <th>Qty</th><th>Total</th>
+                            <th>Manager Approval</th>
+                            <th>Delivery Status</th>
+                            <th>Save</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            orders.forEach((order, idx) => {
+                html += `<tr>
+                <td><strong>${order.id}</strong></td>
+                <td>${order.name}</td>
+                <td><span style="background:#29b6f6;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">${order.type}</span></td>
+                <td>${order.product}</td>
+                <td>${order.qty} kg</td>
+                <td>Rs. ${Number(order.total).toLocaleString()}</td>
+                <td>${getManagerBadge(order.orderStatus)}</td>
+                <td>
+                    <select class="status-select" id="sc_delivery_${idx}">
+                        ${['Pending', 'Shipped', 'Delivered'].map(s =>
+                    `<option value="${s}" ${order.deliveryStatus === s ? 'selected' : ''}>${s}</option>`
+                ).join('')}
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-update" onclick="saveStockClerk(${idx})">💾 Save</button>
+                </td>
+            </tr>`;
+            });
+
+            html += `</tbody></table></div></div>
+ 
+        <div class="section-card">
+            <div class="section-title">📦 Inventory Management</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Code</th><th>Product</th><th>Category</th><th>Price/kg</th><th>Current Stock</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>`;
+
+            inventory.forEach((item, idx) => {
+                let status = getStockStatus(item.stock);
+                let statusClass = status === 'Low Stock' ? 'status-lowstock' : 'status-instock';
+                html += `<tr>
+                <td>${item.code}</td>
+                <td>${item.product}</td>
+                <td>${item.category}</td>
+                <td>Rs. ${item.price}</td>
+                <td><input type="number" id="stock_${idx}" value="${item.stock}" class="stock-input" min="0"> kg</td>
+                <td><span class="status-badge ${statusClass}">${status}</span></td>
+                <td><button class="btn btn-update" onclick="updateStock(${idx})">Update Stock</button></td>
+            </tr>`;
+            });
+
+            html += `</tbody></table></div></div>`;
+            document.getElementById('dynamicContent').innerHTML = html;
+        }
+
+        // ============================================================
+        // SAVE FUNCTIONS — write to localStorage, customer sees it
+        // ============================================================
+
+        function saveAccountClerk(idx) {
+            let newOrderStatus = document.getElementById(`ac_orderstatus_${idx}`).value;
+            let newPaymentStatus = document.getElementById(`ac_payment_${idx}`).value;
+            orders[idx].orderStatus = newOrderStatus;
+            orders[idx].paymentStatus = newPaymentStatus;
+            saveOrders();
+            showToast(`✅ ${orders[idx].id}: Order → ${newOrderStatus} | Payment → ${newPaymentStatus}`);
+            renderAccountClerkView();
+        }
+
+        function saveStockClerk(idx) {
+            let newDelivery = document.getElementById(`sc_delivery_${idx}`).value;
+            orders[idx].deliveryStatus = newDelivery;
+            // Auto-update orderStatus when delivered
+            if (newDelivery === 'Delivered') orders[idx].orderStatus = 'Delivered';
+            if (newDelivery === 'Shipped' && orders[idx].orderStatus !== 'Delivered') orders[idx].orderStatus = 'Shipped';
+            saveOrders();
+            showToast(`✅ ${orders[idx].id}: Delivery → ${newDelivery}`);
+            renderStockClerkView();
+        }
+
+        function updateStock(idx) {
+            let inputElement = document.getElementById(`stock_${idx}`);
+            if (inputElement) {
+                let newStock = parseInt(inputElement.value);
+                if (!isNaN(newStock) && newStock >= 0) {
+                    inventory[idx].stock = newStock;
+                    showToast(`✅ ${inventory[idx].product} stock → ${newStock} kg`);
+                    renderStockClerkView();
+                } else {
+                    alert('Please enter a valid quantity');
+                }
+            }
+        }
+
+        // ============================================================
+        // ROLE SWITCH
+        // ============================================================
+        function switchRole() {
+            currentRole = document.getElementById('roleSwitcher').value;
+            if (currentRole === 'account_clerk') {
+                document.getElementById('userName').innerHTML = 'Account Clerk';
+                document.getElementById('userRole').innerHTML = 'ACCOUNT CLERK';
+                document.getElementById('pageTitle').innerHTML = '💰 Account Clerk Dashboard';
+                renderAccountClerkView();
+            } else {
+                document.getElementById('userName').innerHTML = 'Stock Clerk';
+                document.getElementById('userRole').innerHTML = 'STOCK CLERK';
+                document.getElementById('pageTitle').innerHTML = '📦 Stock Clerk Dashboard';
+                renderStockClerkView();
+            }
+        }
+
+        function renderCurrentView() {
+            if (currentRole === 'account_clerk') renderAccountClerkView();
+            else renderStockClerkView();
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg) {
+            let t = document.createElement('div');
+            t.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#2d6a4f;color:white;padding:12px 24px;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.2);font-size:14px;';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2500);
+        }
+
+        // ============================================================
+        // DATETIME
+        // ============================================================
+        function updateDateTime() {
+            document.getElementById('dateTime').innerHTML = new Date().toLocaleDateString() + ' | ' + new Date().toLocaleTimeString();
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadOrders();
+        renderAccountClerkView();
+
+        // Auto-refresh every 15 seconds to pull new customer orders
+        setInterval(() => {
+            loadOrders();
+            renderCurrentView();
+        }, 15000);
+
+        // Expose globals
+        window.saveAccountClerk = saveAccountClerk;
+        window.saveStockClerk = saveStockClerk;
+        window.updateStock = updateStock;
+        window.switchRole = switchRole;
+        window.refreshFromCustomer = refreshFromCustomer;
+    </script>
+</body>
+
+</html>

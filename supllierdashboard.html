@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pearl Land Commodities - Supplier Portal</title>
+    <title>🚚 Pearl Land Commodities - Supplier Portal</title>
     <style>
         * {
             margin: 0;
@@ -24,6 +24,7 @@
             --danger: #e74c3c;
             --info: #3498db;
             --pending-bg: #fff3cd;
+            --reject-bg: #ffe6e6;
         }
 
         body {
@@ -181,7 +182,7 @@
 
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -217,17 +218,6 @@
             font-weight: 700;
             color: var(--primary-brown);
             margin-bottom: 3px;
-        }
-
-        .analytics-small {
-            color: #666;
-            font-size: 11px;
-        }
-
-        .analytics-trend-up {
-            color: var(--success);
-            font-size: 11px;
-            font-weight: 600;
         }
 
         .stats-grid {
@@ -271,7 +261,6 @@
             font-weight: 700;
         }
 
-        /* Low Stock Table Styles */
         .low-stock-section {
             background: white;
             padding: 20px;
@@ -284,11 +273,6 @@
         .low-stock-section .section-title {
             color: var(--danger);
             border-bottom-color: var(--danger);
-        }
-
-        .badge-lowstock {
-            background: var(--danger);
-            color: white;
         }
 
         .tabs {
@@ -373,6 +357,7 @@
         .badge-info { background: var(--info); color: white; }
         .badge-pending { background: #e67e22; color: white; }
         .badge-danger { background: var(--danger); color: white; }
+        .badge-reject { background: #c0392b; color: white; }
         
         .btn-secondary {
             background: var(--primary-orange);
@@ -387,6 +372,17 @@
         
         .btn-secondary:hover {
             background: var(--secondary-orange);
+        }
+        
+        .btn-success-custom {
+            background: var(--success);
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            margin: 2px;
         }
         
         .btn-sm { padding: 3px 8px; font-size: 10px; }
@@ -415,7 +411,7 @@
             font-size: 12px;
         }
         
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 8px;
             border: 2px solid #e0d5cc;
@@ -435,6 +431,10 @@
             background: var(--pending-bg);
         }
         
+        .rejected-request {
+            background: var(--reject-bg);
+        }
+        
         .info-note {
             background: #e8f4fd;
             padding: 10px 15px;
@@ -443,6 +443,15 @@
             font-size: 13px;
             color: #0066cc;
             border-left: 4px solid #0066cc;
+        }
+        
+        .feedback-message {
+            background: #fef3c7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            margin-top: 5px;
+            color: #92400e;
         }
         
         @media (max-width: 768px) {
@@ -461,16 +470,18 @@
             </div>
             <div class="profile-section">
                 <div class="profile-avatar">👤</div>
-                <div class="profile-name">Sapuni Divyanjana</div>
-                <div class="profile-email">sapuni@gmail.com</div>
+                <div class="profile-name" id="supplierProfileName">Lanka Spices</div>
+                <div class="profile-email" id="supplierProfileEmail">lanka@spices.com</div>
             </div>
             <ul class="sidebar-menu">
                 <li><a onclick="showDashboard()" class="active" id="navDashboard"><span class="icon">🏠</span> Dashboard</a></li>
+                <li><a onclick="showTab('sample-requests')" id="navSampleRequests"><span class="icon">🔬</span> Sample Requests</a></li>
                 <li><a onclick="showTab('materials')" id="navMaterials"><span class="icon">🌾</span> Raw Materials</a></li>
                 <li><a onclick="showTab('orders')" id="navOrders"><span class="icon">📦</span> Purchase Orders</a></li>
+                <li><a onclick="showTab('payments')" id="navPayments"><span class="icon">💰</span> Payment History</a></li>
             </ul>
             <div class="sidebar-footer">
-                <div>🚚 Supplier</div>
+                <div>🚚 Supplier Portal</div>
                 <div style="font-size:12px;" id="supplierName">Lanka Spices</div>
                 <a href="index.html">🚪 Logout</a>
             </div>
@@ -479,23 +490,24 @@
         <div class="main-content">
             <div class="content-header">
                 <h1>Welcome, <span id="welcomeSupplier">Lanka Spices</span>! 🚚</h1>
-                <div class="role-badge">🚚 Supplier</div>
+                <div class="role-badge">🚚 Supplier Portal</div>
             </div>
 
             <!-- DASHBOARD SECTION -->
             <div id="dashboardView" style="display: block;">
                 <div class="analytics-grid">
-                    <div class="analytics-card"><div class="analytics-icon">📊</div><h3>Total Orders (Monthly)</h3><div class="analytics-number">24</div><div class="analytics-small">This Month</div><div class="analytics-trend-up">↑ 12% vs last month</div></div>
-                    <div class="analytics-card"><div class="analytics-icon">📅</div><h3>Total Orders (Yearly)</h3><div class="analytics-number">156</div><div class="analytics-small">2026 YTD</div><div class="analytics-trend-up">↑ 8% vs last year</div></div>
-                    <div class="analytics-card"><div class="analytics-icon">⏳</div><h3>Pending Orders</h3><div class="analytics-number">28</div><div class="analytics-small">18% pending</div><div class="analytics-trend-up">↓ 5% from last month</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">🔬</div><h3>Sample Requests</h3><div class="analytics-number" id="statSampleRequests">0</div><div class="analytics-small">Pending response</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">✅</div><h3>QC Passed</h3><div class="analytics-number" id="statQCPassed">0</div><div class="analytics-small">Samples approved</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">❌</div><h3>QC Rejected</h3><div class="analytics-number" id="statQCRejected">0</div><div class="analytics-small">Need improvement</div></div>
+                    <div class="analytics-card"><div class="analytics-icon">📦</div><h3>Active POs</h3><div class="analytics-number" id="statActivePOs">0</div><div class="analytics-small">In progress</div></div>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">🌾</div><div class="stat-details"><h3>Materials Supplied</h3><div class="stat-number">12</div><p>Active products</p></div></div>
-                    <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Pending Orders</h3><div class="stat-number">28</div><p>Awaiting delivery</p></div></div>
-                    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Total Payments</h3><div class="stat-number">Rs. 1.2M</div><p>Received</p></div></div>
+                    <div class="stat-card"><div class="stat-icon">🌾</div><div class="stat-details"><h3>Materials Supplied</h3><div class="stat-number" id="statMaterialsCount">0</div><p>Active products</p></div></div>
+                    <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Completed Orders</h3><div class="stat-number" id="statCompletedOrders">0</div><p>Delivered</p></div></div>
+                    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Total Payments</h3><div class="stat-number" id="statTotalPayments">Rs. 0</div><p>Received</p></div></div>
                 </div>
 
-                <!-- LOW STOCK ITEMS TABLE - Added as requested -->
+                <!-- LOW STOCK ITEMS TABLE -->
                 <div class="low-stock-section">
                     <div class="section-title">⚠️ Low Stock Items (Need Reorder)</div>
                     <div class="info-note">
@@ -512,9 +524,47 @@
 
             <!-- Tabs -->
             <div class="tabs">
+                <button class="tab-btn" onclick="showTab('sample-requests')">🔬 Sample Requests</button>
                 <button class="tab-btn" onclick="showTab('materials')">🌾 Raw Materials</button>
                 <button class="tab-btn" onclick="showTab('orders')">📦 Purchase Orders</button>
                 <button class="tab-btn" onclick="showTab('payments')">💰 Payment History</button>
+            </div>
+
+            <!-- ========== SAMPLE REQUESTS TAB (NEW) ========== -->
+            <div id="tab-sample-requests" class="tab-content">
+                <div class="info-note">
+                    🔬 <strong>Stock Clerk Sample Requests:</strong> When Pearl Land requests a sample, you will see it here. Please send the sample and update the status.
+                </div>
+                
+                <!-- Pending Sample Requests -->
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <div class="section-title">📋 Pending Sample Requests</div>
+                    <table class="data-table">
+                        <thead><tr><th>Request ID</th><th>Material</th><th>Quantity (kg)</th><th>Request Date</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="pendingSampleRequestsBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Sent Samples History -->
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <div class="section-title">📤 Sent Samples History</div>
+                    <table class="data-table">
+                        <thead><tr><th>Request ID</th><th>Material</th><th>Sent Date</th><th>QC Result</th><th>Feedback</th></tr></thead>
+                        <tbody id="sentSamplesBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- QC Results (from Stock Clerk) -->
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div class="section-title">🔬 Quality Control Results</div>
+                    <div class="info-note">
+                        ✅ <strong>QC Results:</strong> Stock Clerk will update QC results here after testing your samples.
+                    </div>
+                    <table class="data-table">
+                        <thead><tr><th>Sample ID</th><th>Material</th><th>Test Date</th><th>Result</th><th>Remarks</th><th>Price Offered</th></tr></thead>
+                        <tbody id="qcResultsBody"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Raw Materials Tab -->
@@ -568,7 +618,23 @@
     </div>
 
     <script>
-        // Low Stock Items Data (items that need reordering)
+        // Current Supplier
+        let currentSupplier = {
+            name: 'Lanka Spices',
+            email: 'lanka@spices.com'
+        };
+
+        // ============ SUPPLIER SAMPLE FLOW DATA (from localStorage) ============
+        // Sample Requests from Stock Clerk
+        let sampleRequests = [];
+        
+        // Samples sent by supplier
+        let sentSamples = [];
+        
+        // QC Results from Stock Clerk
+        let qcResults = [];
+        
+        // Low Stock Items
         let lowStockItems = [
             { name: 'Cinnamon Sticks', category: 'Spice', currentStock: 400, minRequired: 800, shortage: 400 },
             { name: 'Black Pepper', category: 'Spice', currentStock: 150, minRequired: 500, shortage: 350 },
@@ -576,7 +642,7 @@
             { name: 'Cloves', category: 'Spice', currentStock: 45, minRequired: 150, shortage: 105 }
         ];
 
-        // Raw Material Requests - status can be 'Pending' or 'Approved'
+        // Raw Material Requests
         let rawMaterialRequests = [
             { id: 1, name: 'Turmeric Roots', category: 'Spice', price: 200, stock: 2500, status: 'Approved' },
             { id: 2, name: 'Chili Peppers', category: 'Spice', price: 180, stock: 1200, status: 'Approved' },
@@ -594,7 +660,67 @@
             { id: 'PAY-001', poNumber: 'PO-2026-002', material: 'Chili Peppers', amount: 54000, date: '2026-03-24', status: 'Paid' }
         ];
 
-        // Render Low Stock Table in Dashboard
+        // Load data from localStorage (shared with Stock Clerk)
+        function loadSupplierFlowData() {
+            let storedSampleRequests = localStorage.getItem('sampleRequests');
+            if(storedSampleRequests) {
+                let allRequests = JSON.parse(storedSampleRequests);
+                // Filter only requests for current supplier
+                sampleRequests = allRequests.filter(r => r.supplier === currentSupplier.name);
+            } else {
+                sampleRequests = [
+                    { id: 'SAMP-001', supplier: 'Lanka Spices', material: 'Black Pepper', qty: 2, requestDate: '2026-06-05', status: 'Pending', sampleSent: false },
+                    { id: 'SAMP-002', supplier: 'Lanka Spices', material: 'Turmeric Roots', qty: 3, requestDate: '2026-06-08', status: 'Pending', sampleSent: false }
+                ];
+            }
+            
+            let storedQCReports = localStorage.getItem('qcReports');
+            if(storedQCReports) {
+                let allQC = JSON.parse(storedQCReports);
+                qcResults = allQC.filter(q => q.supplier === currentSupplier.name);
+            } else {
+                qcResults = [
+                    { sampleId: 'SAMP-001', supplier: 'Lanka Spices', material: 'Black Pepper', testDate: '2026-06-10', result: 'Pass', remarks: 'Good quality', price: 750, qualityScore: 8.5 },
+                    { sampleId: 'SAMP-002', supplier: 'Lanka Spices', material: 'Turmeric Roots', testDate: '2026-06-12', result: 'Reject', remarks: 'High moisture content', price: null }
+                ];
+            }
+            
+            // Load sent samples
+            let storedSentSamples = localStorage.getItem('sentSamples');
+            if(storedSentSamples) {
+                sentSamples = JSON.parse(storedSentSamples);
+            } else {
+                sentSamples = [
+                    { requestId: 'SAMP-001', material: 'Black Pepper', sentDate: '2026-06-06', status: 'QC Completed' }
+                ];
+            }
+        }
+
+        // Save sent samples to localStorage
+        function saveSentSamples() {
+            localStorage.setItem('sentSamples', JSON.stringify(sentSamples));
+        }
+
+        // Render Dashboard Stats
+        function renderDashboardStats() {
+            let pendingSamples = sampleRequests.filter(s => s.status === 'Pending' && !s.sampleSent).length;
+            let qcPassed = qcResults.filter(q => q.result === 'Pass').length;
+            let qcRejected = qcResults.filter(q => q.result === 'Reject').length;
+            let activePOs = purchaseOrders.filter(p => p.orderStatus !== 'Delivered').length;
+            let materialsCount = rawMaterialRequests.filter(r => r.status === 'Approved').length;
+            let completedOrders = purchaseOrders.filter(p => p.orderStatus === 'Delivered').length;
+            let totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+            
+            document.getElementById('statSampleRequests').innerHTML = pendingSamples;
+            document.getElementById('statQCPassed').innerHTML = qcPassed;
+            document.getElementById('statQCRejected').innerHTML = qcRejected;
+            document.getElementById('statActivePOs').innerHTML = activePOs;
+            document.getElementById('statMaterialsCount').innerHTML = materialsCount;
+            document.getElementById('statCompletedOrders').innerHTML = completedOrders;
+            document.getElementById('statTotalPayments').innerHTML = `Rs. ${totalPayments.toLocaleString()}`;
+        }
+
+        // Render Low Stock Table
         function renderLowStockTable() {
             let tbody = document.getElementById('lowStockTableBody');
             tbody.innerHTML = '';
@@ -610,17 +736,134 @@
             });
         }
 
-        // Quick request from low stock item
         function requestFromLowStock(materialName) {
-            // Switch to raw materials tab
             showTab('materials');
-            // Pre-fill the material name
             document.getElementById('matName').value = materialName;
-            // Scroll to form
             document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
             alert(`Please fill price and stock details for ${materialName} and submit the request.`);
         }
 
+        // Render Pending Sample Requests
+        function renderPendingSampleRequests() {
+            let tbody = document.getElementById('pendingSampleRequestsBody');
+            let pending = sampleRequests.filter(s => s.status === 'Pending' && !s.sampleSent);
+            tbody.innerHTML = '';
+            if(pending.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">No pending sample requests</td></tr>';
+                return;
+            }
+            pending.forEach(req => {
+                tbody.innerHTML += `<tr>
+                    <td>${req.id}</td>
+                    <td>${req.material}</td>
+                    <td>${req.qty} kg</td>
+                    <td>${req.requestDate}</td>
+                    <td><span class="badge badge-warning">Pending</span></td>
+                    <td><button class="btn-success-custom btn-sm" onclick="sendSample('${req.id}', '${req.material}')">📤 Send Sample</button></td>
+                </td>`;
+            });
+        }
+
+        // Send Sample function
+        function sendSample(requestId, material) {
+            let today = new Date().toISOString().split('T')[0];
+            
+            // Update sample request
+            let reqIndex = sampleRequests.findIndex(s => s.id === requestId);
+            if(reqIndex !== -1) {
+                sampleRequests[reqIndex].sampleSent = true;
+                sampleRequests[reqIndex].status = 'Sample Sent';
+                
+                // Update localStorage
+                let allRequests = JSON.parse(localStorage.getItem('sampleRequests') || '[]');
+                let globalIndex = allRequests.findIndex(s => s.id === requestId);
+                if(globalIndex !== -1) {
+                    allRequests[globalIndex].sampleSent = true;
+                    allRequests[globalIndex].status = 'Sample Sent';
+                    localStorage.setItem('sampleRequests', JSON.stringify(allRequests));
+                }
+            }
+            
+            // Add to sent samples
+            sentSamples.push({
+                requestId: requestId,
+                material: material,
+                sentDate: today,
+                status: 'Sample Sent - Awaiting QC'
+            });
+            saveSentSamples();
+            
+            alert(`✅ Sample for ${material} has been sent to Pearl Land!\nQC results will be updated within 2-3 days.`);
+            renderPendingSampleRequests();
+            renderSentSamples();
+            renderDashboardStats();
+        }
+
+        // Render Sent Samples History
+        function renderSentSamples() {
+            let tbody = document.getElementById('sentSamplesBody');
+            tbody.innerHTML = '';
+            if(sentSamples.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">No samples sent yet</td></tr>';
+                return;
+            }
+            sentSamples.forEach(sample => {
+                // Find QC result if any
+                let qcResult = qcResults.find(q => q.sampleId === sample.requestId);
+                let resultBadge = '';
+                let feedback = '-';
+                if(qcResult) {
+                    resultBadge = qcResult.result === 'Pass' ? 
+                        '<span class="badge badge-success">Passed</span>' : 
+                        '<span class="badge badge-danger">Rejected</span>';
+                    feedback = qcResult.remarks;
+                } else {
+                    resultBadge = '<span class="badge badge-info">Pending</span>';
+                }
+                
+                tbody.innerHTML += `<tr>
+                    <td>${sample.requestId}</td>
+                    <td>${sample.material}</td>
+                    <td>${sample.sentDate}</td>
+                    <td>${resultBadge}</td>
+                    <td>${feedback}</td>
+                </tr>`;
+            });
+        }
+
+        // Render QC Results
+        function renderQCResults() {
+            let tbody = document.getElementById('qcResultsBody');
+            tbody.innerHTML = '';
+            if(qcResults.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">No QC results available</td></tr>';
+                return;
+            }
+            qcResults.forEach(qc => {
+                let resultBadge = qc.result === 'Pass' ? 
+                    '<span class="badge badge-success">✓ Pass</span>' : 
+                    '<span class="badge badge-danger">✗ Reject</span>';
+                
+                let priceDisplay = qc.price ? `Rs. ${qc.price}` : '-';
+                
+                // Add feedback message for rejected samples
+                let feedbackHtml = '';
+                if(qc.result === 'Reject' && qc.remarks) {
+                    feedbackHtml = `<div class="feedback-message">⚠️ Feedback: ${qc.remarks}</div>`;
+                }
+                
+                tbody.innerHTML += `<tr>
+                    <td>${qc.sampleId}</td>
+                    <td>${qc.material}</td>
+                    <td>${qc.testDate || '-'}</td>
+                    <td>${resultBadge}${feedbackHtml}</td>
+                    <td>${qc.remarks || '-'}${feedbackHtml ? '' : ''}</td>
+                    <td>${priceDisplay}</td>
+                </tr>`;
+            });
+        }
+
+        // Raw Materials Functions
         function renderRawMaterials() {
             let tbody = document.getElementById('rawMaterialsBody');
             tbody.innerHTML = '';
@@ -681,6 +924,7 @@
             }
         }
 
+        // Purchase Orders Functions
         function renderPurchaseOrders() {
             let tbody = document.getElementById('purchaseOrdersBody');
             tbody.innerHTML = '';
@@ -724,13 +968,15 @@
             });
         }
 
+        // Navigation Functions
         function showDashboard() {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById('dashboardView').style.display = 'block';
             document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
             document.getElementById('navDashboard').classList.add('active');
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            renderLowStockTable(); // Refresh low stock table
+            renderLowStockTable();
+            renderDashboardStats();
         }
         
         function showTab(tabName) {
@@ -738,20 +984,57 @@
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            if(event && event.target) event.target.classList.add('active');
+            
+            // Find and highlight the clicked tab button
+            let btns = document.querySelectorAll('.tab-btn');
+            for(let btn of btns) {
+                if(btn.innerText.includes(tabName === 'sample-requests' ? 'Sample' : 
+                    (tabName === 'materials' ? 'Raw' : 
+                    (tabName === 'orders' ? 'Purchase' : 'Payment')))) {
+                    btn.classList.add('active');
+                    break;
+                }
+            }
             
             document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
-            if(tabName === 'materials') document.getElementById('navMaterials').classList.add('active');
+            if(tabName === 'sample-requests') document.getElementById('navSampleRequests').classList.add('active');
+            else if(tabName === 'materials') document.getElementById('navMaterials').classList.add('active');
             else if(tabName === 'orders') document.getElementById('navOrders').classList.add('active');
+            else if(tabName === 'payments') document.getElementById('navPayments').classList.add('active');
+            
+            // Refresh data when tab is shown
+            if(tabName === 'sample-requests') {
+                renderPendingSampleRequests();
+                renderSentSamples();
+                renderQCResults();
+            } else if(tabName === 'materials') {
+                renderRawMaterials();
+            } else if(tabName === 'orders') {
+                renderPurchaseOrders();
+            } else if(tabName === 'payments') {
+                renderPaymentHistory();
+            }
         }
         
+        // Initialize
         function init() {
+            loadSupplierFlowData();
             renderLowStockTable();
             renderRawMaterials();
             renderPurchaseOrders();
             renderPaymentHistory();
+            renderPendingSampleRequests();
+            renderSentSamples();
+            renderQCResults();
+            renderDashboardStats();
             showDashboard();
         }
+        
+        // Update supplier name in UI
+        document.getElementById('welcomeSupplier').innerText = currentSupplier.name;
+        document.getElementById('supplierProfileName').innerText = currentSupplier.name;
+        document.getElementById('supplierProfileEmail').innerText = currentSupplier.email;
+        document.getElementById('supplierName').innerText = currentSupplier.name;
         
         init();
     </script>

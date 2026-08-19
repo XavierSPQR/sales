@@ -3,7 +3,7 @@
 require_once 'includes/auth.php';
 requireRole('account_clerk');
 
-global $pdo;
+$pdo = Database::getInstance()->getConnection();
 
 $totalOutstanding = $pdo->query("
     SELECT COALESCE(SUM(amount), 0) FROM payments WHERE status = 'pending'

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Unified Registration - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-brown: #8B4513;
+            --secondary-brown: #A0522D;
+            --primary-orange: #D2691E;
+            --secondary-orange: #FF8C00;
+            --cream: #FFF5E6;
+            --white: #ffffff;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark-green: #1a4d1a;
+            --light-green: #c8e6c9;
+        }
+
+        body {
+            background: var(--cream);
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--primary-orange);
+        }
+
+        .type-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+            justify-content: center;
+        }
+
+        .type-btn {
+            flex: 1;
+            max-width: 300px;
+            padding: 18px 30px;
+            border: 2px solid var(--primary-orange);
+            background: white;
+            color: var(--primary-orange);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .type-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(210, 105, 30, 0.2);
+        }
+
+        .type-btn.active {
+            background: var(--primary-orange);
+            color: white;
+            box-shadow: 0 10px 30px rgba(210, 105, 30, 0.4);
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-brown);
+            margin: 30px 0 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary-orange);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 4px rgba(210, 105, 30, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-orange);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+            color: white;
+            flex: 1;
+            max-width: 250px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(210, 105, 30, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .type-selector {
+                flex-direction: column;
+            }
+
+            .type-btn {
+                max-width: 100%;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group .btn {
+                max-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+
+        .info-box {
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-orange);
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .password-strength {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: all 0.3s;
+        }
+
+        .password-strength-bar.medium {
+            background: var(--warning);
+            width: 50%;
+        }
+
+        .password-strength-bar.strong {
+            background: var(--success);
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Pearl Land Commodities Registration</h1>
+            <p>Register as a Customer or Wholesaler</p>
+        </div>
+
+        <div class="form-container">
+            <!-- Type Selector -->
+            <div class="type-selector">
+                <button class="type-btn active" onclick="switchType('customer')">
+                    👤 Register as Customer
+                </button>
+                <button class="type-btn" onclick="switchType('wholesaler')">
+                    🏢 Register as Wholesaler
+                </button>
+            </div>
+
+            <!-- Alert Messages -->
+            <div id="alertBox" class="alert"></div>
+
+            <!-- CUSTOMER FORM -->
+            <form id="customerForm" class="form-section active" onsubmit="handleSubmit(event, 'customer')">
+                <div class="info-box">
+                    ℹ️ Fill in your personal details to register as a customer. You'll have access to our product catalog and exclusive offers.
+                </div>
+
+                <div class="section-title">👤 Personal Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cust_firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="cust_firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="cust_lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cust_email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="cust_email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="cust_phone" name="phone" placeholder="077-1234567" required>
+                    </div>
+                </div>
+
+                <div class="section-title">📍 Address</div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="cust_address">Street Address <span class="required">*</span></label>
+                        <input type="text" id="cust_address" name="address" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cust_city">City <span class="required">*</span></label>
+                        <input type="text" id="cust_city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_postalCode">Postal Code <span class="required">*</span></label>
+                        <input type="text" id="cust_postalCode" name="postalCode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cust_district">District <span class="required">*</span></label>
+                        <select id="cust_district" name="district" required>
+                            <option value="">Select District</option>
+                            <option value="Colombo">Colombo</option>
+                            <option value="Gampaha">Gampaha</option>
+                            <option value="Kandy">Kandy</option>
+                            <option value="Galle">Galle</option>
+                            <option value="Matara">Matara</option>
+                            <option value="Jaffna">Jaffna</option>
+                            <option value="Trincomalee">Trincomalee</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_country">Country <span class="required">*</span></label>
+                        <select id="cust_country" name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="Sri Lanka" selected>Sri Lanka</option>
+                            <option value="India">India</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">🔐 Account Credentials</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cust_username">Username <span class="required">*</span></label>
+                        <input type="text" id="cust_username" name="username" placeholder="your_username" required>
+                        <div class="field-hint">Username must be unique (3+ characters)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_password">Password <span class="required">*</span></label>
+                        <input type="password" id="cust_password" name="password" placeholder="••••••••" required onkeyup="checkPasswordStrength(this.value)">
+                        <div class="password-strength">
+                            <div id="cust_passwordBar" class="password-strength-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="cust_confirmPassword">Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="cust_confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>Interested Product Categories</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cust_rice" name="categories" value="Rice">
+                                <label for="cust_rice">Rice & Grains</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cust_spices" name="categories" value="Spices">
+                                <label for="cust_spices">Spices</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cust_oils" name="categories" value="Oils">
+                                <label for="cust_oils">Oils & Seeds</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cust_pulses" name="categories" value="Pulses">
+                                <label for="cust_pulses">Pulses & Legumes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cust_terms" name="terms" required>
+                            <label for="cust_terms">I agree to the Terms & Conditions and Privacy Policy <span class="required">*</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="reset" class="btn btn-reset">🔄 Clear Form</button>
+                    <button type="submit" class="btn btn-submit">✅ Register as Customer</button>
+                </div>
+            </form>
+
+            <!-- WHOLESALER FORM -->
+            <form id="wholesalerForm" class="form-section" onsubmit="handleSubmit(event, 'wholesaler')">
+                <div class="info-box">
+                    ℹ️ Register as a wholesaler to access bulk purchasing options, special pricing, and dedicated business support.
+                </div>
+
+                <div class="section-title">👤 Personal Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="whole_firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="whole_lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="whole_email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="whole_phone" name="phone" placeholder="077-1234567" required>
+                    </div>
+                </div>
+
+                <div class="section-title">🏢 Business Information</div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="whole_companyName">Company / Business Name <span class="required">*</span></label>
+                        <input type="text" id="whole_companyName" name="companyName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_businessType">Business Type <span class="required">*</span></label>
+                        <select id="whole_businessType" name="businessType" required>
+                            <option value="">Select Type</option>
+                            <option value="Retailer">Retailer</option>
+                            <option value="Wholesaler">Wholesaler</option>
+                            <option value="Distributor">Distributor</option>
+                            <option value="Exporter">Exporter</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_regNumber">Business Registration Number <span class="required">*</span></label>
+                        <input type="text" id="whole_regNumber" name="regNumber" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_taxId">Tax ID / VAT Number</label>
+                        <input type="text" id="whole_taxId" name="taxId">
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_yearsInBusiness">Years in Business <span class="required">*</span></label>
+                        <input type="number" id="whole_yearsInBusiness" name="yearsInBusiness" min="0" required>
+                    </div>
+                </div>
+
+                <div class="section-title">📍 Business Address</div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="whole_address">Street Address <span class="required">*</span></label>
+                        <input type="text" id="whole_address" name="address" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_city">City <span class="required">*</span></label>
+                        <input type="text" id="whole_city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_postalCode">Postal Code <span class="required">*</span></label>
+                        <input type="text" id="whole_postalCode" name="postalCode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_district">District <span class="required">*</span></label>
+                        <select id="whole_district" name="district" required>
+                            <option value="">Select District</option>
+                            <option value="Colombo">Colombo</option>
+                            <option value="Gampaha">Gampaha</option>
+                            <option value="Kandy">Kandy</option>
+                            <option value="Galle">Galle</option>
+                            <option value="Matara">Matara</option>
+                            <option value="Jaffna">Jaffna</option>
+                            <option value="Trincomalee">Trincomalee</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_country">Country <span class="required">*</span></label>
+                        <select id="whole_country" name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="Sri Lanka" selected>Sri Lanka</option>
+                            <option value="India">India</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">📊 Business Details</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_employees">Number of Employees <span class="required">*</span></label>
+                        <input type="number" id="whole_employees" name="employees" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_turnover">Annual Turnover Range <span class="required">*</span></label>
+                        <select id="whole_turnover" name="turnover" required>
+                            <option value="">Select Range</option>
+                            <option value="Below 50L">Below Rs. 50 Lakhs</option>
+                            <option value="50L-1Cr">Rs. 50 Lakhs - 1 Crore</option>
+                            <option value="1Cr-5Cr">Rs. 1 - 5 Crore</option>
+                            <option value="5Cr-10Cr">Rs. 5 - 10 Crore</option>
+                            <option value="Above 10Cr">Above Rs. 10 Crore</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>Product Categories <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="whole_rice" name="productCategories" value="Rice">
+                                <label for="whole_rice">Rice & Grains</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="whole_spices" name="productCategories" value="Spices">
+                                <label for="whole_spices">Spices</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="whole_oils" name="productCategories" value="Oils">
+                                <label for="whole_oils">Oils & Seeds</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="whole_pulses" name="productCategories" value="Pulses">
+                                <label for="whole_pulses">Pulses & Legumes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="whole_description">Business Description</label>
+                        <textarea id="whole_description" name="description" placeholder="Describe your business operations..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section-title">🔐 Account Credentials</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whole_username">Username <span class="required">*</span></label>
+                        <input type="text" id="whole_username" name="username" placeholder="your_username" required>
+                        <div class="field-hint">Username must be unique (3+ characters)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="whole_password">Password <span class="required">*</span></label>
+                        <input type="password" id="whole_password" name="password" placeholder="••••••••" required onkeyup="checkPasswordStrength(this.value, 'whole')">
+                        <div class="password-strength">
+                            <div id="whole_passwordBar" class="password-strength-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="whole_confirmPassword">Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="whole_confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="whole_terms" name="terms" required>
+                            <label for="whole_terms">I agree to the Terms & Conditions and Privacy Policy <span class="required">*</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="reset" class="btn btn-reset">🔄 Clear Form</button>
+                    <button type="submit" class="btn btn-submit">✅ Register as Wholesaler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const isAdminMode = new URLSearchParams(window.location.search).get('mode') === 'admin';
+
+        function switchType(type) {
+            document.getElementById('customerForm').classList.remove('active');
+            document.getElementById('wholesalerForm').classList.remove('active');
+            document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
+
+            if (type === 'customer') {
+                document.getElementById('customerForm').classList.add('active');
+                document.querySelectorAll('.type-btn')[0].classList.add('active');
+            } else {
+                document.getElementById('wholesalerForm').classList.add('active');
+                document.querySelectorAll('.type-btn')[1].classList.add('active');
+            }
+
+            hideAlert();
+        }
+
+        function checkPasswordStrength(pwd, prefix = 'cust') {
+            const bar = document.getElementById(prefix + '_passwordBar');
+            let strength = 0;
+
+            if (pwd.length >= 6) strength++;
+            if (/\d/.test(pwd)) strength++;
+            if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) strength++;
+            if (/[^A-Za-z0-9]/.test(pwd)) strength++;
+
+            bar.className = 'password-strength-bar';
+            if (strength >= 3) bar.classList.add('strong');
+            else if (strength >= 2) bar.classList.add('medium');
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function hideAlert() {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert';
+        }
+
+        function handleSubmit(event, type) {
+            event.preventDefault();
+            hideAlert();
+
+            const form = type === 'customer' ? document.getElementById('customerForm') : document.getElementById('wholesalerForm');
+            const formData = new FormData(form);
+            const prefix = type === 'customer' ? 'cust_' : 'whole_';
+
+            // Validation
+            const firstName = document.getElementById(prefix + 'firstName').value.trim();
+            const lastName = document.getElementById(prefix + 'lastName').value.trim();
+            const email = document.getElementById(prefix + 'email').value.trim();
+            const phone = document.getElementById(prefix + 'phone').value.trim();
+            const username = document.getElementById(prefix + 'username').value.trim();
+            const password = document.getElementById(prefix + 'password').value;
+            const confirmPassword = document.getElementById(prefix + 'confirmPassword').value;
+
+            if (!firstName || !lastName || !email || !phone || !username || !password || !confirmPassword) {
+                showAlert('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showAlert('❌ Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (username.length < 3) {
+                showAlert('❌ Username must be at least 3 characters long', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('❌ Password must be at least 6 characters long', 'error');
+                return;
+            }
+
+            if (!/\d/.test(password)) {
+                showAlert('❌ Password must contain at least one number', 'error');
+                return;
+            }
+
+            if (!/[A-Z]/.test(password)) {
+                showAlert('❌ Password must contain at least one uppercase letter', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('❌ Passwords do not match', 'error');
+                return;
+            }
+
+            if (!document.getElementById(prefix + 'terms').checked) {
+                showAlert('❌ You must agree to the Terms & Conditions', 'error');
+                return;
+            }
+
+            // Check username uniqueness
+            const existingCustomers = JSON.parse(localStorage.getItem('customers') || '[]');
+            const existingWholesalers = JSON.parse(localStorage.getItem('wholesalers') || '[]');
+            const allUsers = [...existingCustomers, ...existingWholesalers];
+
+            if (allUsers.some(u => u.username === username)) {
+                showAlert('❌ Username already taken. Please choose a different username', 'error');
+                return;
+            }
+
+            // Save data
+            if (type === 'customer') {
+                const customerData = {
+                    id: Date.now(),
+                    firstName,
+                    lastName,
+                    fullName: firstName + ' ' + lastName,
+                    email,
+                    phone,
+                    address: document.getElementById('cust_address').value,
+                    city: document.getElementById('cust_city').value,
+                    postalCode: document.getElementById('cust_postalCode').value,
+                    district: document.getElementById('cust_district').value,
+                    country: document.getElementById('cust_country').value,
+                    username,
+                    password,
+                    accountStatus: 'active',
+                    registeredDate: new Date().toISOString()
+                };
+                existingCustomers.push(customerData);
+                localStorage.setItem('customers', JSON.stringify(existingCustomers));
+            } else {
+                const wholesalerData = {
+                    id: Date.now(),
+                    firstName,
+                    lastName,
+                    companyName: document.getElementById('whole_companyName').value,
+                    email,
+                    phone,
+                    address: document.getElementById('whole_address').value,
+                    city: document.getElementById('whole_city').value,
+                    postalCode: document.getElementById('whole_postalCode').value,
+                    district: document.getElementById('whole_district').value,
+                    country: document.getElementById('whole_country').value,
+                    businessType: document.getElementById('whole_businessType').value,
+                    regNumber: document.getElementById('whole_regNumber').value,
+                    username,
+                    password,
+                    accountStatus: 'active',
+                    registeredDate: new Date().toISOString()
+                };
+                existingWholesalers.push(wholesalerData);
+                localStorage.setItem('wholesalers', JSON.stringify(existingWholesalers));
+            }
+
+            showAlert(`✅ ${type === 'customer' ? 'Customer' : 'Wholesaler'} registered successfully!`, 'success');
+            form.reset();
+
+            setTimeout(() => {
+                if (isAdminMode) {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }, 2000);
+        }
+
+        // Set initial password strength
+        checkPasswordStrength('');
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +45,8 @@
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
         }
 
         .sidebar-header {
@@ -81,6 +83,7 @@
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .sidebar-menu a:hover,
@@ -100,7 +103,7 @@
             left: 20px;
             right: 20px;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             text-align: center;
         }
@@ -110,6 +113,29 @@
             text-decoration: none;
             display: block;
             margin-top: 10px;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+        }
+
+        .logout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* Main Content */
@@ -128,7 +154,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-left: 6px solid var(--primary-orange);
             flex-wrap: wrap;
             gap: 15px;
@@ -147,94 +173,22 @@
             font-weight: 600;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            background: var(--primary-brown);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary-brown);
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-success:hover {
-            background: #27ae60;
-            transform: scale(1.05);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-warning:hover {
-            background: #e67e22;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
             background: white;
-            padding: 25px;
+            padding: 18px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
             transition: transform 0.3s;
             border-bottom: 4px solid var(--primary-orange);
         }
@@ -244,9 +198,9 @@
         }
 
         .stat-icon {
-            font-size: 40px;
-            width: 70px;
-            height: 70px;
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
             background: var(--cream);
             border-radius: 12px;
             display: flex;
@@ -256,19 +210,14 @@
 
         .stat-details h3 {
             color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            margin-bottom: 4px;
         }
 
         .stat-number {
             color: var(--primary-brown);
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
-        }
-
-        .stat-details p {
-            color: #666;
-            font-size: 12px;
         }
 
         /* Tabs */
@@ -280,7 +229,7 @@
         }
 
         .tab-btn {
-            padding: 12px 25px;
+            padding: 10px 22px;
             background: white;
             border: 2px solid var(--primary-orange);
             border-radius: 30px;
@@ -288,6 +237,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 13px;
         }
 
         .tab-btn.active {
@@ -312,8 +262,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Tables */
@@ -322,7 +278,8 @@
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
         .data-table thead {
@@ -331,24 +288,59 @@
         }
 
         .data-table th {
-            padding: 15px;
+            padding: 10px 12px;
             text-align: left;
             font-weight: 600;
+            font-size: 12px;
         }
 
         .data-table td {
-            padding: 12px 15px;
+            padding: 8px 12px;
             border-bottom: 1px solid #eee;
+            font-size: 12px;
         }
 
         .data-table tbody tr:hover {
             background: var(--cream);
         }
 
+        /* Delivery Status Grid */
+        .delivery-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 15px 0 20px;
+        }
+
+        .delivery-status-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .delivery-status-card h3 {
+            margin: 0;
+            font-size: 11px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .delivery-status-card p {
+            margin: 6px 0 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-brown);
+        }
+
+        /* Badges */
         .badge {
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 600;
             display: inline-block;
         }
@@ -373,14 +365,37 @@
             color: white;
         }
 
+        /* Status Select Dropdown */
+        .status-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 11px;
+            background: white;
+        }
+
+        .status-select.pending {
+            background: #fff3cd;
+        }
+
+        .status-select.shipped {
+            background: #cce5ff;
+        }
+
+        .status-select.delivered {
+            background: #d4edda;
+        }
+
+        /* Buttons */
         .btn-secondary {
             background: var(--primary-orange);
             color: white;
-            padding: 6px 15px;
+            padding: 5px 12px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s;
@@ -393,47 +408,86 @@
         }
 
         .btn-sm {
+            padding: 3px 8px;
+            font-size: 10px;
+        }
+
+        .btn-success-custom {
+            background: var(--success);
+            color: white;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .btn-success-custom:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: white;
+            border: none;
             padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 2px;
+            font-size: 11px;
+        }
+
+        .btn-reject {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 2px;
             font-size: 11px;
         }
 
         /* Forms */
         .product-form {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-left: 6px solid var(--success);
         }
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: var(--primary-brown);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 6px 10px;
             border: 2px solid #e0d5cc;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 12px;
             transition: all 0.3s;
         }
 
@@ -444,39 +498,31 @@
             border-color: var(--primary-orange);
         }
 
-        /* Stock Alerts */
+        /* Alerts Section */
         .alerts-section {
             background: white;
-            padding: 20px;
+            padding: 18px;
             border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .alerts-section h2 {
             color: var(--primary-brown);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-bottom: 2px dashed var(--primary-orange);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            font-size: 16px;
         }
 
         .alert-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 10px 12px;
             border-bottom: 1px solid #eee;
             flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .alert-item:last-child {
-            border-bottom: none;
-        }
-
-        .alert-low {
-            color: var(--danger);
-            font-weight: bold;
+            gap: 8px;
         }
 
         .stock-critical {
@@ -485,54 +531,150 @@
         }
 
         @keyframes blink {
-            0%,100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
 
-        /* Report Cards */
-        .report-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #6c757d;
+            font-size: 0.8em;
         }
 
-        .report-header {
-            display: flex;
-            justify-content: space-between;
+        /* Info Note */
+        .info-note {
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #2e7d32;
+            border-left: 3px solid var(--success);
+        }
+
+        .info-note.warning-note {
+            background: #fff3cd;
+            border-left-color: var(--warning);
+            color: #856404;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
             align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 16px;
+            padding: 20px;
+            animation: fadeInUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            color: var(--primary-brown);
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--secondary-orange);
+            padding-bottom: 8px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        /* Fast/Slow Cards */
+        .velocity-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 15px;
         }
 
-        .report-header h3 {
+        .velocity-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .velocity-card .v-value {
+            font-size: 22px;
+            font-weight: 700;
             color: var(--primary-brown);
         }
 
-        /* Progress Bar */
-        .progress-bar {
-            background: #e0e0e0;
-            height: 8px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 5px 0;
+        .velocity-card .v-label {
+            font-size: 11px;
+            color: #666;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            border-radius: 10px;
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            min-width: 250px;
         }
 
-        .progress-warning {
-            background: var(--warning);
+        .toast.show {
+            transform: translateX(0);
         }
 
-        .progress-danger {
-            background: var(--danger);
+        .toast.success {
+            background: #27ae60;
         }
 
-        /* Responsive */
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .toast.info {
+            background: #3498db;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -543,18 +685,22 @@
                 margin-left: 0;
             }
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .content-header {
                 flex-direction: column;
                 text-align: center;
             }
-            .form-row {
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
@@ -564,60 +710,48 @@
                 <p>Stock Management</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="stock-dashboard.html" class="active"><span class="icon">🏠</span> Dashboard</a></li>
-                <li><a href="#" onclick="showTab('products')"><span class="icon">📦</span> Products</a></li>
-                <li><a href="#" onclick="showTab('rawmaterial')"><span class="icon">🌾</span> Raw Material</a></li>
-                <li><a href="#" onclick="showTab('alerts')"><span class="icon">⚠️</span> Reorder Alerts</a></li>
-                <li><a href="#" onclick="showTab('stockreport')"><span class="icon">📈</span> Stock Report</a></li>
-                <li><a href="#" onclick="showTab('delivery')"><span class="icon">🚚</span> Delivery Status</a></li>
-                <li><a href="#" onclick="showTab('fastslow')"><span class="icon">⚡</span> Fast/Slow Items</a></li>
-                <li><a href="#" onclick="showTab('returns')"><span class="icon">🔄</span> Return Report</a></li>
+                <li><a onclick="showTab('overview')" class="active"><span class="icon">🏠</span> Dashboard</a></li>
+                <li><a onclick="showTab('products')"><span class="icon">📦</span> Products</a></li>
+                <li><a onclick="showTab('rawmaterial')"><span class="icon">🌾</span> Raw Material</a></li>
+                <li><a onclick="showTab('stockreport')"><span class="icon">📈</span> Stock Report</a></li>
+                <li><a onclick="showTab('delivery')"><span class="icon">🚚</span> Delivery</a></li>
+                <li><a onclick="showTab('returns')"><span class="icon">🔄</span> Return Report</a></li>
+                <li><a onclick="showTab('suppliers')"><span class="icon">🏭</span> Active Suppliers</a></li>
+                <li><a onclick="showTab('supplier-flow')"><span class="icon">📦</span> Supplier Sample Flow</a></li>
             </ul>
             <div class="sidebar-footer">
                 <div>📦 Stock Clerk</div>
                 <div style="font-size:12px;">stock@pearlland.com</div>
-                <a href="index.html">🚪 Logout</a>
+                <button class="logout-btn" id="logoutBtn" onclick="logoutUser()">🚪 Logout</button>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
             <div class="content-header">
-                <h1>Stock Clerk Dashboard</h1>
+                <h1>📦 Stock Clerk Dashboard</h1>
                 <div class="role-badge">📦 Stock Management</div>
             </div>
 
+            <!-- Toast Notification -->
+            <div id="toast" class="toast"></div>
+
             <!-- Stats Cards -->
-            <div class="stats-grid" id="stats-summary">
-                <!-- Filled by JavaScript -->
-            </div>
+            <div class="stats-grid" id="stats-summary"></div>
 
-            <!-- Action Tabs -->
-            <div class="tabs">
-                <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
-                <button class="tab-btn" onclick="showTab('products')">📦 Products</button>
-                <button class="tab-btn" onclick="showTab('rawmaterial')">🌾 Raw Material</button>
-                <button class="tab-btn" onclick="showTab('alerts')">⚠️ Alerts</button>
-                <button class="tab-btn" onclick="showTab('stockreport')">📈 Stock Report</button>
-                <button class="tab-btn" onclick="showTab('delivery')">🚚 Delivery Status</button>
-                <button class="tab-btn" onclick="showTab('fastslow')">⚡ Fast/Slow</button>
-                <button class="tab-btn" onclick="showTab('returns')">🔄 Returns</button>
-            </div>
-
-            <!-- Tab 1: Overview -->
+            <!-- ===== DASHBOARD - OVERVIEW ===== -->
             <div id="tab-overview" class="tab-content active">
-                <!-- Stock Alerts -->
+
+                <!-- Critical Stock Alerts -->
                 <div class="alerts-section">
                     <h2>⚠️ Critical Stock Alerts</h2>
-                    <div id="critical-alerts-list">
-                        <!-- Filled by JavaScript -->
-                    </div>
+                    <div id="critical-alerts-list"></div>
                 </div>
 
                 <!-- Low Stock Items -->
                 <div class="alerts-section">
                     <h2>📋 Low Stock Items</h2>
-                    <table class="data-table" id="low-stock-table">
+                    <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -628,10 +762,54 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="low-stock-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
+                        <tbody id="low-stock-body"></tbody>
                     </table>
+                </div>
+
+                <!-- Reorder Alerts (Dashboard) -->
+                <div class="alerts-section">
+                    <h2>🔄 Reorder Alerts</h2>
+                    <div class="info-note">💡 Items that need to be reordered. Suggested order quantity is calculated based on current stock.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Reorder Level</th>
+                                <th>Suggested Order</th>
+                                <th>Supplier</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reorder-list-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Fast & Slow Moving Items (Dashboard) -->
+                <div class="alerts-section">
+                    <h2>⚡ Fast & Slow Moving Items</h2>
+                    <div class="info-note">💡 Fast moving items sell quickly, slow moving items need promotion or price adjustment.</div>
+                    <div class="velocity-summary" id="velocity-summary"></div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                        <div>
+                            <h4 style="color:var(--primary-brown); margin-bottom:8px;">⚡ Fast Moving Items (Top 5)</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>Rank</th><th>Product</th><th>Sold</th><th>Sales Value</th></tr>
+                                </thead>
+                                <tbody id="fast-moving-body"></tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="color:var(--primary-brown); margin-bottom:8px;">🐌 Slow Moving Items</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>Product</th><th>Stock</th><th>Sold</th><th>Days</th></tr>
+                                </thead>
+                                <tbody id="slow-moving-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Recent Stock Updates -->
@@ -644,195 +822,13 @@
                                 <th>Product</th>
                                 <th>Type</th>
                                 <th>Quantity</th>
-                                <th>Updated By</th>
                             </tr>
                         </thead>
-                        <tbody id="recent-movements">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 2: Products -->
-            <div id="tab-products" class="tab-content">
-                <!-- Add Product Form -->
-                <div class="product-form">
-                    <h2 style="color: var(--primary-brown); margin-bottom: 20px;">➕ Add New Product</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" id="product-name" placeholder="e.g., Turmeric Powder">
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="product-category">
-                                <option value="Spice">Spice</option>
-                                <option value="Whole Spice">Whole Spice</option>
-                                <option value="Raw Material">Raw Material</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Unit</label>
-                            <select id="product-unit">
-                                <option value="kg">Kilogram (kg)</option>
-                                <option value="g">Gram (g)</option>
-                                <option value="lb">Pound (lb)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Price (LKR)</label>
-                            <input type="number" id="product-price" placeholder="500.00">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Initial Stock</label>
-                            <input type="number" id="product-stock" placeholder="100">
-                        </div>
-                        <div class="form-group">
-                            <label>Reorder Level</label>
-                            <input type="number" id="product-reorder" placeholder="20">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Supplier</label>
-                            <select id="product-supplier">
-                                <option value="1">Lanka Spices</option>
-                                <option value="2">Kalutara Farmers</option>
-                                <option value="3">Matale Growers</option>
-                                <option value="4">Jaffna Exports</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-success" onclick="addProduct()">➕ Add Product</button>
-                </div>
-
-                <!-- Product List -->
-                <div class="alerts-section">
-                    <h2>📋 Product List</h2>
-                    <table class="data-table" id="product-table">
-                        <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Product Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Current Stock</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="product-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 3: Raw Material -->
-            <div id="tab-rawmaterial" class="tab-content">
-                <div class="product-form">
-                    <h2 style="color: var(--primary-brown); margin-bottom: 20px;">🌾 Raw Material Management</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Raw Material Name</label>
-                            <input type="text" id="raw-name" placeholder="e.g., Turmeric Roots">
-                        </div>
-                        <div class="form-group">
-                            <label>Supplier</label>
-                            <input type="text" id="raw-supplier" placeholder="Supplier name">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Quantity (kg)</label>
-                            <input type="number" id="raw-quantity" placeholder="500">
-                        </div>
-                        <div class="form-group">
-                            <label>Unit Price</label>
-                            <input type="number" id="raw-price" placeholder="200.00">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Received Date</label>
-                            <input type="date" id="raw-date" value="2026-03-18">
-                        </div>
-                        <div class="form-group">
-                            <label>Batch No</label>
-                            <input type="text" id="raw-batch" placeholder="BATCH001">
-                        </div>
-                    </div>
-                    <button class="btn-success" onclick="addRawMaterial()">➕ Add Raw Material</button>
-                </div>
-
-                <div class="alerts-section">
-                    <h2>📋 Raw Materials Inventory</h2>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Material</th>
-                                <th>Supplier</th>
-                                <th>Batch</th>
-                                <th>Quantity</th>
-                                <th>Received Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="raw-material-body">
-                            <tr>
-                                <td>Turmeric Roots</td>
-                                <td>Lanka Spices</td>
-                                <td>BATCH001</td>
-                                <td>500 kg</td>
-                                <td>2026-03-15</td>
-                                <td><span class="badge badge-success">In Stock</span></td>
-                            </tr>
-                            <tr>
-                                <td>Chili Peppers</td>
-                                <td>Kalutara Farmers</td>
-                                <td>BATCH002</td>
-                                <td>300 kg</td>
-                                <td>2026-03-16</td>
-                                <td><span class="badge badge-success">In Stock</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 4: Reorder Alerts -->
-            <div id="tab-alerts" class="tab-content">
-                <div class="alerts-section">
-                    <h2>⚠️ Critical Stock Alerts</h2>
-                    <div id="critical-alerts-full">
-                        <!-- Filled by JavaScript -->
-                    </div>
-                </div>
-
-                <div class="alerts-section">
-                    <h2>📋 Items Below Reorder Level</h2>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Current Stock</th>
-                                <th>Reorder Level</th>
-                                <th>Suggested Order</th>
-                                <th>Supplier</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reorder-list-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
+                        <tbody id="recent-movements"></tbody>
                     </table>
                 </div>
 
+                <!-- Pending Reorders (Dashboard) -->
                 <div class="alerts-section">
                     <h2>🔄 Pending Reorders</h2>
                     <table class="data-table">
@@ -846,48 +842,117 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="pending-reorders-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
+                        <tbody id="pending-reorders-body"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Tab 5: Stock Report -->
+            <!-- ===== PRODUCTS TAB ===== -->
+            <div id="tab-products" class="tab-content">
+                <div class="product-form">
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">➕ Add New Product</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label>Product Name</label><input type="text" id="product-name" placeholder="e.g., Turmeric Powder"></div>
+                        <div class="form-group"><label>Category</label><select id="product-category">
+                                <option value="Spice">Spice</option>
+                                <option value="Whole Spice">Whole Spice</option>
+                                <option value="Raw Material">Raw Material</option>
+                            </select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Unit</label><select id="product-unit">
+                                <option value="kg">Kilogram (kg)</option>
+                                <option value="g">Gram (g)</option>
+                            </select></div>
+                        <div class="form-group"><label>Price (LKR)</label><input type="number" id="product-price" placeholder="500.00"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Initial Stock</label><input type="number" id="product-stock" placeholder="100"></div>
+                        <div class="form-group"><label>Reorder Level</label><input type="number" id="product-reorder" placeholder="20"></div>
+                    </div>
+                    <button class="btn-success-custom" onclick="addProduct()">➕ Add Product</button>
+                </div>
+                <div class="alerts-section">
+                    <h2>📋 Product List</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Current Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== RAW MATERIAL TAB ===== -->
+            <div id="tab-rawmaterial" class="tab-content">
+                <div class="product-form">
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">🌾 Raw Material Management</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label>Raw Material Name</label><input type="text" id="raw-name" placeholder="e.g., Turmeric Roots"></div>
+                        <div class="form-group"><label>Supplier</label><input type="text" id="raw-supplier" placeholder="Supplier name"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Quantity (kg)</label><input type="number" id="raw-quantity" placeholder="500"></div>
+                        <div class="form-group"><label>Unit Price</label><input type="number" id="raw-price" placeholder="200.00"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Received Date</label><input type="date" id="raw-date"></div>
+                        <div class="form-group"><label>Batch No</label><input type="text" id="raw-batch" placeholder="BATCH001"></div>
+                    </div>
+                    <button class="btn-success-custom" onclick="addRawMaterial()">➕ Add Raw Material</button>
+                </div>
+                <div class="alerts-section">
+                    <h2>📋 Raw Materials Inventory</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Supplier</th>
+                                <th>Batch</th>
+                                <th>Quantity</th>
+                                <th>Received Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="raw-material-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== STOCK REPORT TAB ===== -->
             <div id="tab-stockreport" class="tab-content">
                 <div class="product-form">
-                    <h2 style="color: var(--primary-brown); margin-bottom: 20px;">📊 Stock Report</h2>
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">📊 Stock Report</h2>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Report Type</label>
-                            <select id="stock-report-type">
+                        <div class="form-group"><label>Report Type</label><select id="stock-report-type">
                                 <option value="inventory">Inventory Summary</option>
                                 <option value="category">Category-wise Stock</option>
                                 <option value="valuation">Stock Valuation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="report-category">
+                            </select></div>
+                        <div class="form-group"><label>Category</label><select id="report-category">
                                 <option value="all">All Categories</option>
                                 <option value="Spice">Spice</option>
                                 <option value="Whole Spice">Whole Spice</option>
                                 <option value="Raw Material">Raw Material</option>
-                            </select>
-                        </div>
+                            </select></div>
                     </div>
-                    <button class="btn-success" onclick="generateStockReport()">📊 Generate Report</button>
+                    <button class="btn-success-custom" onclick="generateStockReport()">📊 Generate Report</button>
                 </div>
-
-                <div id="stock-report-results" class="alerts-section">
-                    <!-- Filled by JavaScript -->
-                </div>
+                <div id="stock-report-results" class="alerts-section"></div>
             </div>
 
-            <!-- Tab 6: Delivery Status -->
+            <!-- ===== DELIVERY TAB ===== -->
             <div id="tab-delivery" class="tab-content">
                 <div class="alerts-section">
-                    <h2>🚚 Delivery Status</h2>
+                    <h2>🚚 Delivery Management</h2>
                     <div class="delivery-status-grid" id="delivery-status-summary"></div>
                     <table class="data-table">
                         <thead>
@@ -898,6 +963,7 @@
                                 <th>Order Date</th>
                                 <th>Expected Date</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="delivery-status-body"></tbody>
@@ -905,490 +971,436 @@
                 </div>
             </div>
 
-            <!-- Tab 7: Fast/Slow Moving Items -->
-            <div id="tab-fastslow" class="tab-content">
-                <div class="product-form">
-                    <h2 style="color: var(--primary-brown); margin-bottom: 20px;">⚡ Fast & Slow Moving Analysis</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Period</label>
-                            <select id="velocity-period">
-                                <option value="30">Last 30 Days</option>
-                                <option value="60">Last 60 Days</option>
-                                <option value="90">Last 90 Days</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="velocity-category">
-                                <option value="all">All Categories</option>
-                                <option value="Spice">Spice</option>
-                                <option value="Whole Spice">Whole Spice</option>
-                                <option value="Raw Material">Raw Material</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-success" onclick="analyzeVelocity()">📊 Analyze</button>
-                </div>
-
-                <!-- Fast Moving Items -->
-                <div class="alerts-section">
-                    <h2>⚡ Fast Moving Items (Top 5)</h2>
-                    <table class="data-table" id="fast-moving-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Quantity Sold</th>
-                                <th>Sales Value</th>
-                                <th>Turnover Rate</th>
-                                <th>Recommendation</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fast-moving-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Slow Moving Items -->
-                <div class="alerts-section">
-                    <h2>🐌 Slow Moving Items</h2>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Current Stock</th>
-                                <th>Quantity Sold</th>
-                                <th>Days in Stock</th>
-                                <th>Status</th>
-                                <th>Recommendation</th>
-                            </tr>
-                        </thead>
-                        <tbody id="slow-moving-body">
-                            <!-- Filled by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Stock Turnover Analysis -->
-                <div class="alerts-section">
-                    <h2>🔄 Stock Turnover Analysis</h2>
-                    <div id="turnover-analysis">
-                        <!-- Filled by JavaScript -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 7: Return Product Report -->
+            <!-- ===== RETURNS TAB ===== -->
             <div id="tab-returns" class="tab-content">
                 <div class="product-form">
-                    <h2 style="color: var(--primary-brown); margin-bottom: 20px;">🔄 Return Product Report</h2>
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">🔄 Return Product Report</h2>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>From Date</label>
-                            <input type="date" id="return-from" value="2026-03-01">
-                        </div>
-                        <div class="form-group">
-                            <label>To Date</label>
-                            <input type="date" id="return-to" value="2026-03-18">
-                        </div>
+                        <div class="form-group"><label>From Date</label><input type="date" id="return-from"></div>
+                        <div class="form-group"><label>To Date</label><input type="date" id="return-to"></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Return Type</label>
-                            <select id="return-type">
+                        <div class="form-group"><label>Return Type</label><select id="return-type">
                                 <option value="all">All Returns</option>
                                 <option value="customer">Customer Returns</option>
                                 <option value="supplier">Supplier Returns</option>
-                                <option value="damaged">Damaged Goods</option>
-                            </select>
-                        </div>
+                            </select></div>
                     </div>
-                    <button class="btn-success" onclick="generateReturnReport()">📊 Generate Return Report</button>
+                    <button class="btn-success-custom" onclick="generateReturnReport()">📊 Generate Return Report</button>
                 </div>
-
-                <div id="return-report-results" class="alerts-section">
-                    <h3 style="color: var(--primary-brown);">Return Summary</h3>
+                <div class="alerts-section">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Return ID</th>
                                 <th>Product</th>
-                                <th>Customer/Supplier</th>
+                                <th>Party</th>
                                 <th>Date</th>
                                 <th>Quantity</th>
                                 <th>Reason</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>RET-001</td>
-                                <td>Turmeric Powder</td>
-                                <td>Saman Perera</td>
-                                <td>2026-03-15</td>
-                                <td>5 kg</td>
-                                <td>Damaged</td>
-                                <td><span class="badge badge-success">Approved</span></td>
-                            </tr>
-                            <tr>
-                                <td>RET-002</td>
-                                <td>Chili Powder</td>
-                                <td>Nimali Stores</td>
-                                <td>2026-03-16</td>
-                                <td>3 kg</td>
-                                <td>Expired</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>RET-003</td>
-                                <td>Pepper Powder</td>
-                                <td>Lanka Spices</td>
-                                <td>2026-03-17</td>
-                                <td>10 kg</td>
-                                <td>Quality Issue</td>
-                                <td><span class="badge badge-success">Approved</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="return-report-body"></tbody>
                     </table>
                 </div>
+            </div>
+
+            <!-- ===== ACTIVE SUPPLIERS TAB ===== -->
+            <div id="tab-suppliers" class="tab-content">
+                <div class="alerts-section">
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">🏭 Approved Active Suppliers</h2>
+                    <div class="info-note">✅ These suppliers are approved by Manager. You can request samples from them.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Supplier ID</th>
+                                <th>Company Name</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Materials Supplied</th>
+                                <th>Orders Cost (Rs.)</th>
+                                <th>Status</th>
+                                <th>Approved Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="active-suppliers-body"></tbody>
+                    </table>
+                    <div id="no-suppliers-msg" style="text-align:center; padding:20px; color:#999; display:none;">
+                        ℹ️ No active suppliers available. Wait for Manager approval.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SUPPLIER SAMPLE FLOW TAB ===== -->
+            <div id="tab-supplier-flow" class="tab-content">
+                <div class="alerts-section">
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">📦 Supplier Sample Flow</h2>
+                    <div class="info-note">📌 Manage supplier sample requests, QC testing, and PO creation.</div>
+                </div>
+
+                <!-- 1️⃣ Request Sample -->
+                <div class="product-form">
+                    <h2 style="color: var(--primary-brown); margin-bottom: 15px;">1️⃣ Request Sample from Supplier</h2>
+                    <div class="info-note">📌 Select an active supplier and request a sample. The supplier will receive this request.</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Supplier</label>
+                            <select id="sample-supplier-select">
+                                <option value="">Select Supplier</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Raw Material</label><input type="text" id="sample-material" placeholder="e.g., Turmeric Roots"></div>
+                        <div class="form-group"><label>Quantity (kg)</label><input type="number" id="sample-qty" placeholder="2" value="2"></div>
+                    </div>
+                    <button class="btn-success-custom" onclick="requestSample()">📦 Request Sample</button>
+                </div>
+
+                <!-- 2️⃣ QC Testing -->
+                <div class="alerts-section">
+                    <h2>🔬 Quality Control Testing</h2>
+                    <div class="info-note">📌 Test samples received from suppliers. Pass or Reject based on quality.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sample ID</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>Qty</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qc-test-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- 3️⃣ Select Best Sample & Create PO -->
+                <div class="alerts-section">
+                    <h2>✅ Select Best Sample & Create PO</h2>
+                    <div class="info-note">📌 Samples that passed QC can be selected to create a Purchase Order for Manager approval.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sample ID</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>QC Result</th>
+                                <th>Price (LKR)</th>
+                                <th>Quality Score</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="best-sample-body"></tbody>
+                    </table>
+                    <div id="po-creation-area" style="display:none; margin-top:15px; padding:15px; background:#f5f5f5; border-radius:8px;">
+                        <h3 style="color:var(--primary-brown);">📄 Create Purchase Order</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Selected Supplier</label><input type="text" id="po-supplier" readonly></div>
+                            <div class="form-group"><label>Material</label><input type="text" id="po-material" readonly></div>
+                            <div class="form-group"><label>Unit Price (LKR)</label><input type="number" id="po-price"></div>
+                            <div class="form-group"><label>Quantity (kg)</label><input type="number" id="po-qty"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Expected Delivery Date</label><input type="date" id="po-delivery-date"></div>
+                            <div class="form-group"><label>Payment Terms</label>
+                                <select id="po-terms">
+                                    <option>30 Days Credit</option>
+                                    <option>Cash on Delivery</option>
+                                    <option>Advance 50%</option>
+                                    <option>Net 45 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-success-custom" onclick="createPurchaseOrder()">📄 Create PO & Send for Manager Approval</button>
+                        <button class="btn-secondary" onclick="document.getElementById('po-creation-area').style.display='none'" style="margin-left:10px;">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- 4️⃣ Pending Purchase Orders -->
+                <div class="alerts-section">
+                    <h2>📄 Purchase Orders (Pending Manager Approval)</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>PO #</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>Qty</th>
+                                <th>Unit Price</th>
+                                <th>Total (LKR)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-po-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- 5️⃣ Goods Received - Create GRN -->
+                <div class="alerts-section">
+                    <h2>📦 Goods Received - Create GRN</h2>
+                    <div class="info-note">📌 After supplier delivers goods, create GRN (Goods Received Note). GRN will be auto-approved.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>PO #</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>Ordered Qty</th>
+                                <th>Received Qty</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="received-goods-body"></tbody>
+                    </table>
+                    <div id="grn-creation-area" style="display:none; margin-top:15px; padding:15px; background:#f5f5f5; border-radius:8px;">
+                        <h3 style="color:var(--primary-brown);">📦 Create GRN</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>PO Number</label><input type="text" id="grn-po" readonly></div>
+                            <div class="form-group"><label>Received Date</label><input type="date" id="grn-date"></div>
+                            <div class="form-group"><label>Received Quantity (kg)</label><input type="number" id="grn-qty"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Inspected By</label><input type="text" id="grn-inspector" placeholder="Stock Clerk Name"></div>
+                            <div class="form-group"><label>Remarks</label><input type="text" id="grn-remarks" placeholder="Any damages or issues?"></div>
+                        </div>
+                        <button class="btn-success-custom" onclick="createGRN()">✅ Create GRN</button>
+                        <button class="btn-secondary" onclick="document.getElementById('grn-creation-area').style.display='none'" style="margin-left:10px;">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- 6️⃣ Approved GRNs -->
+                <div class="alerts-section">
+                    <h2>💰 Approved GRNs (Ready for Payment)</h2>
+                    <div class="info-note">✅ These GRNs are auto-approved. Account Clerk will process payment.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>GRN #</th>
+                                <th>PO #</th>
+                                <th>Supplier</th>
+                                <th>Received Qty</th>
+                                <th>Amount (LKR)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approved-grn-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>✅ Stock Clerk can update Delivery Status | Click dropdown to change Pending → Shipped → Delivered</p>
+                <p>🏭 Supplier Sample Flow: Request → QC → Select Best → PO → Receive → GRN</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Sample Data
+        // ===================== DATA =====================
         let products = [
-            { id: 1, code: 'P001', name: 'Turmeric Powder', category: 'Spice', unit: 'kg', price: 500, stock: 450, reorder: 100, supplier: 'Lanka Spices' },
-            { id: 2, code: 'P002', name: 'Chili Powder', category: 'Spice', unit: 'kg', price: 400, stock: 15, reorder: 25, supplier: 'Lanka Spices' },
-            { id: 3, code: 'P003', name: 'Coriander Powder', category: 'Spice', unit: 'kg', price: 450, stock: 30, reorder: 20, supplier: 'Kalutara Farmers' },
-            { id: 4, code: 'P004', name: 'Pepper Powder', category: 'Spice', unit: 'kg', price: 600, stock: 8, reorder: 10, supplier: 'Jaffna Exports' },
-            { id: 5, code: 'P005', name: 'Cinnamon Powder', category: 'Spice', unit: 'kg', price: 800, stock: 25, reorder: 15, supplier: 'Matale Growers' },
-            { id: 6, code: 'P006', name: 'Cardamom', category: 'Whole Spice', unit: 'kg', price: 2000, stock: 50, reorder: 20, supplier: 'Jaffna Exports' },
-            { id: 7, code: 'P007', name: 'Cloves', category: 'Whole Spice', unit: 'kg', price: 1500, stock: 35, reorder: 15, supplier: 'Jaffna Exports' },
-            { id: 8, code: 'P008', name: 'Turmeric Roots', category: 'Raw Material', unit: 'kg', price: 200, stock: 500, reorder: 100, supplier: 'Lanka Spices' },
-            { id: 9, code: 'P009', name: 'Chili Peppers', category: 'Raw Material', unit: 'kg', price: 180, stock: 300, reorder: 100, supplier: 'Kalutara Farmers' }
+            { id: 1, code: 'P001', name: 'Turmeric Powder', category: 'Spice', unit: 'kg', price: 500, stock: 450,
+                reorder: 100, supplier: 'Lanka Spices' },
+            { id: 2, code: 'P002', name: 'Chili Powder', category: 'Spice', unit: 'kg', price: 400, stock: 15,
+                reorder: 25, supplier: 'Lanka Spices' },
+            { id: 3, code: 'P003', name: 'Black Pepper', category: 'Spice', unit: 'kg', price: 780, stock: 8,
+                reorder: 20, supplier: 'Jaffna Exports' },
+            { id: 4, code: 'P004', name: 'Cinnamon Sticks', category: 'Spice', unit: 'kg', price: 950, stock: 320,
+                reorder: 50, supplier: 'Matale Growers' },
+            { id: 5, code: 'P005', name: 'Cardamom', category: 'Whole Spice', unit: 'kg', price: 2800, stock: 25,
+                reorder: 15, supplier: 'Jaffna Exports' }
+        ];
+
+        let rawMaterials = [
+            { id: 1, name: 'Turmeric Roots', supplier: 'Kalutara Farmers', batch: 'BATCH001', quantity: 500,
+                receivedDate: '2026-03-01', status: 'In Stock' },
+            { id: 2, name: 'Chili Peppers', supplier: 'Lanka Spices', batch: 'BATCH002', quantity: 300,
+                receivedDate: '2026-03-05', status: 'In Stock' }
+        ];
+
+        let deliveries = [
+            { id: 'R001', product: 'Chili Powder', quantity: 50, orderDate: '2026-03-10', expectedDate: '2026-03-17',
+                status: 'Pending' },
+            { id: 'R002', product: 'Pepper Powder', quantity: 30, orderDate: '2026-03-12', expectedDate: '2026-03-19',
+                status: 'Shipped' },
+            { id: 'R003', product: 'Chili Peppers', quantity: 100, orderDate: '2026-03-14',
+                expectedDate: '2026-03-21', status: 'Pending' }
         ];
 
         let sales = [
-            { productId: 1, quantity: 120, date: '2026-03-01' },
-            { productId: 1, quantity: 85, date: '2026-03-05' },
-            { productId: 1, quantity: 95, date: '2026-03-10' },
-            { productId: 2, quantity: 60, date: '2026-03-02' },
-            { productId: 2, quantity: 45, date: '2026-03-07' },
-            { productId: 2, quantity: 30, date: '2026-03-12' },
-            { productId: 3, quantity: 25, date: '2026-03-03' },
-            { productId: 3, quantity: 20, date: '2026-03-08' },
-            { productId: 4, quantity: 5, date: '2026-03-04' },
-            { productId: 4, quantity: 3, date: '2026-03-09' },
-            { productId: 5, quantity: 8, date: '2026-03-06' },
-            { productId: 5, quantity: 7, date: '2026-03-11' },
-            { productId: 6, quantity: 2, date: '2026-03-01' },
-            { productId: 6, quantity: 3, date: '2026-03-10' },
-            { productId: 7, quantity: 1, date: '2026-03-05' },
-            { productId: 8, quantity: 0, date: '2026-03-01' },
-            { productId: 9, quantity: 0, date: '2026-03-01' }
+            { productId: 1, quantity: 120, date: '2026-03-01' }, { productId: 1, quantity: 85, date: '2026-03-05' },
+            { productId: 2, quantity: 60, date: '2026-03-02' }, { productId: 2, quantity: 45, date: '2026-03-07' },
+            { productId: 3, quantity: 5, date: '2026-03-04' }, { productId: 4, quantity: 8, date: '2026-03-06' },
+            { productId: 5, quantity: 2, date: '2026-03-01' }, { productId: 5, quantity: 3, date: '2026-03-10' }
         ];
 
         let movements = [
-            { id: 1, date: '2026-03-15', productId: 2, type: 'add', quantity: 50, newStock: 65, notes: 'New shipment' },
-            { id: 2, date: '2026-03-14', productId: 4, type: 'remove', quantity: 5, newStock: 8, notes: 'Sales order' },
-            { id: 3, date: '2026-03-13', productId: 1, type: 'add', quantity: 100, newStock: 450, notes: 'Bulk purchase' }
+            { date: '2026-03-15', productId: 2, type: 'add', quantity: 50 },
+            { date: '2026-03-14', productId: 3, type: 'remove', quantity: 5 },
+            { date: '2026-03-13', productId: 1, type: 'add', quantity: 100 }
         ];
 
         let reorders = [
-            { id: 'R001', productId: 2, quantity: 50, orderDate: '2026-03-10', expectedDate: '2026-03-17', status: 'Pending' },
-            { id: 'R002', productId: 4, quantity: 30, orderDate: '2026-03-12', expectedDate: '2026-03-19', status: 'Shipped' },
-            { id: 'R003', productId: 9, quantity: 100, orderDate: '2026-03-14', expectedDate: '2026-03-21', status: 'Pending' }
+            { id: 'R001', productId: 2, quantity: 50, orderDate: '2026-03-10', expectedDate: '2026-03-17',
+                status: 'Pending' },
+            { id: 'R002', productId: 3, quantity: 30, orderDate: '2026-03-12', expectedDate: '2026-03-19',
+                status: 'Shipped' }
         ];
 
-        // Initialize Page
+        let returnRecords = [
+            { id: 'RET-001', product: 'Turmeric Powder', party: 'Saman Perera', date: '2026-03-15', quantity: '5 kg',
+                reason: 'Damaged', status: 'Approved', type: 'customer' },
+            { id: 'RET-002', product: 'Chili Powder', party: 'Nimali Stores', date: '2026-03-16', quantity: '3 kg',
+                reason: 'Expired', status: 'Pending', type: 'supplier' }
+        ];
+
+        // ===================== SUPPLIER SAMPLE FLOW DATA =====================
+        let sampleRequests = [
+            { id: 'SAMP-001', supplier: 'Lanka Spices', material: 'Black Pepper', qty: 2, requestDate: '2026-03-10',
+                status: 'Pending', sampleSent: false },
+            { id: 'SAMP-002', supplier: 'Jaffna Exports', material: 'Cardamom', qty: 1, requestDate: '2026-03-12',
+                status: 'Sample Sent', sampleSent: true }
+        ];
+
+        let qcReports = [
+            { sampleId: 'SAMP-002', supplier: 'Jaffna Exports', material: 'Cardamom', testDate: '2026-03-14',
+                result: 'Pass', remarks: 'Good quality', price: 2800, qualityScore: 8.5 }
+        ];
+
+        let purchaseOrders = [
+            { id: 'PO-001', supplier: 'Jaffna Exports', material: 'Cardamom', qty: 50, unitPrice: 2800, total: 140000,
+                deliveryDate: '2026-03-25', terms: '30 Days Credit', status: 'Pending Approval', approved: false,
+                sampleId: 'SAMP-002' }
+        ];
+
+        let grns = [];
+
+        // ===================== ACTIVE SUPPLIERS =====================
+        let activeSuppliers = [
+            { id: 'S001', company: 'Lanka Spices', contact: 'Kamal Perera', email: 'lanka@spices.com',
+                phone: '071-1234567', materials: 'Turmeric, Chili Powder', ordersCost: 500000, status: 'Active',
+                approvedDate: '2025-01-16' },
+            { id: 'S002', company: 'Jaffna Exports', contact: 'Priya Kumari', email: 'jaffna@exports.lk',
+                phone: '077-2345678', materials: 'Black Pepper, Cardamom', ordersCost: 250000, status: 'Active',
+                approvedDate: '2025-02-10' },
+            { id: 'S003', company: 'Matale Growers', contact: 'Mr. Silva', email: 'matale@growers.lk',
+                phone: '076-3456789', materials: 'Cinnamon, Cloves', ordersCost: 180000, status: 'Active',
+                approvedDate: '2025-03-01' }
+        ];
+
+        // ===================== TOAST NOTIFICATION =====================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            
+            // Trigger reflow
+            void toast.offsetWidth;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===================== LOGOUT FUNCTION (FIXED) =====================
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                const btn = document.getElementById('logoutBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '⏳ Logging out...';
+                btn.disabled = true;
+                
+                // Clear all local storage and session storage
+                try {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                } catch(e) {
+                    // Ignore errors if storage is not available
+                }
+                
+                // Delete all cookies
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "")
+                        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                
+                // Show success message
+                showToast('✅ Logging out...', 'success');
+                
+                // Redirect to logout handler
+                setTimeout(function() {
+                    // If you have a logout.php file, redirect to it
+                    window.location.href = 'logout.php';
+                    
+                    // If you don't have a logout.php, just redirect to login page
+                    // window.location.href = 'login.html';
+                    
+                    // If you want to stay on same page but reset state
+                    // window.location.reload(true);
+                }, 500);
+            }
+        }
+
+        // ===================== INITIALIZE =====================
         document.addEventListener('DOMContentLoaded', function() {
             updateStats();
             loadProducts();
             loadLowStockTable();
             loadCriticalAlerts();
             loadRecentMovements();
-            loadProductDropdown();
             loadReorderList();
             loadPendingReorders();
-            loadFastSlowItems();
+            loadDeliveryStatus();
+            loadReturnReport();
+            loadRawMaterials();
+            loadActiveSuppliers();
+            loadSampleFlowData();
+            analyzeVelocity();
+            showTab('overview');
+            
+            // Check if user is logged in (simple session check)
+            // If using PHP session, you can check via AJAX
+            console.log('📦 Stock Clerk Dashboard loaded successfully!');
+            showToast('👋 Welcome to Stock Dashboard!', 'info');
         });
 
-        // Tab Switching
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            event.target.classList.add('active');
-            
-            if (tabName === 'delivery') {
-                loadDeliveryStatus();
-            }
-            if (tabName === 'fastslow') {
-                analyzeVelocity();
-            }
-        }
-
-        function loadDeliveryStatus() {
-            const statusCounts = reorders.reduce((acc, item) => {
-                acc[item.status] = (acc[item.status] || 0) + 1;
-                return acc;
-            }, {});
-
-            const summaryHtml = Object.entries(statusCounts).map(([status, count]) => {
-                return `<div class="delivery-status-card"><h3>${status}</h3><p>${count}</p></div>`;
-            }).join('');
-
-            const bodyHtml = reorders.map(order => {
-                const product = products.find(p => p.id === order.productId) || { name: 'Unknown' };
-                return `<tr>
-                    <td>${order.id}</td>
-                    <td>${product.name}</td>
-                    <td>${order.quantity} kg</td>
-                    <td>${order.orderDate}</td>
-                    <td>${order.expectedDate}</td>
-                    <td>${order.status}</td>
-                </tr>`;
-            }).join('');
-
-            const summaryContainer = document.getElementById('delivery-status-summary');
-            const bodyContainer = document.getElementById('delivery-status-body');
-            if (summaryContainer) summaryContainer.innerHTML = summaryHtml || '<div style="color:#666">No delivery records.</div>';
-            if (bodyContainer) bodyContainer.innerHTML = bodyHtml || '<tr><td colspan="6" style="text-align:center;color:#666">No delivery data available.</td></tr>';
-        }
-
-        // Update Statistics
+        // ===================== STATS =====================
         function updateStats() {
             let totalProducts = products.length;
-            let lowStock = products.filter(p => p.stock <= p.reorder).length;
+            let lowStock = products.filter(p => p.stock <= p.reorder && p.stock > 0).length;
             let outOfStock = products.filter(p => p.stock === 0).length;
             let totalValue = products.reduce((sum, p) => sum + (p.stock * p.price), 0);
+            let pendingSamples = sampleRequests.filter(s => s.status === 'Pending').length;
+            let pendingPOs = purchaseOrders.filter(p => p.status === 'Pending Approval').length;
 
             document.getElementById('stats-summary').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-details">
-                        <h3>Total Products</h3>
-                        <div class="stat-number">${totalProducts}</div>
-                        <p>Active Items</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⚠️</div>
-                    <div class="stat-details">
-                        <h3>Low Stock Items</h3>
-                        <div class="stat-number">${lowStock}</div>
-                        <p>Need reorder</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⛔</div>
-                    <div class="stat-details">
-                        <h3>Out of Stock</h3>
-                        <div class="stat-number">${outOfStock}</div>
-                        <p>Critical</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-details">
-                        <h3>Stock Value</h3>
-                        <div class="stat-number">Rs. ${totalValue.toLocaleString()}</div>
-                    </div>
-                </div>
-            `;
+                        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Total Products</h3><div class="stat-number">${totalProducts}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-details"><h3>Low Stock Items</h3><div class="stat-number">${lowStock}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon">⛔</div><div class="stat-details"><h3>Out of Stock</h3><div class="stat-number">${outOfStock}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Stock Value</h3><div class="stat-number">Rs. ${totalValue.toLocaleString()}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon">🔬</div><div class="stat-details"><h3>Sample Requests</h3><div class="stat-number">${pendingSamples}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-details"><h3>Pending POs</h3><div class="stat-number">${pendingPOs}</div></div></div>
+                    `;
         }
 
-        // Load Products Table
+        // ===================== PRODUCTS =====================
         function loadProducts() {
             let html = '';
             products.forEach(p => {
-                let statusClass = 'badge-success';
-                let statusText = 'Good';
-                
-                if (p.stock === 0) {
-                    statusClass = 'badge-danger';
-                    statusText = 'Out of Stock';
-                } else if (p.stock <= p.reorder) {
-                    statusClass = 'badge-warning';
-                    statusText = 'Low Stock';
-                }
-                
-                html += `
-                    <tr>
-                        <td>${p.code}</td>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>Rs. ${p.price}</td>
-                        <td>${p.stock} ${p.unit}</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                        <td>
-                            <button class="btn-secondary btn-sm" onclick="editProduct(${p.id})">✏️ Edit</button>
-                            <button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">🔄 Reorder</button>
-                        </td>
-                    </tr>
-                `;
+                let statusClass = p.stock === 0 ? 'badge-danger' : (p.stock <= p.reorder ? 'badge-warning' :
+                    'badge-success');
+                let statusText = p.stock === 0 ? 'Out of Stock' : (p.stock <= p.reorder ? 'Low Stock' : 'Good');
+                html += `<tr><td>${p.code}</td><td>${p.name}</td><td>${p.category}</td><td>Rs. ${p.price}</td><td>${p.stock} ${p.unit}</td><td><span class="badge ${statusClass}">${statusText}</span></td><td><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">🔄 Reorder</button></td></tr>`;
             });
             document.getElementById('product-body').innerHTML = html;
         }
 
-        // Load Low Stock Table
-        function loadLowStockTable() {
-            let lowStock = products.filter(p => p.stock <= p.reorder && p.stock > 0);
-            let html = '';
-            
-            lowStock.forEach(p => {
-                html += `
-                    <tr>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.stock} ${p.unit}</td>
-                        <td>${p.reorder} ${p.unit}</td>
-                        <td><span class="badge badge-warning">Low Stock</span></td>
-                        <td><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder</button></td>
-                    </tr>
-                `;
-            });
-            
-            if (lowStock.length === 0) {
-                html = '<tr><td colspan="6" style="text-align: center;">No low stock items</td></tr>';
-            }
-            
-            document.getElementById('low-stock-body').innerHTML = html;
-        }
-
-        // Load Critical Alerts
-        function loadCriticalAlerts() {
-            let critical = products.filter(p => p.stock === 0);
-            let lowStock = products.filter(p => p.stock <= p.reorder && p.stock > 0);
-            
-            let html = '';
-            
-            critical.forEach(p => {
-                html += `
-                    <div class="alert-item">
-                        <span><strong>${p.name}</strong> - Out of stock!</span>
-                        <span class="alert-low stock-critical">CRITICAL</span>
-                        <button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder Now</button>
-                    </div>
-                `;
-            });
-            
-            if (critical.length === 0) {
-                html = '<p style="padding: 15px; color: var(--success);">✅ No critical stock issues</p>';
-            }
-            
-            document.getElementById('critical-alerts-list').innerHTML = html;
-            
-            // Full alerts for tab
-            let fullHtml = '';
-            critical.forEach(p => {
-                fullHtml += `
-                    <div class="alert-item">
-                        <span><strong>${p.name}</strong> - Out of stock!</span>
-                        <span class="alert-low stock-critical">CRITICAL</span>
-                        <button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder Now</button>
-                    </div>
-                `;
-            });
-            lowStock.forEach(p => {
-                fullHtml += `
-                    <div class="alert-item">
-                        <span><strong>${p.name}</strong> - ${p.stock} ${p.unit} remaining</span>
-                        <span class="alert-low">Below reorder level (${p.reorder} ${p.unit})</span>
-                        <button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder</button>
-                    </div>
-                `;
-            });
-            
-            if (critical.length === 0 && lowStock.length === 0) {
-                fullHtml = '<p style="padding: 15px;">✅ All stock levels are good</p>';
-            }
-            
-            document.getElementById('critical-alerts-full').innerHTML = fullHtml;
-        }
-
-        // Load Recent Movements
-        function loadRecentMovements() {
-            let recent = movements.slice(-5).reverse();
-            let html = '';
-            
-            recent.forEach(m => {
-                let product = products.find(p => p.id === m.productId);
-                html += `
-                    <tr>
-                        <td>${m.date}</td>
-                        <td>${product ? product.name : 'Unknown'}</td>
-                        <td><span class="badge badge-${m.type === 'add' ? 'success' : 'warning'}">${m.type}</span></td>
-                        <td>${m.quantity} ${product ? product.unit : ''}</td>
-                        <td>Stock Clerk</td>
-                    </tr>
-                `;
-            });
-            
-            document.getElementById('recent-movements').innerHTML = html;
-        }
-
-        // Load Product Dropdown for Reorder
-        function loadProductDropdown() {
-            let options = '<option value="">Select Product</option>';
-            products.forEach(p => {
-                options += `<option value="${p.id}" data-stock="${p.stock}">${p.name} (${p.stock} ${p.unit})</option>`;
-            });
-            document.getElementById('stock-product').innerHTML = options;
-        }
-
-        // Load Reorder List
-        function loadReorderList() {
-            let needReorder = products.filter(p => p.stock <= p.reorder && p.stock > 0);
-            let html = '';
-            
-            needReorder.forEach(p => {
-                let suggested = p.reorder * 2 - p.stock;
-                html += `
-                    <tr>
-                        <td>${p.name}</td>
-                        <td>${p.stock} ${p.unit}</td>
-                        <td>${p.reorder} ${p.unit}</td>
-                        <td>${suggested} ${p.unit}</td>
-                        <td>${p.supplier}</td>
-                        <td><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Place Order</button></td>
-                    </tr>
-                `;
-            });
-            
-            if (needReorder.length === 0) {
-                html = '<tr><td colspan="6" style="text-align: center;">No items need reorder</td></tr>';
-            }
-            
-            document.getElementById('reorder-list-body').innerHTML = html;
-        }
-
-        // Load Pending Reorders
-        function loadPendingReorders() {
-            let html = '';
-            reorders.forEach(r => {
-                let product = products.find(p => p.id === r.productId);
-                html += `
-                    <tr>
-                        <td>${r.id}</td>
-                        <td>${product ? product.name : 'Unknown'}</td>
-                        <td>${r.quantity} ${product ? product.unit : ''}</td>
-                        <td>${r.orderDate}</td>
-                        <td>${r.expectedDate}</td>
-                        <td><span class="badge badge-${r.status === 'Pending' ? 'warning' : 'info'}">${r.status}</span></td>
-                    </tr>
-                `;
-            });
-            document.getElementById('pending-reorders-body').innerHTML = html;
-        }
-
-        // Add Product
         function addProduct() {
             let name = document.getElementById('product-name').value;
             let category = document.getElementById('product-category').value;
@@ -1396,277 +1408,644 @@
             let price = parseFloat(document.getElementById('product-price').value);
             let stock = parseFloat(document.getElementById('product-stock').value);
             let reorder = parseFloat(document.getElementById('product-reorder').value);
-            let supplier = document.getElementById('product-supplier').value;
-            
-            if (!name || !price) {
-                alert('Please fill required fields');
-                return;
+
+            if (!name || !price) { 
+                showToast('❌ Please fill required fields', 'error');
+                return; 
             }
-            
             let newId = products.length + 1;
             let code = 'P' + String(newId).padStart(3, '0');
-            
-            products.push({
-                id: newId,
-                code: code,
-                name: name,
-                category: category,
-                unit: unit,
-                price: price,
-                stock: stock || 0,
-                reorder: reorder || 10,
-                supplier: supplier
-            });
-            
-            alert(`Product added successfully! Code: ${code}`);
-            
-            // Refresh
+            products.push({ id: newId, code, name, category, unit, price, stock: stock || 0, reorder: reorder || 10,
+                supplier: 'Lanka Spices' });
+            showToast(`✅ Product added! Code: ${code}`, 'success');
             loadProducts();
             updateStats();
-            loadProductDropdown();
-            
-            // Clear form
+            loadLowStockTable();
+            loadReorderList();
             document.getElementById('product-name').value = '';
             document.getElementById('product-price').value = '';
             document.getElementById('product-stock').value = '';
-            document.getElementById('product-reorder').value = '';
         }
 
-        // Add Raw Material
-        function addRawMaterial() {
-            alert('Raw Material added successfully!');
-        }
-
-        // Reorder Product
         function reorderProduct(productId) {
             let product = products.find(p => p.id === productId);
             let suggestedQty = product.reorder * 2 - product.stock;
-            
-            if (confirm(`Place reorder for ${product.name}?\nSuggested quantity: ${suggestedQty} ${product.unit}`)) {
+            if (confirm(`Place reorder for ${product.name}?\nSuggested: ${suggestedQty} ${product.unit}`)) {
                 let reorderId = 'R' + String(reorders.length + 1).padStart(3, '0');
                 let today = new Date().toISOString().split('T')[0];
                 let expected = new Date();
                 expected.setDate(expected.getDate() + 7);
-                
-                reorders.push({
-                    id: reorderId,
-                    productId: productId,
-                    quantity: suggestedQty,
-                    orderDate: today,
-                    expectedDate: expected.toISOString().split('T')[0],
-                    status: 'Pending'
-                });
-                
-                alert(`Reorder placed! Order ID: ${reorderId}`);
+                reorders.push({ id: reorderId, productId: productId, quantity: suggestedQty, orderDate: today,
+                    expectedDate: expected.toISOString().split('T')[0], status: 'Pending' });
+                showToast(`✅ Reorder placed! ID: ${reorderId}`, 'success');
                 loadPendingReorders();
-                showTab('alerts');
+                loadReorderList();
             }
         }
 
-        // Generate Stock Report
+        // ===================== LOW STOCK =====================
+        function loadLowStockTable() {
+            let lowStock = products.filter(p => p.stock <= p.reorder && p.stock > 0);
+            document.getElementById('low-stock-body').innerHTML = lowStock.map(p =>
+                `<tr><td>${p.name}</td><td>${p.category}</td><td>${p.stock} ${p.unit}</td><td>${p.reorder} ${p.unit}</td><td><span class="badge badge-warning">Low Stock</span></td><td><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder</button></td></tr>`
+            ).join('') || '<tr><td colspan="6" style="text-align:center">No low stock items</td></tr>';
+        }
+
+        function loadCriticalAlerts() {
+            let critical = products.filter(p => p.stock === 0);
+            document.getElementById('critical-alerts-list').innerHTML = critical.map(p =>
+                `<div class="alert-item"><span><strong>${p.name}</strong> - Out of stock!</span><span class="stock-critical">CRITICAL</span><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Reorder Now</button></div>`
+            ).join('') || '<p style="padding:15px">✅ No critical stock issues</p>';
+        }
+
+        function loadRecentMovements() {
+            let recent = movements.slice(-5).reverse();
+            document.getElementById('recent-movements').innerHTML = recent.map(m => {
+                let product = products.find(p => p.id === m.productId);
+                return `<tr><td>${m.date}</td><td>${product ? product.name : 'Unknown'}</td><td><span class="badge badge-${m.type === 'add' ? 'success' : 'warning'}">${m.type}</span></td><td>${m.quantity} kg</td></tr>`;
+            }).join('');
+        }
+
+        // ===================== REORDER LIST =====================
+        function loadReorderList() {
+            let needReorder = products.filter(p => p.stock <= p.reorder && p.stock > 0);
+            let html = '';
+            needReorder.forEach(p => {
+                let suggested = p.reorder * 2 - p.stock;
+                html += `<tr>
+                            <td>${p.name}</td>
+                            <td>${p.stock} ${p.unit}</td>
+                            <td>${p.reorder} ${p.unit}</td>
+                            <td>${suggested} ${p.unit}</td>
+                            <td>${p.supplier}</td>
+                            <td><button class="btn-secondary btn-sm" onclick="reorderProduct(${p.id})">Place Order</button></td>
+                        </tr>`;
+            });
+            document.getElementById('reorder-list-body').innerHTML = html ||
+                '<tr><td colspan="6" style="text-align:center">No items need reorder</td></tr>';
+        }
+
+        function loadPendingReorders() {
+            document.getElementById('pending-reorders-body').innerHTML = reorders.map(r => {
+                let product = products.find(p => p.id === r.productId);
+                return `<tr><td>${r.id}</td><td>${product ? product.name : 'Unknown'}</td><td>${r.quantity} kg</td><td>${r.orderDate}</td><td>${r.expectedDate}</td><td><span class="badge badge-warning">${r.status}</span></td></tr>`;
+            }).join('') || '<tr><td colspan="6">No pending reorders</td></tr>';
+        }
+
+        // ===================== RAW MATERIAL =====================
+        function loadRawMaterials() {
+            let html = '';
+            rawMaterials.forEach(r => { html +=
+                    `<tr><td>${r.name}</td><td>${r.supplier}</td><td>${r.batch}</td><td>${r.quantity} kg</td><td>${r.receivedDate}</td><td><span class="badge badge-success">${r.status}</span></td></tr>`
+                    ; });
+            document.getElementById('raw-material-body').innerHTML = html;
+        }
+
+        function addRawMaterial() {
+            let name = document.getElementById('raw-name').value;
+            let supplier = document.getElementById('raw-supplier').value;
+            let quantity = document.getElementById('raw-quantity').value;
+            let date = document.getElementById('raw-date').value;
+            let batch = document.getElementById('raw-batch').value;
+            if (!name || !supplier) { 
+                showToast('❌ Please fill required fields', 'error');
+                return; 
+            }
+            rawMaterials.push({ id: rawMaterials.length + 1, name, supplier, batch, quantity: parseInt(quantity),
+                receivedDate: date || new Date().toISOString().split('T')[0], status: 'In Stock' });
+            showToast('✅ Raw Material added!', 'success');
+            loadRawMaterials();
+            document.getElementById('raw-name').value = '';
+            document.getElementById('raw-supplier').value = '';
+            document.getElementById('raw-quantity').value = '';
+            document.getElementById('raw-batch').value = '';
+        }
+
+        // ===================== DELIVERY =====================
+        function loadDeliveryStatus() {
+            let pending = deliveries.filter(d => d.status === 'Pending').length;
+            let shipped = deliveries.filter(d => d.status === 'Shipped').length;
+            let delivered = deliveries.filter(d => d.status === 'Delivered').length;
+            let canceled = deliveries.filter(d => d.status === 'Canceled').length;
+
+            document.getElementById('delivery-status-summary').innerHTML = `
+                        <div class="delivery-status-card"><h3>PENDING</h3><p>${pending}</p></div>
+                        <div class="delivery-status-card"><h3>SHIPPED</h3><p>${shipped}</p></div>
+                        <div class="delivery-status-card"><h3>DELIVERED</h3><p>${delivered}</p></div>
+                        <div class="delivery-status-card"><h3>CANCELED</h3><p>${canceled}</p></div>
+                    `;
+
+            let tableHtml = '';
+            deliveries.forEach((delivery, idx) => {
+                const statusClass = delivery.status === 'Pending' ? 'pending' : (delivery.status === 'Shipped' ?
+                    'shipped' : 'delivered');
+                tableHtml += `<tr>
+                            <td>${delivery.id}</td><td>${delivery.product}</td><td>${delivery.quantity} kg</td>
+                            <td>${delivery.orderDate}</td><td>${delivery.expectedDate}</td>
+                            <td><select class="status-select ${statusClass}" onchange="updateDeliveryStatus(${idx}, this.value)">
+                                <option value="Pending" ${delivery.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Shipped" ${delivery.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${delivery.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="Canceled" ${delivery.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
+                            </select></td>
+                            <td><button class="btn-secondary btn-sm" onclick="updateDeliveryStatus(${idx}, document.querySelector('#tab-delivery .status-select').value)">Update</button></td>
+                        </tr>`;
+            });
+            document.getElementById('delivery-status-body').innerHTML = tableHtml ||
+                '<tr><td colspan="7">No delivery data</td></tr>';
+        }
+
+        function updateDeliveryStatus(idx, newStatus) {
+            deliveries[idx].status = newStatus;
+            showToast(`✅ Delivery ${deliveries[idx].id} status updated to ${newStatus}`, 'success');
+            loadDeliveryStatus();
+        }
+
+        // ===================== FAST/SLOW =====================
+        function analyzeVelocity() {
+            let period = 30;
+            let cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - period);
+            let filteredSales = sales.filter(s => new Date(s.date) >= cutoffDate);
+            let salesByProduct = {};
+            filteredSales.forEach(s => { salesByProduct[s.productId] = (salesByProduct[s.productId] || 0) + s.quantity; });
+
+            let productStats = products.map(p => {
+                let sold = salesByProduct[p.id] || 0;
+                let turnover = p.stock > 0 ? (sold / p.stock) : 0;
+                return { ...p, sold, turnover };
+            });
+
+            let fastMoving = [...productStats].filter(p => p.sold > 0).sort((a, b) => b.sold - a.sold).slice(0, 5);
+            let slowMoving = productStats.filter(p => p.turnover < 0.5 && p.stock > 5);
+
+            let totalSold = productStats.reduce((sum, p) => sum + p.sold, 0);
+            let totalValue = productStats.reduce((sum, p) => sum + (p.sold * p.price), 0);
+            let avgTurnover = (productStats.reduce((sum, p) => sum + p.turnover, 0) / productStats.length || 0);
+
+            document.getElementById('velocity-summary').innerHTML = `
+                        <div class="velocity-card"><div class="v-value">${totalSold}</div><div class="v-label">Total Sold (kg)</div></div>
+                        <div class="velocity-card"><div class="v-value">Rs. ${totalValue.toLocaleString()}</div><div class="v-label">Total Sales Value</div></div>
+                        <div class="velocity-card"><div class="v-value">${fastMoving.length}</div><div class="v-label">Fast Moving Items</div></div>
+                        <div class="velocity-card"><div class="v-value">${slowMoving.length}</div><div class="v-label">Slow Moving Items</div></div>
+                        <div class="velocity-card"><div class="v-value">${avgTurnover.toFixed(2)}x</div><div class="v-label">Avg Turnover Rate</div></div>
+                    `;
+
+            let fastHtml = fastMoving.map((p, i) =>
+                `<tr><td>#${i + 1}</td><td>${p.name}</td><td>${p.sold} kg</td><td>Rs. ${(p.sold * p.price).toLocaleString()}</td></tr>`
+            ).join('') || '<tr><td colspan="4">No data</td></tr>';
+
+            document.getElementById('fast-moving-body').innerHTML = fastHtml;
+
+            let slowHtml = slowMoving.map(p =>
+                `<tr><td>${p.name}</td><td>${p.stock} kg</td><td>${p.sold} kg</td><td>${p.stock > 0 ? (period / (p.sold || 1)).toFixed(0) : 0} days</td></tr>`
+            ).join('') || '<tr><td colspan="4">No slow moving items</td></tr>';
+
+            document.getElementById('slow-moving-body').innerHTML = slowHtml;
+        }
+
+        // ===================== RETURNS =====================
+        function loadReturnReport() {
+            document.getElementById('return-report-body').innerHTML = returnRecords.map(r => {
+                let statusClass = r.status === 'Approved' ? 'badge-success' : 'badge-warning';
+                return `<tr><td>${r.id}</td><td>${r.product}</td><td>${r.party}</td><td>${r.date}</td><td>${r.quantity}</td><td>${r.reason}</td><td><span class="badge ${statusClass}">${r.status}</span></td></tr>`;
+            }).join('') || '<tr><td colspan="7">No returns</td></tr>';
+        }
+
+        function generateReturnReport() {
+            let from = document.getElementById('return-from').value;
+            let to = document.getElementById('return-to').value;
+            let type = document.getElementById('return-type').value;
+            let filtered = returnRecords.filter(r => {
+                let matchesType = type === 'all' || r.type === type;
+                let matchesDate = (!from || r.date >= from) && (!to || r.date <= to);
+                return matchesType && matchesDate;
+            });
+            document.getElementById('return-report-body').innerHTML = filtered.map(r => {
+                let statusClass = r.status === 'Approved' ? 'badge-success' : 'badge-warning';
+                return `<tr><td>${r.id}</td><td>${r.product}</td><td>${r.party}</td><td>${r.date}</td><td>${r.quantity}</td><td>${r.reason}</td><td><span class="badge ${statusClass}">${r.status}</span></td></tr>`;
+            }).join('') || '<tr><td colspan="7">No matching records</td></tr>';
+        }
+
         function generateStockReport() {
             let reportType = document.getElementById('stock-report-type').value;
             let category = document.getElementById('report-category').value;
-            
-            let filteredProducts = category === 'all' ? products : products.filter(p => p.category === category);
-            let html = '';
-            
-            if (reportType === 'inventory') {
-                html = '<h3 style="color: var(--primary-brown);">Inventory Summary Report</h3>';
-                html += '<table class="data-table">';
-                html += '<thead><tr><th>Code</th><th>Product</th><th>Category</th><th>Stock</th><th>Status</th><th>Value</th></tr></thead><tbody>';
-                
-                filteredProducts.forEach(p => {
-                    let statusClass = 'badge-success';
-                    let statusText = 'Good';
-                    if (p.stock === 0) {
-                        statusClass = 'badge-danger';
-                        statusText = 'Out of Stock';
-                    } else if (p.stock <= p.reorder) {
-                        statusClass = 'badge-warning';
-                        statusText = 'Low Stock';
-                    }
-                    
-                    html += `<tr>
-                        <td>${p.code}</td>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.stock} ${p.unit}</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                        <td>Rs. ${(p.stock * p.price).toLocaleString()}</td>
-                    </tr>`;
-                });
-                
-                let totalValue = filteredProducts.reduce((sum, p) => sum + (p.stock * p.price), 0);
-                html += `<tr style="background: #fff3cd;"><td colspan="5"><strong>TOTAL</strong></td><td><strong>Rs. ${totalValue.toLocaleString()}</strong></td></tr>`;
-                html += '</tbody></table>';
-                
-            } else if (reportType === 'category') {
-                html = '<h3 style="color: var(--primary-brown);">Category-wise Stock Report</h3>';
-                html += '<table class="data-table">';
-                html += '<thead><tr><th>Category</th><th>Items</th><th>Total Quantity</th><th>Total Value</th></tr></thead><tbody>';
-                
-                let categories = {};
-                filteredProducts.forEach(p => {
-                    if (!categories[p.category]) {
-                        categories[p.category] = { count: 0, qty: 0, value: 0 };
-                    }
-                    categories[p.category].count++;
-                    categories[p.category].qty += p.stock;
-                    categories[p.category].value += p.stock * p.price;
-                });
-                
-                for (let cat in categories) {
-                    html += `<tr>
-                        <td>${cat}</td>
-                        <td>${categories[cat].count}</td>
-                        <td>${categories[cat].qty.toFixed(0)} kg</td>
-                        <td>Rs. ${categories[cat].value.toLocaleString()}</td>
-                    </tr>`;
-                }
-                html += '</tbody></table>';
-                
-            } else if (reportType === 'valuation') {
-                html = '<h3 style="color: var(--primary-brown);">Stock Valuation Report</h3>';
-                html += '<table class="data-table">';
-                html += '<thead><tr><th>Category</th><th>Items</th><th>Total Quantity</th><th>Total Value</th><th>% of Total</th></tr></thead><tbody>';
-                
-                let categories = {};
-                filteredProducts.forEach(p => {
-                    if (!categories[p.category]) {
-                        categories[p.category] = { count: 0, qty: 0, value: 0 };
-                    }
-                    categories[p.category].count++;
-                    categories[p.category].qty += p.stock;
-                    categories[p.category].value += p.stock * p.price;
-                });
-                
-                let grandTotal = Object.values(categories).reduce((sum, cat) => sum + cat.value, 0);
-                
-                for (let cat in categories) {
-                    let percent = ((categories[cat].value / grandTotal) * 100).toFixed(1);
-                    html += `<tr>
-                        <td>${cat}</td>
-                        <td>${categories[cat].count}</td>
-                        <td>${categories[cat].qty.toFixed(0)} kg</td>
-                        <td>Rs. ${categories[cat].value.toLocaleString()}</td>
-                        <td>${percent}%</td>
-                    </tr>`;
-                }
-                
-                html += `<tr style="background: #fff3cd;"><td colspan="3"><strong>TOTAL</strong></td><td><strong>Rs. ${grandTotal.toLocaleString()}</strong></td><td>100%</td></tr>`;
-                html += '</tbody></table>';
-            }
-            
-            html += '<button class="btn-success" onclick="window.print()" style="margin-top: 20px;">🖨️ Print Report</button>';
+            let filtered = category === 'all' ? products : products.filter(p => p.category === category);
+            let html = '<h3>Stock Report</h3><table class="data-table"><thead><tr><th>Code</th><th>Product</th><th>Stock</th><th>Status</th><th>Value</th></tr></thead><tbody>';
+            filtered.forEach(p => {
+                let statusClass = p.stock === 0 ? 'badge-danger' : (p.stock <= p.reorder ? 'badge-warning' :
+                    'badge-success');
+                let statusText = p.stock === 0 ? 'Out of Stock' : (p.stock <= p.reorder ? 'Low Stock' : 'Good');
+                html +=
+                    `<tr><td>${p.code}</td><td>${p.name}</td><td>${p.stock} ${p.unit}</td><td><span class="badge ${statusClass}">${statusText}</span></td><td>Rs. ${(p.stock * p.price).toLocaleString()}</td></tr>`;
+            });
+            let total = filtered.reduce((s, p) => s + (p.stock * p.price), 0);
+            html +=
+                `<tr style="background:#fff3cd"><td colspan="4"><strong>TOTAL</strong></td><td><strong>Rs. ${total.toLocaleString()}</strong></td></tr></tbody></table>`;
             document.getElementById('stock-report-results').innerHTML = html;
         }
 
-        // Analyze Fast/Slow Moving Items
-        function analyzeVelocity() {
-            let period = parseInt(document.getElementById('velocity-period').value);
-            let category = document.getElementById('velocity-category').value;
-            
-            let cutoffDate = new Date();
-            cutoffDate.setDate(cutoffDate.getDate() - period);
-            
-            let filteredSales = sales.filter(s => new Date(s.date) >= cutoffDate);
-            
-            // Calculate sales by product
-            let salesByProduct = {};
-            filteredSales.forEach(s => {
-                if (!salesByProduct[s.productId]) {
-                    salesByProduct[s.productId] = 0;
+        // ===================== ACTIVE SUPPLIERS =====================
+        function loadActiveSuppliers() {
+            let tbody = document.getElementById('active-suppliers-body');
+            let noMsg = document.getElementById('no-suppliers-msg');
+
+            if (!activeSuppliers || activeSuppliers.length === 0) {
+                tbody.innerHTML = '';
+                noMsg.style.display = 'block';
+            } else {
+                noMsg.style.display = 'none';
+                tbody.innerHTML = activeSuppliers.map(s => `
+                            <tr>
+                                <td><strong>${s.id}</strong></td>
+                                <td>${s.company}</td>
+                                <td>${s.contact || 'N/A'}</td>
+                                <td>${s.email}</td>
+                                <td>${s.phone}</td>
+                                <td>${s.materials}</td>
+                                <td><strong>Rs. ${(s.ordersCost || 0).toLocaleString()}</strong></td>
+                                <td><span class="badge badge-success">✅ Active</span></td>
+                                <td>${s.approvedDate || 'N/A'}</td>
+                                <td><button class="btn-secondary btn-sm" onclick="contactSupplier('${s.email}', '${s.company}')">📧 Contact</button></td>
+                            </tr>
+                        `).join('');
+            }
+
+            let select = document.getElementById('sample-supplier-select');
+            select.innerHTML = '<option value="">Select Supplier</option>';
+            activeSuppliers.forEach(s => {
+                let option = document.createElement('option');
+                option.value = s.company;
+                option.textContent = s.company + ' (' + s.materials + ')';
+                select.appendChild(option);
+            });
+        }
+
+        function contactSupplier(email, name) {
+            if (confirm(`Send email to ${name} (${email})?`)) {
+                window.open(
+                    `mailto:${email}?subject=Pearl Land Commodities - Sample Request&body=Dear ${name},\n\nWe would like to request a sample of your products.\n\nPlease send us a sample for quality testing.\n\nBest regards,\nPearl Land Commodities Stock Department`
+                    );
+            }
+        }
+
+        // ===================== SUPPLIER SAMPLE FLOW =====================
+        function loadSampleFlowData() {
+            let qcHtml = '';
+            let pendingSamples = sampleRequests.filter(s => s.status === 'Pending' || s.status === 'Sample Sent');
+            pendingSamples.forEach(s => {
+                let isSent = s.sampleSent || false;
+                qcHtml += `<tr>
+                            <td>${s.id}</td>
+                            <td>${s.supplier}</td>
+                            <td>${s.material}</td>
+                            <td>${s.qty} kg</td>
+                            <td>${s.requestDate}</td>
+                            <td><span class="badge ${isSent ? 'badge-info' : 'badge-warning'}">${isSent ? 'Sample Sent' : 'Pending'}</span></td>
+                            <td>${isSent ? `<button class="btn-approve" onclick="simulateQC('${s.id}', 'Pass', 'Good quality', 800, 9)">✅ Pass</button> <button class="btn-reject" onclick="simulateQC('${s.id}', 'Reject', 'Poor quality', null, 0)">❌ Reject</button>` : '<span style="color:#888;">Waiting...</span>'}</td>
+                        </tr>`;
+            });
+            document.getElementById('qc-test-body').innerHTML = qcHtml ||
+                '<tr><td colspan="7">No pending samples for QC</td></tr>';
+
+            let passedSamples = qcReports.filter(q => q.result === 'Pass');
+            let bestHtml = '';
+            passedSamples.forEach(q => {
+                let sample = sampleRequests.find(s => s.id === q.sampleId);
+                if (sample) {
+                    bestHtml += `<tr>
+                                <td>${q.sampleId}</td>
+                                <td>${q.supplier}</td>
+                                <td>${q.material}</td>
+                                <td><span class="badge badge-success">✅ Pass</span></td>
+                                <td>${q.price ? 'Rs. ' + q.price : 'N/A'}</td>
+                                <td>${q.qualityScore || 'N/A'}</td>
+                                <td><button class="btn-secondary btn-sm" onclick="selectForPO('${q.sampleId}')">📄 Create PO</button></td>
+                            </tr>`;
                 }
-                salesByProduct[s.productId] += s.quantity;
             });
-            
-            let filteredProducts = category === 'all' ? products : products.filter(p => p.category === category);
-            
-            // Calculate turnover rates
-            let productStats = filteredProducts.map(p => {
-                let sold = salesByProduct[p.id] || 0;
-                let turnover = p.stock > 0 ? (sold / p.stock) : 0;
-                return {
-                    ...p,
-                    sold: sold,
-                    turnover: turnover,
-                    daysInStock: p.stock > 0 ? (p.stock / (sold / period)) : 999
-                };
+            document.getElementById('best-sample-body').innerHTML = bestHtml ||
+                '<tr><td colspan="7">No samples passed QC yet</td></tr>';
+
+            let poHtml = '';
+            purchaseOrders.forEach(po => {
+                poHtml += `<tr>
+                            <td>${po.id}</td>
+                            <td>${po.supplier}</td>
+                            <td>${po.material}</td>
+                            <td>${po.qty} kg</td>
+                            <td>Rs. ${po.unitPrice}</td>
+                            <td>Rs. ${(po.total || po.qty * po.unitPrice).toLocaleString()}</td>
+                            <td><span class="badge ${po.status === 'Approved' ? 'badge-success' : 'badge-warning'}">${po.status}</span></td>
+                            <td>${po.status === 'Pending Approval' ? '⏳ Waiting for Manager' : '✅ Approved'}</td>
+                        </tr>`;
             });
-            
-            // Fast Moving (Top 5 by sales)
-            let fastMoving = [...productStats].filter(p => p.sold > 0).sort((a,b) => b.sold - a.sold).slice(0,5);
-            let fastHtml = '';
-            fastMoving.forEach((p, index) => {
-                fastHtml += `
-                    <tr>
-                        <td><strong>#${index + 1}</strong></td>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.sold} ${p.unit}</td>
-                        <td>Rs. ${(p.sold * p.price).toLocaleString()}</td>
-                        <td>${p.turnover.toFixed(2)}x</td>
-                        <td><span class="badge badge-success">Increase stock</span></td>
-                    </tr>
-                `;
+            document.getElementById('pending-po-body').innerHTML = poHtml ||
+                '<tr><td colspan="8">No POs created</td></tr>';
+
+            let approvedPOs = purchaseOrders.filter(po => po.status === 'Approved');
+            let goodsHtml = '';
+            approvedPOs.forEach(po => {
+                let alreadyGRN = grns.some(g => g.poId === po.id);
+                if (!alreadyGRN) {
+                    goodsHtml += `<tr>
+                                <td>${po.id}</td>
+                                <td>${po.supplier}</td>
+                                <td>${po.material}</td>
+                                <td>${po.qty} kg</td>
+                                <td><input type="number" id="rec-qty-${po.id}" placeholder="Enter received qty" style="width:100px"></td>
+                                <td><button class="btn-secondary btn-sm" onclick="receiveMaterial('${po.id}')">📦 Create GRN</button></td>
+                            </tr>`;
+                }
             });
-            document.getElementById('fast-moving-body').innerHTML = fastHtml || '<tr><td colspan="7" style="text-align: center;">No data</td></tr>';
-            
-            // Slow Moving (turnover < 0.5)
-            let slowMoving = productStats.filter(p => p.turnover < 0.5 && p.stock > 5);
-            let slowHtml = '';
-            slowMoving.forEach(p => {
-                let daysInStock = p.stock > 0 ? (period / (p.sold || 1)).toFixed(0) : 0;
-                slowHtml += `
-                    <tr>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.stock} ${p.unit}</td>
-                        <td>${p.sold} ${p.unit}</td>
-                        <td>${daysInStock} days</td>
-                        <td><span class="badge badge-warning">Slow Moving</span></td>
-                        <td>Promotion needed</td>
-                    </tr>
-                `;
+            document.getElementById('received-goods-body').innerHTML = goodsHtml ||
+                '<tr><td colspan="6">No goods to receive</td></tr>';
+
+            let approvedGrns = grns.filter(g => g.status === 'Manager Approved' || g.status === 'Approved');
+            let grnHtml = '';
+            approvedGrns.forEach(g => {
+                grnHtml += `<tr>
+                            <td>${g.id || 'GRN-' + String(grns.indexOf(g) + 1).padStart(3, '0')}</td>
+                            <td>${g.poId}</td>
+                            <td>${g.supplier}</td>
+                            <td>${g.receivedQty || g.qty} kg</td>
+                            <td>Rs. ${(g.totalAmount || g.amount || (g.receivedQty * g.unitPrice)).toLocaleString()}</td>
+                            <td><span class="badge badge-success">✅ Approved</span></td>
+                        </tr>`;
             });
-            document.getElementById('slow-moving-body').innerHTML = slowHtml || '<tr><td colspan="7" style="text-align: center;">No slow moving items</td></tr>';
-            
-            // Turnover Analysis
-            let avgTurnover = productStats.reduce((sum, p) => sum + p.turnover, 0) / productStats.length;
-            let turnoverHtml = `
-                <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 20px;">
-                    <div style="background: var(--cream); padding: 20px; border-radius: 12px;">
-                        <h4>Average Turnover</h4>
-                        <p style="font-size: 24px; font-weight: bold; color: var(--primary-brown);">${avgTurnover.toFixed(2)}x</p>
-                    </div>
-                    <div style="background: var(--cream); padding: 20px; border-radius: 12px;">
-                        <h4>Fast Moving Items</h4>
-                        <p style="font-size: 24px; font-weight: bold; color: var(--success);">${fastMoving.length}</p>
-                    </div>
-                    <div style="background: var(--cream); padding: 20px; border-radius: 12px;">
-                        <h4>Slow Moving Items</h4>
-                        <p style="font-size: 24px; font-weight: bold; color: var(--warning);">${slowMoving.length}</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('turnover-analysis').innerHTML = turnoverHtml;
+            document.getElementById('approved-grn-body').innerHTML = grnHtml ||
+                '<tr><td colspan="6">No approved GRNs</td></tr>';
+
+            updateStats();
         }
 
-        // Generate Return Report
-        function generateReturnReport() {
-            alert('Return report generated! Check the report section below.');
+        // ===================== SAMPLE FUNCTIONS =====================
+        function requestSample() {
+            let supplier = document.getElementById('sample-supplier-select').value;
+            let material = document.getElementById('sample-material').value;
+            let qty = document.getElementById('sample-qty').value;
+
+            if (!supplier || !material) {
+                showToast('❌ Please select supplier and enter material name', 'error');
+                return;
+            }
+
+            let id = 'SAMP-' + String(sampleRequests.length + 1).padStart(3, '0');
+            let today = new Date().toISOString().split('T')[0];
+
+            sampleRequests.push({
+                id: id,
+                supplier: supplier,
+                material: material,
+                qty: parseInt(qty) || 2,
+                requestDate: today,
+                status: 'Pending',
+                sampleSent: false
+            });
+
+            showToast(`✅ Sample requested from ${supplier} for ${material}`, 'success');
+            loadSampleFlowData();
+            updateStats();
+
+            document.getElementById('sample-material').value = '';
+            document.getElementById('sample-qty').value = '2';
         }
 
-        // Load Fast/Slow Items
-        function loadFastSlowItems() {
-            analyzeVelocity();
+        function simulateQC(sampleId, result, remarks, price, qualityScore) {
+            let sample = sampleRequests.find(s => s.id === sampleId);
+            if (!sample) { 
+                showToast('❌ Sample not found!', 'error');
+                return; 
+            }
+
+            sample.status = 'QC Completed';
+            sample.sampleSent = true;
+
+            let testDate = new Date().toISOString().split('T')[0];
+
+            let existing = qcReports.find(q => q.sampleId === sampleId);
+            if (existing) {
+                existing.result = result;
+                existing.remarks = remarks;
+                existing.price = price;
+                existing.qualityScore = qualityScore;
+                existing.testDate = testDate;
+            } else {
+                qcReports.push({
+                    sampleId: sampleId,
+                    supplier: sample.supplier,
+                    material: sample.material,
+                    testDate: testDate,
+                    result: result,
+                    remarks: remarks,
+                    price: price,
+                    qualityScore: qualityScore
+                });
+            }
+
+            showToast(result === 'Pass' ? `✅ Sample ${sampleId} PASSED QC.` : `❌ Sample ${sampleId} REJECTED.`, 
+                result === 'Pass' ? 'success' : 'error');
+            loadSampleFlowData();
+            updateStats();
         }
 
-        // Edit Product (placeholder)
-        function editProduct(id) {
-            alert('Edit product feature - In development');
+        function selectForPO(sampleId) {
+            let qc = qcReports.find(q => q.sampleId === sampleId);
+            if (!qc || qc.result !== 'Pass') {
+                showToast('❌ Sample must pass QC before creating PO!', 'error');
+                return;
+            }
+
+            document.getElementById('po-supplier').value = qc.supplier;
+            document.getElementById('po-material').value = qc.material;
+            document.getElementById('po-price').value = qc.price || '';
+            document.getElementById('po-qty').value = '';
+            document.getElementById('po-delivery-date').value = new Date(Date.now() + 14 * 86400000).toISOString().split(
+            'T')[0];
+            document.getElementById('po-creation-area').style.display = 'block';
+            document.getElementById('po-creation-area').dataset.selectedSampleId = sampleId;
+            document.getElementById('po-creation-area').scrollIntoView({ behavior: 'smooth' });
         }
+
+        function createPurchaseOrder() {
+            let sampleId = document.getElementById('po-creation-area').dataset.selectedSampleId;
+            let supplier = document.getElementById('po-supplier').value;
+            let material = document.getElementById('po-material').value;
+            let unitPrice = parseFloat(document.getElementById('po-price').value);
+            let qty = parseFloat(document.getElementById('po-qty').value);
+            let deliveryDate = document.getElementById('po-delivery-date').value;
+            let terms = document.getElementById('po-terms').value;
+
+            if (!unitPrice || !qty || unitPrice <= 0 || qty <= 0) {
+                showToast('❌ Please enter valid price and quantity', 'error');
+                return;
+            }
+
+            let poId = 'PO-' + String(purchaseOrders.length + 1).padStart(3, '0');
+            let total = unitPrice * qty;
+
+            purchaseOrders.push({
+                id: poId,
+                sampleId: sampleId,
+                supplier: supplier,
+                material: material,
+                qty: qty,
+                unitPrice: unitPrice,
+                total: total,
+                deliveryDate: deliveryDate,
+                terms: terms,
+                status: 'Pending Approval',
+                approved: false
+            });
+
+            let sample = sampleRequests.find(s => s.id === sampleId);
+            if (sample) {
+                sample.status = 'PO Created';
+            }
+
+            showToast(`✅ PO ${poId} created and sent to Manager for approval!`, 'success');
+
+            document.getElementById('po-creation-area').style.display = 'none';
+            loadSampleFlowData();
+            updateStats();
+        }
+
+        function receiveMaterial(poId) {
+            let po = purchaseOrders.find(p => p.id === poId);
+            if (!po || po.status !== 'Approved') {
+                showToast('❌ PO must be approved by Manager before receiving material.', 'error');
+                return;
+            }
+
+            let receivedQty = parseFloat(document.getElementById('rec-qty-' + poId).value);
+            if (!receivedQty || receivedQty <= 0) {
+                showToast('❌ Please enter valid received quantity', 'error');
+                return;
+            }
+
+            document.getElementById('grn-po').value = poId;
+            document.getElementById('grn-qty').value = receivedQty;
+            document.getElementById('grn-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('grn-inspector').value = 'Stock Clerk';
+            document.getElementById('grn-remarks').value = '';
+            document.getElementById('grn-creation-area').style.display = 'block';
+            document.getElementById('grn-creation-area').dataset.selectedPoId = poId;
+            document.getElementById('grn-creation-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createGRN() {
+            let poId = document.getElementById('grn-creation-area').dataset.selectedPoId;
+            let po = purchaseOrders.find(p => p.id === poId);
+            if (!po) { 
+                showToast('❌ PO not found!', 'error');
+                return; 
+            }
+
+            let receivedQty = parseFloat(document.getElementById('grn-qty').value);
+            let receivedDate = document.getElementById('grn-date').value;
+            let inspector = document.getElementById('grn-inspector').value || 'Stock Clerk';
+            let remarks = document.getElementById('grn-remarks').value || '';
+
+            if (!receivedQty || receivedQty <= 0 || !receivedDate) {
+                showToast('❌ Please fill all required fields', 'error');
+                return;
+            }
+
+            let grnId = 'GRN-' + String(grns.length + 1).padStart(3, '0');
+
+            grns.push({
+                id: grnId,
+                poId: po.id,
+                supplier: po.supplier,
+                material: po.material,
+                orderedQty: po.qty,
+                receivedQty: receivedQty,
+                unitPrice: po.unitPrice,
+                totalAmount: receivedQty * po.unitPrice,
+                receivedDate: receivedDate,
+                inspector: inspector,
+                remarks: remarks,
+                status: 'Approved'
+            });
+
+            let product = products.find(p => p.name.toLowerCase().includes(po.material.toLowerCase()));
+            if (product) {
+                product.stock += receivedQty;
+            }
+
+            showToast(`✅ GRN ${grnId} created and auto-approved!`, 'success');
+
+            document.getElementById('grn-creation-area').style.display = 'none';
+            loadSampleFlowData();
+            loadProducts();
+            loadLowStockTable();
+            updateStats();
+        }
+
+        // ===================== TAB NAVIGATION =====================
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+
+            let targetTab = document.getElementById(`tab-${tabName}`);
+            if (targetTab) targetTab.classList.add('active');
+
+            let menuMap = {
+                'overview': 0,
+                'products': 1,
+                'rawmaterial': 2,
+                'stockreport': 3,
+                'delivery': 4,
+                'returns': 5,
+                'suppliers': 6,
+                'supplier-flow': 7
+            };
+            let menuItems = document.querySelectorAll('.sidebar-menu a');
+            if (menuItems[menuMap[tabName]]) {
+                menuItems[menuMap[tabName]].classList.add('active');
+            }
+
+            if (tabName === 'delivery') loadDeliveryStatus();
+            if (tabName === 'supplier-flow') loadSampleFlowData();
+            if (tabName === 'suppliers') loadActiveSuppliers();
+            if (tabName === 'overview') {
+                updateStats();
+                loadCriticalAlerts();
+                loadLowStockTable();
+                loadRecentMovements();
+                loadReorderList();
+                analyzeVelocity();
+            }
+        }
+
+        // Make functions globally accessible
+        window.showTab = showTab;
+        window.updateDeliveryStatus = updateDeliveryStatus;
+        window.addProduct = addProduct;
+        window.addRawMaterial = addRawMaterial;
+        window.reorderProduct = reorderProduct;
+        window.generateStockReport = generateStockReport;
+        window.generateReturnReport = generateReturnReport;
+        window.requestSample = requestSample;
+        window.simulateQC = simulateQC;
+        window.selectForPO = selectForPO;
+        window.createPurchaseOrder = createPurchaseOrder;
+        window.receiveMaterial = receiveMaterial;
+        window.createGRN = createGRN;
+        window.contactSupplier = contactSupplier;
+        window.logoutUser = logoutUser;
+        window.showToast = showToast;
+
+        console.log('📦 Stock Clerk Dashboard loaded successfully!');
+        console.log('📊 Data loaded:', {
+            products: products.length,
+            samples: sampleRequests.length,
+            qcReports: qcReports.length,
+            purchaseOrders: purchaseOrders.length,
+            grns: grns.length,
+            suppliers: activeSuppliers.length
+        });
     </script>
 </body>
+
 </html>

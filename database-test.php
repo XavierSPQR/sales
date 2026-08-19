@@ -1,19 +1,29 @@
 <?php
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'pearl_land_db';
+// database-test.php - Test Database Connection
+// Uses the Database singleton class.
 
-// Create connection
-$conn = mysqli_connect($host, $username, $password, $database);
+require_once __DIR__ . '/classes/Database.php';
 
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+try {
+    $db = Database::getInstance();
+    $pdo = $db->getConnection();
+    $driver = $db->getDriver();
+
+    echo "<h1>✅ Database Connected Successfully!</h1>";
+    echo "<p>Connected using: <strong>" . strtoupper($driver) . "</strong> driver</p>";
+
+    if ($driver === 'mysql') {
+        $version = $pdo->query("SELECT VERSION() as version")->fetch();
+        echo "<p><strong>MySQL Version:</strong> " . $version['version'] . "</p>";
+    } else {
+        $version = $pdo->query("SELECT sqlite_version() as version")->fetch();
+        echo "<p><strong>SQLite Version:</strong> " . $version['version'] . "</p>";
+    }
+
+    echo "<p style='color: green;'>✓ Database class is working correctly!</p>";
+
+} catch (Exception $e) {
+    echo "<h1>❌ Connection Failed</h1>";
+    echo "<p>" . $e->getMessage() . "</p>";
 }
-
-echo "<h1>✅ Database Connected Successfully!</h1>";
-echo "Connected to: <strong>" . $database . "</strong> database";
-
-mysqli_close($conn);
 ?>

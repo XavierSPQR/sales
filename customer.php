@@ -3,7 +3,7 @@
 require_once '../includes/auth.php';
 requireLogin();
 
-global $pdo;
+$pdo = Database::getInstance()->getConnection();
 
 // Only manager and account clerk can access customers
 if (!hasRole('manager') && !hasRole('account_clerk')) {
