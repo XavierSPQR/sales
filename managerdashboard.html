@@ -993,6 +993,103 @@
             resize: vertical;
         }
 
+        /* Supplier Registration Card Styles - NEW */
+        .supplier-reg-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            transition: 0.2s;
+        }
+
+        .supplier-reg-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .supplier-reg-card.pending {
+            border-left: 4px solid var(--warning);
+        }
+
+        .supplier-reg-card.approved {
+            border-left: 4px solid var(--success);
+        }
+
+        .supplier-reg-card.rejected {
+            border-left: 4px solid var(--danger);
+        }
+
+        .supplier-reg-card .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .supplier-reg-card .company-name {
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 16px;
+        }
+
+        .supplier-reg-card .reg-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .supplier-reg-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .supplier-reg-card .status-text {
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .supplier-reg-card .status-text.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .supplier-reg-card .status-text.approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .supplier-reg-card .status-text.rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         @media print {
             body * {
                 visibility: hidden;
@@ -1064,13 +1161,14 @@
                 <li><a onclick="showSection('samples')"><span class="icon">🔬</span> Sample Requests</a></li>
                 <li><a onclick="showSection('po-approvals')"><span class="icon">📄</span> PO Approvals</a></li>
                 <li><a onclick="showSection('products')"><span class="icon">📦</span> Products</a></li>
-                <li><a onclick="showSection('suppliers')"><span class="icon">🚚</span> Suppliers</a></li>
+                <li><a onclick="showSection('suppliers')"><span class="icon">🚚</span> Suppliers <span class="badge-count" id="supplierPendingBadge">0</span></a></li>
                 <li><a onclick="showSection('reports')"><span class="icon">📈</span> Reports</a></li>
             </ul>
             <div class="user-info">
                 <div style="font-size:32px;">👨‍💼</div>
                 <div><strong>Manager</strong></div>
                 <div style="font-size:12px;opacity:.7;">manager@gmail.com</div>
+                <!-- ✅ LOGOUT BUTTON - Redirects to login.html -->
                 <button class="logout-btn" id="logoutBtn">🚪 Logout</button>
             </div>
         </div>
@@ -1109,6 +1207,11 @@
                         <div class="icon">📄</div>
                         <div class="val" id="dashPendingPOs">0</div>
                         <div class="lbl">Pending POs</div>
+                    </div>
+                    <div class="dash-overview-card orange-card">
+                        <div class="icon">🚚</div>
+                        <div class="val" id="dashPendingSuppliers">0</div>
+                        <div class="lbl">Pending Suppliers</div>
                     </div>
                 </div>
                 <div class="card">
@@ -1352,22 +1455,22 @@
                         <button class="btn-primary" onclick="openPOModal()">➕ Create New PO</button>
                     </div>
                     <div class="info-note">📌 Approve POs to allow suppliers to deliver goods. Select payment terms when creating PO.</div>
-                    <div class="payment-summary">
-                        <div class="payment-summary-item">
-                            <div class="label">💵 COD</div>
-                            <div class="value" id="codCount">0</div>
+                    <div class="payment-summary" style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:15px;">
+                        <div class="payment-summary-item" style="background:#f8f9fa;padding:8px 16px;border-radius:8px;">
+                            <div class="label" style="font-weight:600;color:var(--primary-green);font-size:12px;">💵 COD</div>
+                            <div class="value" id="codCount" style="font-weight:700;font-size:18px;">0</div>
                         </div>
-                        <div class="payment-summary-item">
-                            <div class="label">💳 Online</div>
-                            <div class="value" id="onlineCount">0</div>
+                        <div class="payment-summary-item" style="background:#f8f9fa;padding:8px 16px;border-radius:8px;">
+                            <div class="label" style="font-weight:600;color:var(--primary-green);font-size:12px;">💳 Online</div>
+                            <div class="value" id="onlineCount" style="font-weight:700;font-size:18px;">0</div>
                         </div>
-                        <div class="payment-summary-item">
-                            <div class="label">📋 Credit</div>
-                            <div class="value" id="creditCount">0</div>
+                        <div class="payment-summary-item" style="background:#f8f9fa;padding:8px 16px;border-radius:8px;">
+                            <div class="label" style="font-weight:600;color:var(--primary-green);font-size:12px;">📋 Credit</div>
+                            <div class="value" id="creditCount" style="font-weight:700;font-size:18px;">0</div>
                         </div>
-                        <div class="payment-summary-item">
-                            <div class="label">💰 Advance</div>
-                            <div class="value" id="advanceCount">0</div>
+                        <div class="payment-summary-item" style="background:#f8f9fa;padding:8px 16px;border-radius:8px;">
+                            <div class="label" style="font-weight:600;color:var(--primary-green);font-size:12px;">💰 Advance</div>
+                            <div class="value" id="advanceCount" style="font-weight:700;font-size:18px;">0</div>
                         </div>
                     </div>
                     <table class="data-table">
@@ -1446,7 +1549,7 @@
                 </div>
             </div>
 
-            <!-- SUPPLIERS -->
+            <!-- SUPPLIERS SECTION - UPDATED with Registration Display -->
             <div id="suppliersSection" class="section-content">
                 <div class="card">
                     <div class="card-header">
@@ -1465,34 +1568,23 @@
                         <button class="btn-secondary" onclick="showSupplierTab('active', event)" id="activeTab">
                             ✅ Active <span class="badge" id="activeCount" style="background:#2ecc71;color:white;border-radius:50%;padding:1px 10px;margin-left:5px;font-size:11px;">0</span>
                         </button>
-                        <button class="btn-secondary" onclick="showSupplierTab('approved-details', event)" id="detailsTab">
-                            📋 Approved Details
+                        <button class="btn-secondary" onclick="showSupplierTab('rejected', event)" id="rejectedTab">
+                            ❌ Rejected <span class="badge" id="rejectedCount" style="background:#e74c3c;color:white;border-radius:50%;padding:1px 10px;margin-left:5px;font-size:11px;">0</span>
                         </button>
-                        <button class="btn-secondary" onclick="viewEmailLog()" style="background:#2196F3;color:white;border-color:#2196F3;">📧 Email Log</button>
+                        <button class="btn-secondary" onclick="showSupplierTab('all', event)" id="allTab">
+                            📋 All Suppliers
+                        </button>
                     </div>
 
+                    <!-- Pending Suppliers -->
                     <div id="pendingSuppliers">
                         <h4 style="color:var(--primary-green);margin:10px 0 15px;">📝 Registrations Awaiting Approval</h4>
-                        <div style="overflow-x:auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Req ID</th>
-                                        <th>Company</th>
-                                        <th>Contact Person</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Business Type</th>
-                                        <th>Materials</th>
-                                        <th>Reg. Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pendingSuppliersTableBody"></tbody>
-                            </table>
+                        <div id="pendingSuppliersContainer">
+                            <!-- Pending supplier cards will be rendered here -->
                         </div>
                     </div>
 
+                    <!-- Active Suppliers -->
                     <div id="activeSuppliers" style="display:none;">
                         <h4 style="color:var(--primary-green);margin:10px 0 15px;">✅ Active Suppliers</h4>
                         <div style="overflow-x:auto;">
@@ -1504,9 +1596,9 @@
                                         <th>Contact</th>
                                         <th>Email</th>
                                         <th>Phone</th>
+                                        <th>Username</th>
                                         <th>Materials</th>
                                         <th>Status</th>
-                                        <th>Orders Cost</th>
                                     </tr>
                                 </thead>
                                 <tbody id="activeSuppliersTableBody"></tbody>
@@ -1514,11 +1606,29 @@
                         </div>
                     </div>
 
-                    <div id="approvedDetailsSuppliers" style="display:none;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 15px;flex-wrap:wrap;gap:10px;">
-                            <h4 style="color:var(--primary-green);">📋 Approved Suppliers - Full Details</h4>
-                            <button class="btn-secondary" onclick="downloadSuppliersPDF()" style="background:#2980b9;color:white;border-color:#2980b9;">📄 Download PDF</button>
+                    <!-- Rejected Suppliers -->
+                    <div id="rejectedSuppliers" style="display:none;">
+                        <h4 style="color:var(--primary-green);margin:10px 0 15px;">❌ Rejected Suppliers</h4>
+                        <div style="overflow-x:auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Supplier ID</th>
+                                        <th>Company</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rejectedSuppliersTableBody"></tbody>
+                            </table>
                         </div>
+                    </div>
+
+                    <!-- All Suppliers -->
+                    <div id="allSuppliers" style="display:none;">
+                        <h4 style="color:var(--primary-green);margin:10px 0 15px;">📋 All Suppliers</h4>
                         <div style="overflow-x:auto;">
                             <table class="data-table">
                                 <thead>
@@ -1528,39 +1638,13 @@
                                         <th>Contact</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Materials</th>
+                                        <th>Username</th>
+                                        <th>Status</th>
                                         <th>Registered</th>
-                                        <th>Approved</th>
-                                        <th>Orders Cost</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="approvedDetailedBody"></tbody>
+                                <tbody id="allSuppliersTableBody"></tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="emailLogModal" class="modal">
-                    <div class="modal-content" style="max-width:750px;max-height:80vh;overflow-y:auto;">
-                        <h3 style="color:var(--primary-green);margin-bottom:15px;">📧 Email Notification Log</h3>
-                        <div style="overflow-x:auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date & Time</th>
-                                        <th>Type</th>
-                                        <th>Recipient</th>
-                                        <th>Subject</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="emailLogBody"></tbody>
-                            </table>
-                        </div>
-                        <div class="modal-buttons" style="display:flex;justify-content:flex-end;gap:10px;margin-top:15px;padding-top:15px;border-top:2px solid #eee;">
-                            <button class="btn-secondary" onclick="closeModal('emailLogModal')">❌ Close</button>
-                            <button class="btn-secondary" onclick="clearEmailLog()" style="background:#e74c3c;color:white;border-color:#e74c3c;">🗑️ Clear Log</button>
                         </div>
                     </div>
                 </div>
@@ -1589,7 +1673,6 @@
                     </div>
 
                     <div class="report-grid">
-                        <!-- Existing Reports -->
                         <div class="report-item" onclick="openReport('sales')">
                             <span class="report-icon">📊</span>
                             <strong>Sales Report</strong>
@@ -1620,7 +1703,6 @@
                             <strong>Sample Report</strong>
                             <p>Sample Requests & QC</p>
                         </div>
-                        <!-- New Reports -->
                         <div class="report-item" onclick="openReport('supplier-summary')">
                             <span class="report-icon">🚚</span>
                             <strong>Supplier Summary</strong>
@@ -1756,7 +1838,7 @@
         </div>
     </div>
 
-    <script>
++    <script>
         // ===================== DATA =====================
         // Customer Orders
         let customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || [
@@ -1805,26 +1887,84 @@
             { code: 'P005', name: 'Cardamom', category: 'Spice', price: 2800, stock: 25, minStock: 30, totalSales: 20 }
         ];
 
-        let suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [
-            { id: 'SUP001', company: 'Lanka Spices', contact: 'Mr. Perera', email: 'lanka@spices.com', materials: 'Cinnamon, Pepper', status: 'Active', registered: '2024-01-15', approved: '2024-01-20', ordersCost: 125000 },
-            { id: 'SUP002', company: 'Kalutara Farmers', contact: 'Mrs. Silva', email: 'kalutara@farmers.lk', materials: 'Turmeric, Ginger', status: 'Pending', registered: '2024-06-10', approved: null, ordersCost: 0 }
-        ];
-
-        let reportFrom = '2026-01-01';
-        let reportTo = new Date().toISOString().split('T')[0];
-        let wholesalerTab = 'pending';
+        // ===================== SUPPLIER REGISTRATION DATA =====================
+        let supplierRegistrations = JSON.parse(localStorage.getItem('registered_users')) || [];
+        let pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
+        let suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
 
         // ===================== SAVE FUNCTIONS =====================
-        function saveSampleRequests() { localStorage.setItem('sampleRequests', JSON.stringify(sampleRequests)); }
-        function saveQCReports() { localStorage.setItem('qcReports', JSON.stringify(qcReports)); }
-        function savePOs() { localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders)); }
-        function saveGRNs() { localStorage.setItem('grns', JSON.stringify(grns)); }
         function saveAllData() {
             localStorage.setItem('customerOrders', JSON.stringify(customerOrders));
             localStorage.setItem('supplierOrders', JSON.stringify(supplierOrders));
             localStorage.setItem('wholesalerOrders', JSON.stringify(wholesalerOrders));
             localStorage.setItem('managerProducts', JSON.stringify(products));
             localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+            localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
+            localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
+        }
+
+        function loadSupplierRegistrations() {
+            supplierRegistrations = JSON.parse(localStorage.getItem('registered_users')) || [];
+            pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
+            suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+            
+            // Sync pending registrations
+            const pendingFromUsers = supplierRegistrations.filter(u => u.status === 'pending' || u.account_status === 'pending');
+            pendingFromUsers.forEach(user => {
+                if (!pendingRegistrations.some(p => p.email === user.email && p.status === 'Pending')) {
+                    pendingRegistrations.push({
+                        ...user,
+                        request_id: user.registration_id || Date.now(),
+                        request_code: 'REQ-' + (user.registration_id || Date.now()).toString().slice(-6),
+                        status: 'Pending'
+                    });
+                }
+            });
+            
+            // Sync approved users to suppliers
+            const approvedUsers = supplierRegistrations.filter(u => u.status === 'approved' || u.account_status === 'approved');
+            approvedUsers.forEach(user => {
+                if (!suppliers.some(s => s.email === user.email && s.status === 'Active')) {
+                    suppliers.push({
+                        id: 'SUP' + String(suppliers.length + 1).padStart(3, '0'),
+                        company: user.company_name || 'N/A',
+                        contact: user.full_name || 'N/A',
+                        email: user.email || 'N/A',
+                        phone: user.phone || 'N/A',
+                        materials: user.materials || 'N/A',
+                        username: user.username || 'N/A',
+                        status: 'Active',
+                        registered: user.created_at || new Date().toISOString().split('T')[0],
+                        approved: new Date().toISOString().split('T')[0],
+                        ordersCost: 0
+                    });
+                }
+            });
+            
+            // Sync rejected users
+            const rejectedUsers = supplierRegistrations.filter(u => u.status === 'rejected' || u.account_status === 'rejected');
+            rejectedUsers.forEach(user => {
+                if (!suppliers.some(s => s.email === user.email && s.status === 'Rejected')) {
+                    suppliers.push({
+                        id: 'SUP' + String(suppliers.length + 1).padStart(3, '0'),
+                        company: user.company_name || 'N/A',
+                        contact: user.full_name || 'N/A',
+                        email: user.email || 'N/A',
+                        phone: user.phone || 'N/A',
+                        materials: user.materials || 'N/A',
+                        username: user.username || 'N/A',
+                        status: 'Rejected',
+                        registered: user.created_at || new Date().toISOString().split('T')[0],
+                        rejection_reason: user.rejection_reason || 'Not specified',
+                        ordersCost: 0
+                    });
+                }
+            });
+            
+            localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
+            localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
+            localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+            return { supplierRegistrations, pendingRegistrations, suppliers };
         }
 
         // ===================== NAVIGATION =====================
@@ -1859,14 +1999,18 @@
                                supplierOrders.reduce((s, o) => s + o.amount, 0) +
                                wholesalerOrders.filter(o => o.status === 'Approved' || o.status === 'Delivered').reduce((s, o) => s + (o.total || 0), 0);
             
+            loadSupplierRegistrations();
+            const pendingSuppliers = pendingRegistrations.filter(p => p.status === 'Pending').length;
+            
             document.getElementById('dashTotalOrders').textContent = totalOrders;
             document.getElementById('dashWholesalerPending').textContent = pendingWholesaler;
             document.getElementById('dashRevenue').textContent = 'Rs. ' + totalRevenue.toLocaleString();
             document.getElementById('dashSampleRequests').textContent = sampleRequests.filter(s => s.status === 'Pending').length;
             document.getElementById('dashPendingPOs').textContent = purchaseOrders.filter(p => p.status === 'Pending Approval').length;
+            document.getElementById('dashPendingSuppliers').textContent = pendingSuppliers;
             document.getElementById('wholesalerPendingBadge').textContent = pendingWholesaler;
+            document.getElementById('supplierPendingBadge').textContent = pendingSuppliers;
             
-            // Recent Orders
             let recentHtml = '';
             const allRecent = [...sampleOrders, ...customerOrders, ...supplierOrders].slice(0, 5);
             allRecent.forEach(o => {
@@ -1880,7 +2024,6 @@
             });
             document.querySelector('#recentOrdersTable tbody').innerHTML = recentHtml || '<tr><td colspan="5">No recent orders</td></tr>';
 
-            // Low Stock
             let stockHtml = '';
             const lowStock = products.filter(p => p.stock < p.minStock);
             lowStock.forEach(p => {
@@ -1891,6 +2034,8 @@
         }
 
         // ===================== WHOLESALER ORDERS =====================
+        let wholesalerTab = 'pending';
+
         function renderWholesalerOrders() {
             const container = document.getElementById('wholesalerOrdersContainer');
             
@@ -1980,7 +2125,8 @@
         function showWholesalerTab(tab) {
             wholesalerTab = tab;
             document.querySelectorAll('#wholesaler-ordersSection .section-tabs .btn-secondary').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`wholesaler${tab.charAt(0).toUpperCase() + tab.slice(1)}Tab`).classList.add('active');
+            const tabMap = { 'pending': 'wholesalerPendingTab', 'approved': 'wholesalerApprovedTab', 'rejected': 'wholesalerRejectedTab', 'delivered': 'wholesalerDeliveredTab' };
+            document.getElementById(tabMap[tab]).classList.add('active');
             renderWholesalerOrders();
         }
 
@@ -2032,41 +2178,7 @@
             document.getElementById('rejectModal').classList.add('show');
         }
 
-        function closeRejectModal() {
-            document.getElementById('rejectModal').classList.remove('show');
-        }
-
-        function confirmReject() {
-            const orderId = document.getElementById('rejectOrderId').value;
-            const reason = document.getElementById('rejectReason').value.trim();
-
-            if (!reason) { alert('Please provide a reason for rejection.'); return; }
-
-            const order = wholesalerOrders.find(o => o.id === orderId);
-            if (!order) { alert('Order not found!'); return; }
-
-            order.status = 'Rejected';
-            order.reason = reason;
-            order.rejectedDate = new Date().toISOString().split('T')[0];
-            saveAllData();
-
-            let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
-            userMessages.push({
-                orderId: order.id,
-                message: `❌ Your order ${order.id} has been rejected by Manager.\nReason: ${reason}`,
-                date: new Date().toISOString().split('T')[0],
-                recipientType: 'Wholesaler',
-                type: 'rejected'
-            });
-            localStorage.setItem('userMessages', JSON.stringify(userMessages));
-
-            closeRejectModal();
-            renderWholesalerOrders();
-            renderDashboard();
-            alert(`❌ Order ${orderId} rejected. Wholesaler has been notified.`);
-        }
-
-        // ===================== ORDERS (Existing) =====================
+        // ===================== ORDERS =====================
         function renderOrders() {
             let html = '';
             sampleOrders.forEach(o => {
@@ -2086,7 +2198,7 @@
         function approveOrder(id) { alert('✅ Order ' + id + ' approved!'); }
         function rejectOrder(id) { alert('❌ Order ' + id + ' rejected!'); }
 
-        // ===================== ALL ORDERS (New - Combined) =====================
+        // ===================== ALL ORDERS =====================
         function renderAllOrders() {
             const typeFilter = document.getElementById('allOrderTypeFilter').value;
             const statusFilter = document.getElementById('allOrderStatusFilter').value;
@@ -2311,7 +2423,7 @@
             if (po) {
                 po.status = 'Approved';
                 po.approvedDate = new Date().toISOString().split('T')[0];
-                savePOs();
+                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
                 alert(`✅ PO ${id} approved!\nPayment Terms: ${po.paymentTerms}\nPayment Status: ${po.paymentStatus}`);
                 renderPOs();
                 renderDashboard();
@@ -2321,7 +2433,7 @@
         function rejectPO(id) {
             if (confirm('Reject PO ' + id + '?')) {
                 purchaseOrders = purchaseOrders.filter(p => p.id !== id);
-                savePOs();
+                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
                 alert('❌ PO ' + id + ' rejected.');
                 renderPOs();
             }
@@ -2334,7 +2446,7 @@
             let newStatus = prompt(`Current Payment Status: ${current}\n\nEnter new status:\n- Pending\n- Paid\n- Overdue`, current);
             if (newStatus && ['Pending', 'Paid', 'Overdue'].includes(newStatus)) {
                 po.paymentStatus = newStatus;
-                savePOs();
+                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
                 renderPOs();
                 alert(`✅ Payment status updated to: ${newStatus}`);
             } else if (newStatus !== null) {
@@ -2420,133 +2532,301 @@
         });
 
         // ===================== SUPPLIERS =====================
-        function showSupplierTab(tab) {
+        let supplierTab = 'pending';
+
+        function showSupplierTab(tab, event) {
+            supplierTab = tab;
             document.querySelectorAll('#suppliersSection .section-tabs .btn-secondary').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                const tabMap = { 'pending': 'pendingTab', 'active': 'activeTab', 'rejected': 'rejectedTab', 'all': 'allTab' };
+                const el = document.getElementById(tabMap[tab]);
+                if (el) el.classList.add('active');
+            }
             document.getElementById('pendingSuppliers').style.display = tab === 'pending' ? 'block' : 'none';
             document.getElementById('activeSuppliers').style.display = tab === 'active' ? 'block' : 'none';
-            document.getElementById('approvedDetailsSuppliers').style.display = tab === 'approved-details' ? 'block' : 'none';
+            document.getElementById('rejectedSuppliers').style.display = tab === 'rejected' ? 'block' : 'none';
+            document.getElementById('allSuppliers').style.display = tab === 'all' ? 'block' : 'none';
             renderSuppliers();
         }
 
         function renderSuppliers() {
-            const pending = suppliers.filter(s => s.status === 'Pending');
-            const pendingTbody = document.getElementById('pendingSuppliersTableBody');
-            pendingTbody.innerHTML = '';
+            loadSupplierRegistrations();
+            
+            // Pending
+            const pendingContainer = document.getElementById('pendingSuppliersContainer');
+            const pending = pendingRegistrations.filter(p => p.status === 'Pending');
+            
+            document.getElementById('pendingCount').textContent = pending.length;
+            document.getElementById('supplierPendingBadge').textContent = pending.length;
+            
             if (pending.length === 0) {
-                pendingTbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:#888;">No pending registrations</td></tr>';
+                pendingContainer.innerHTML = `<div class="empty-state"><span class="icon">✅</span><p>No pending supplier registrations</p></div>`;
             } else {
-                pending.forEach(s => {
-                    pendingTbody.innerHTML += `<tr>
-                        <td>${s.id}</td><td>${s.company}</td><td>${s.contact}</td>
-                        <td>${s.email}</td><td>${s.phone}</td><td>${s.materials}</td>
-                        <td>${s.registered}</td>
-                        <td><button class="action-btn btn-approve" onclick="approveSupplier('${s.id}')">Approve</button>
-                        <button class="action-btn btn-reject" onclick="showRejectModal('${s.id}')">Reject</button></td>
-                    </tr>`;
+                let html = '';
+                pending.forEach(reg => {
+                    html += `
+                        <div class="supplier-reg-card pending">
+                            <div class="row">
+                                <div><span class="company-name">${reg.company_name || reg.company || 'N/A'}</span>
+                                    <span class="reg-meta"> | ${reg.request_code || reg.id || 'REQ-' + Date.now()}</span>
+                                </div>
+                                <span class="status-text pending">⏳ Pending</span>
+                            </div>
+                            <div class="row" style="margin:5px 0;font-size:13px;">
+                                <span><strong>Contact:</strong> ${reg.full_name || reg.contact_person || 'N/A'}</span>
+                                <span><strong>Email:</strong> ${reg.email || 'N/A'}</span>
+                                <span><strong>Phone:</strong> ${reg.phone || 'N/A'}</span>
+                            </div>
+                            <div class="row" style="margin:5px 0;font-size:13px;">
+                                <span><strong>Business Type:</strong> ${reg.business_type || 'N/A'}</span>
+                                <span><strong>Materials:</strong> ${reg.materials || 'N/A'}</span>
+                                <span><strong>City:</strong> ${reg.city || 'N/A'}</span>
+                            </div>
+                            <div class="row" style="margin:5px 0;font-size:12px;color:#666;">
+                                <span>📅 Registered: ${reg.created_at ? new Date(reg.created_at).toLocaleDateString() : reg.registered || 'N/A'}</span>
+                                <span>👤 Username: <strong>${reg.username || 'N/A'}</strong></span>
+                            </div>
+                            <div class="actions">
+                                <button class="action-btn btn-approve" onclick="approveSupplierRegistration('${reg.email || reg.id}')">✅ Approve</button>
+                                <button class="action-btn btn-reject" onclick="showRejectModal('${reg.email || reg.id}')">❌ Reject</button>
+                                <button class="action-btn" style="background:var(--info);color:white;" onclick="viewSupplierDetails('${reg.email || reg.id}')">📋 View Details</button>
+                            </div>
+                        </div>
+                    `;
                 });
+                pendingContainer.innerHTML = html;
             }
 
-            const active = suppliers.filter(s => s.status === 'Active');
+            // Active
             const activeTbody = document.getElementById('activeSuppliersTableBody');
-            activeTbody.innerHTML = '';
+            const active = suppliers.filter(s => s.status === 'Active');
+            document.getElementById('activeCount').textContent = active.length;
+            
             if (active.length === 0) {
                 activeTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:#888;">No active suppliers</td></tr>';
             } else {
+                let html = '';
                 active.forEach(s => {
-                    activeTbody.innerHTML += `<tr>
-                        <td>${s.id}</td><td>${s.company}</td><td>${s.contact}</td>
-                        <td>${s.email}</td><td>${s.phone}</td><td>${s.materials}</td>
-                        <td><span class="status-badge status-approved">Active</span></td>
-                        <td>Rs. ${s.ordersCost.toLocaleString()}</td>
+                    html += `<tr>
+                        <td>${s.id || 'N/A'}</td>
+                        <td>${s.company || 'N/A'}</td>
+                        <td>${s.contact || 'N/A'}</td>
+                        <td>${s.email || 'N/A'}</td>
+                        <td>${s.phone || 'N/A'}</td>
+                        <td><strong>${s.username || 'N/A'}</strong></td>
+                        <td>${s.materials || 'N/A'}</td>
+                        <td><span class="status-badge status-approved">✅ Active</span></td>
                     </tr>`;
                 });
+                activeTbody.innerHTML = html;
             }
 
-            const approved = suppliers.filter(s => s.status === 'Active');
-            const detailTbody = document.getElementById('approvedDetailedBody');
-            detailTbody.innerHTML = '';
-            if (approved.length === 0) {
-                detailTbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:#888;">No approved suppliers</td></tr>';
+            // Rejected
+            const rejectedTbody = document.getElementById('rejectedSuppliersTableBody');
+            const rejected = suppliers.filter(s => s.status === 'Rejected');
+            document.getElementById('rejectedCount').textContent = rejected.length;
+            
+            if (rejected.length === 0) {
+                rejectedTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#888;">No rejected suppliers</td></tr>';
             } else {
-                approved.forEach(s => {
-                    detailTbody.innerHTML += `<tr>
-                        <td>${s.id}</td><td>${s.company}</td><td>${s.contact}</td>
-                        <td>${s.email}</td><td>${s.phone}</td><td>${s.materials}</td>
-                        <td>${s.registered}</td><td>${s.approved || 'N/A'}</td>
-                        <td>Rs. ${s.ordersCost.toLocaleString()}</td>
-                        <td><span class="status-badge status-approved">Active</span></td>
+                let html = '';
+                rejected.forEach(s => {
+                    html += `<tr>
+                        <td>${s.id || 'N/A'}</td>
+                        <td>${s.company || 'N/A'}</td>
+                        <td>${s.contact || 'N/A'}</td>
+                        <td>${s.email || 'N/A'}</td>
+                        <td>${s.phone || 'N/A'}</td>
+                        <td style="color:var(--danger);">${s.rejection_reason || 'Not specified'}</td>
                     </tr>`;
                 });
+                rejectedTbody.innerHTML = html;
             }
-            document.getElementById('pendingCount').textContent = pending.length;
-            document.getElementById('activeCount').textContent = active.length;
+
+            // All
+            const allTbody = document.getElementById('allSuppliersTableBody');
+            const allSuppliers = suppliers;
+            
+            if (allSuppliers.length === 0) {
+                allTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:#888;">No suppliers found</td></tr>';
+            } else {
+                let html = '';
+                allSuppliers.forEach(s => {
+                    const statusClass = s.status === 'Active' ? 'status-approved' : (s.status === 'Rejected' ? 'status-rejected' : 'status-pending');
+                    const statusText = s.status === 'Active' ? '✅ Active' : (s.status === 'Rejected' ? '❌ Rejected' : '⏳ Pending');
+                    html += `<tr>
+                        <td>${s.id || 'N/A'}</td>
+                        <td>${s.company || 'N/A'}</td>
+                        <td>${s.contact || 'N/A'}</td>
+                        <td>${s.email || 'N/A'}</td>
+                        <td>${s.phone || 'N/A'}</td>
+                        <td><strong>${s.username || 'N/A'}</strong></td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${s.registered || 'N/A'}</td>
+                    </tr>`;
+                });
+                allTbody.innerHTML = html;
+            }
+            
+            renderDashboard();
         }
 
-        function approveSupplier(id) {
-            const supplier = suppliers.find(s => s.id === id);
-            if (supplier) {
-                supplier.status = 'Active';
-                supplier.approved = new Date().toISOString().split('T')[0];
+        function approveSupplierRegistration(identifier) {
+            const pendingIndex = pendingRegistrations.findIndex(p => p.email === identifier || p.id === identifier);
+            if (pendingIndex === -1) {
+                alert('Supplier registration not found!');
+                return;
+            }
+            
+            const reg = pendingRegistrations[pendingIndex];
+            
+            if (confirm(`Approve supplier registration for ${reg.company_name || reg.company}?`)) {
+                pendingRegistrations.splice(pendingIndex, 1);
+                
+                const userIndex = supplierRegistrations.findIndex(u => u.email === reg.email);
+                if (userIndex !== -1) {
+                    supplierRegistrations[userIndex].status = 'approved';
+                    supplierRegistrations[userIndex].account_status = 'approved';
+                }
+                
+                // Check if already exists in suppliers
+                if (!suppliers.some(s => s.email === reg.email)) {
+                    const newSupplier = {
+                        id: 'SUP' + String(suppliers.length + 1).padStart(3, '0'),
+                        company: reg.company_name || reg.company || 'N/A',
+                        contact: reg.full_name || reg.contact_person || 'N/A',
+                        email: reg.email || 'N/A',
+                        phone: reg.phone || 'N/A',
+                        materials: reg.materials || 'N/A',
+                        username: reg.username || 'N/A',
+                        status: 'Active',
+                        registered: reg.created_at ? new Date(reg.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+                        approved: new Date().toISOString().split('T')[0],
+                        ordersCost: 0
+                    };
+                    suppliers.push(newSupplier);
+                } else {
+                    // Update existing supplier to Active
+                    const existing = suppliers.find(s => s.email === reg.email);
+                    if (existing) {
+                        existing.status = 'Active';
+                        existing.approved = new Date().toISOString().split('T')[0];
+                    }
+                }
+                
+                localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
+                localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
                 localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+                
                 renderSuppliers();
-                alert(`✅ Supplier ${supplier.company} approved!`);
+                renderDashboard();
+                alert(`✅ Supplier ${reg.company_name || reg.company} approved successfully!\n\nUsername: ${reg.username}\nPassword: (as set during registration)`);
             }
         }
 
-        function refreshSuppliers() {
-            suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || suppliers;
-            renderSuppliers();
-            alert('✅ Suppliers refreshed!');
-        }
-
-        function downloadSuppliersPDF() {
-            alert('📄 PDF Report would be generated here.');
-        }
-
-        function viewEmailLog() {
-            document.getElementById('emailLogModal').style.display = 'flex';
-        }
-
-        function clearEmailLog() {
-            if (confirm('Clear all email logs?')) {
-                document.getElementById('emailLogBody').innerHTML = '<tr><td colspan="5">No email logs</td></tr>';
-                alert('✅ Email log cleared!');
+        function viewSupplierDetails(identifier) {
+            const reg = pendingRegistrations.find(p => p.email === identifier || p.id === identifier) ||
+                       supplierRegistrations.find(u => u.email === identifier);
+            if (!reg) {
+                alert('Supplier details not found!');
+                return;
             }
+            
+            let details = '📋 SUPPLIER DETAILS\n' + '='.repeat(40) + '\n';
+            details += `Company: ${reg.company_name || reg.company || 'N/A'}\n`;
+            details += `Contact Person: ${reg.full_name || reg.contact_person || 'N/A'}\n`;
+            details += `Email: ${reg.email || 'N/A'}\n`;
+            details += `Phone: ${reg.phone || 'N/A'}\n`;
+            details += `Address: ${reg.address || 'N/A'}\n`;
+            details += `City: ${reg.city || 'N/A'}\n`;
+            details += `Postal Code: ${reg.postal_code || 'N/A'}\n`;
+            details += `Business Type: ${reg.business_type || 'N/A'}\n`;
+            details += `Materials: ${reg.materials || 'N/A'}\n`;
+            details += `Username: ${reg.username || 'N/A'}\n`;
+            details += `Status: ${reg.status || reg.account_status || 'Pending'}\n`;
+            details += `Registered: ${reg.created_at ? new Date(reg.created_at).toLocaleString() : 'N/A'}`;
+            
+            alert(details);
         }
 
-        function showRejectModal(supplierId) {
-            document.getElementById('rejectSupplierId').value = supplierId;
+        function showRejectModal(identifier) {
+            document.getElementById('rejectSupplierId').value = identifier;
             document.getElementById('rejectReason').value = '';
             document.getElementById('rejectModal').classList.add('show');
         }
 
         document.getElementById('rejectForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const supplierId = document.getElementById('rejectSupplierId').value;
+            const identifier = document.getElementById('rejectSupplierId').value;
             const reason = document.getElementById('rejectReason').value.trim();
             
             if (!reason) {
-                alert('කරුණාකර ප්‍රතික්ෂේප කිරීමට හේතුව ඇතුළත් කරන්න.');
+                alert('Please provide a reason for rejection.');
                 return;
             }
             
-            if (confirm('ඔබට මෙම සැපයුම්කරු ප්‍රතික්ෂේප කිරීමට අවශ්‍යද?')) {
-                const supplierIndex = suppliers.findIndex(s => s.id === supplierId);
-                if (supplierIndex !== -1) {
-                    const supplier = suppliers[supplierIndex];
-                    suppliers.splice(supplierIndex, 1);
+            if (confirm('Are you sure you want to reject this supplier registration?')) {
+                const pendingIndex = pendingRegistrations.findIndex(p => p.email === identifier || p.id === identifier);
+                if (pendingIndex !== -1) {
+                    const reg = pendingRegistrations[pendingIndex];
+                    pendingRegistrations.splice(pendingIndex, 1);
+                    
+                    const userIndex = supplierRegistrations.findIndex(u => u.email === reg.email);
+                    if (userIndex !== -1) {
+                        supplierRegistrations[userIndex].status = 'rejected';
+                        supplierRegistrations[userIndex].account_status = 'rejected';
+                        supplierRegistrations[userIndex].rejection_reason = reason;
+                    }
+                    
+                    // Add to suppliers as Rejected
+                    if (!suppliers.some(s => s.email === reg.email)) {
+                        suppliers.push({
+                            id: 'SUP' + String(suppliers.length + 1).padStart(3, '0'),
+                            company: reg.company_name || reg.company || 'N/A',
+                            contact: reg.full_name || reg.contact_person || 'N/A',
+                            email: reg.email || 'N/A',
+                            phone: reg.phone || 'N/A',
+                            materials: reg.materials || 'N/A',
+                            username: reg.username || 'N/A',
+                            status: 'Rejected',
+                            registered: reg.created_at ? new Date(reg.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+                            rejection_reason: reason,
+                            ordersCost: 0
+                        });
+                    } else {
+                        const existing = suppliers.find(s => s.email === reg.email);
+                        if (existing) {
+                            existing.status = 'Rejected';
+                            existing.rejection_reason = reason;
+                        }
+                    }
+                    
+                    localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
+                    localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
                     localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+                    
                     renderSuppliers();
                     closeModal('rejectModal');
-                    alert(`❌ ${supplier.company} ප්‍රතික්ෂේප කරන ලදී.\nහේතුව: ${reason}`);
+                    alert(`❌ Supplier ${reg.company_name || reg.company} rejected.\nReason: ${reason}`);
                 } else {
-                    alert('සැපයුම්කරු හමු නොවීය!');
+                    alert('Supplier registration not found!');
                 }
             }
         });
 
+        function refreshSuppliers() {
+            loadSupplierRegistrations();
+            renderSuppliers();
+            renderDashboard();
+            alert('✅ Suppliers refreshed!');
+        }
+
         // ===================== REPORTS =====================
+        let reportFrom = '2026-01-01';
+        let reportTo = new Date().toISOString().split('T')[0];
+
         function setReportDates() {
             reportFrom = document.getElementById('reportFrom').value;
             reportTo = document.getElementById('reportTo').value || new Date().toISOString().split('T')[0];
@@ -2594,7 +2874,6 @@
 
             let html = '';
 
-            // Existing Report Types
             if (type === 'sales') {
                 let totalOrders = filteredCustomerOrders.length;
                 let totalRevenue = filteredCustomerOrders.reduce((s, o) => s + o.amount, 0);
@@ -2691,6 +2970,7 @@
                 let lowStock = products.filter(p => p.stock < p.minStock).length;
                 let activeSuppliers = suppliers.filter(s => s.status === 'Active').length;
                 let pendingWholesaler = filteredWholesalerOrders.filter(o => o.status === 'Pending').length;
+                let pendingSuppliers = pendingRegistrations.filter(p => p.status === 'Pending').length;
 
                 html = `
                     <div style="margin-bottom:15px;font-size:12px;color:#666;">Report Period: <strong>${reportFrom}</strong> to <strong>${reportTo}</strong></div>
@@ -2701,6 +2981,7 @@
                         <div class="report-summary-card"><div class="r-value">${products.length}</div><div class="r-label">Total Products</div></div>
                         <div class="report-summary-card red-border"><div class="r-value">${lowStock}</div><div class="r-label">⚠️ Low Stock</div></div>
                         <div class="report-summary-card orange-border"><div class="r-value">${pendingWholesaler}</div><div class="r-label">Pending Wholesaler</div></div>
+                        <div class="report-summary-card orange-border"><div class="r-value">${pendingSuppliers}</div><div class="r-label">Pending Suppliers</div></div>
                     </div>
                     <h4 style="color:var(--primary-green);margin-bottom:10px;">📊 Complete Summary</h4>
                     <table class="report-table">
@@ -2712,6 +2993,7 @@
                             <tr><td>Total Orders</td><td>${totalOrders}</td></tr>
                             <tr><td>Total Revenue</td><td>Rs. ${totalRevenue.toLocaleString()}</td></tr>
                             <tr><td>Active Suppliers</td><td>${activeSuppliers}</td></tr>
+                            <tr><td>Pending Suppliers</td><td>${pendingSuppliers}</td></tr>
                             <tr><td>Total Products</td><td>${products.length}</td></tr>
                             <tr><td>Low Stock Items</td><td>${lowStock}</td></tr>
                             <tr><td>Sample Requests</td><td>${filteredSamples.length}</td></tr>
@@ -2771,7 +3053,6 @@
                         </tbody>
                     </table>
                 `;
-            // NEW REPORTS
             } else if (type === 'supplier-summary') {
                 let totalOrders = filteredSupplierOrders.length;
                 let totalSpend = filteredSupplierOrders.reduce((s, o) => s + o.amount, 0);
@@ -2935,14 +3216,6 @@
             window.print();
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') { closeReport(); }
-        });
-
-        document.getElementById('reportViewer').addEventListener('click', function(e) {
-            if (e.target === this) { closeReport(); }
-        });
-
         // ===================== UTILITY =====================
         function closeModal(id) {
             const modal = document.getElementById(id);
@@ -2967,21 +3240,34 @@
             });
         });
 
-        // ===================== LOGOUT =====================
+        // ===================== LOGOUT - REDIRECT TO LOGIN PAGE =====================
+        // ✅ FIXED: Logout button redirects to login.html
         document.addEventListener('DOMContentLoaded', function() {
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
+                // Remove old event listeners by cloning
+                const newBtn = logoutBtn.cloneNode(true);
+                logoutBtn.parentNode.replaceChild(newBtn, logoutBtn);
+                
+                newBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (confirm('Do you want logout?')) {
+                    if (confirm('Do you want to logout?')) {
+                        // Clear session storage
+                        localStorage.removeItem('user_session');
+                        localStorage.removeItem('supplier_session');
+                        // Redirect to login page
                         window.location.href = 'login.html';
                     }
                 });
+                console.log('✅ Logout button fixed - redirects to login.html');
             }
         });
 
-        function logout() {
-            if (confirm('Do You Want to Logout? ')) {
+        // Backup logout function
+        function logoutToLogin() {
+            if (confirm('Do you want to logout?')) {
+                localStorage.removeItem('user_session');
+                localStorage.removeItem('supplier_session');
                 window.location.href = 'login.html';
             }
         }
@@ -2994,6 +3280,8 @@
         document.getElementById('reportFrom').value = '2026-01-01';
         document.getElementById('reportTo').value = new Date().toISOString().split('T')[0];
 
+        loadSupplierRegistrations();
+
         renderDashboard();
         renderWholesalerOrders();
         renderOrders();
@@ -3004,7 +3292,6 @@
         renderSuppliers();
         showSection('dashboard');
 
-        // Auto refresh
         setInterval(() => {
             customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || customerOrders;
             supplierOrders = JSON.parse(localStorage.getItem('supplierOrders')) || supplierOrders;
@@ -3013,7 +3300,7 @@
             qcReports = JSON.parse(localStorage.getItem('qcReports')) || qcReports;
             purchaseOrders = JSON.parse(localStorage.getItem('purchaseOrders')) || purchaseOrders;
             products = JSON.parse(localStorage.getItem('managerProducts')) || products;
-            suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || suppliers;
+            loadSupplierRegistrations();
 
             if (document.getElementById('wholesaler-ordersSection').classList.contains('active')) {
                 renderWholesalerOrders();
@@ -3024,11 +3311,10 @@
             renderDashboard();
         }, 10000);
 
-        console.log('🌿 Manager Dashboard loaded with Wholesaler Approval & All Orders');
-        console.log('📊 Customer Orders:', customerOrders.length);
-        console.log('📊 Supplier Orders:', supplierOrders.length);
-        console.log('📊 Wholesaler Orders:', wholesalerOrders.length);
-        console.log('📊 Total Orders:', customerOrders.length + supplierOrders.length + wholesalerOrders.length);
+        console.log('🌿 Manager Dashboard loaded with Supplier Registration Integration');
+        console.log('📊 Pending Supplier Registrations:', pendingRegistrations.filter(p => p.status === 'Pending').length);
+        console.log('📊 Active Suppliers:', suppliers.filter(s => s.status === 'Active').length);
+        console.log('✅ Logout button redirects to login.html');
     </script>
 </body>
 

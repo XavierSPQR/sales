@@ -36,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: var(--primary-brown);
@@ -133,19 +132,12 @@
             transform: scale(1.02);
         }
 
-        .logout-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: 280px;
             padding: 30px;
         }
 
-        /* Header */
         .content-header {
             background: white;
             padding: 20px 30px;
@@ -173,7 +165,6 @@
             font-weight: 600;
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -220,7 +211,6 @@
             font-weight: 700;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 10px;
@@ -272,7 +262,6 @@
             }
         }
 
-        /* Tables */
         .data-table {
             width: 100%;
             background: white;
@@ -304,39 +293,6 @@
             background: var(--cream);
         }
 
-        /* Delivery Status Grid */
-        .delivery-status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin: 15px 0 20px;
-        }
-
-        .delivery-status-card {
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            padding: 14px 16px;
-            text-align: center;
-            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .delivery-status-card h3 {
-            margin: 0;
-            font-size: 11px;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .delivery-status-card p {
-            margin: 6px 0 0;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-brown);
-        }
-
-        /* Badges */
         .badge {
             padding: 3px 10px;
             border-radius: 20px;
@@ -365,29 +321,6 @@
             color: white;
         }
 
-        /* Status Select Dropdown */
-        .status-select {
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            font-size: 11px;
-            background: white;
-        }
-
-        .status-select.pending {
-            background: #fff3cd;
-        }
-
-        .status-select.shipped {
-            background: #cce5ff;
-        }
-
-        .status-select.delivered {
-            background: #d4edda;
-        }
-
-        /* Buttons */
         .btn-secondary {
             background: var(--primary-orange);
             color: white;
@@ -404,28 +337,6 @@
 
         .btn-secondary:hover {
             background: var(--secondary-orange);
-            transform: scale(1.05);
-        }
-
-        .btn-sm {
-            padding: 3px 8px;
-            font-size: 10px;
-        }
-
-        .btn-success-custom {
-            background: var(--success);
-            color: white;
-            padding: 6px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 12px;
-        }
-
-        .btn-success-custom:hover {
-            background: #27ae60;
             transform: scale(1.05);
         }
 
@@ -451,7 +362,28 @@
             font-size: 11px;
         }
 
-        /* Forms */
+        .btn-success-custom {
+            background: var(--success);
+            color: white;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .btn-success-custom:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .btn-sm {
+            padding: 3px 8px;
+            font-size: 10px;
+        }
+
         .product-form {
             background: white;
             padding: 20px;
@@ -498,7 +430,6 @@
             border-color: var(--primary-orange);
         }
 
-        /* Alerts Section */
         .alerts-section {
             background: white;
             padding: 18px;
@@ -515,39 +446,6 @@
             font-size: 16px;
         }
 
-        .alert-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .stock-critical {
-            color: var(--danger);
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: #6c757d;
-            font-size: 0.8em;
-        }
-
-        /* Info Note */
         .info-note {
             background: #e8f5e9;
             padding: 8px 12px;
@@ -564,7 +462,6 @@
             color: #856404;
         }
 
-        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -617,33 +514,6 @@
             margin-top: 12px;
         }
 
-        /* Fast/Slow Cards */
-        .velocity-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .velocity-card {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .velocity-card .v-value {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary-brown);
-        }
-
-        .velocity-card .v-label {
-            font-size: 11px;
-            color: #666;
-        }
-
-        /* Toast Notification */
         .toast {
             position: fixed;
             top: 20px;
@@ -673,6 +543,129 @@
 
         .toast.info {
             background: #3498db;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Delivery Status */
+        .delivery-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 15px 0 20px;
+        }
+
+        .delivery-status-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .delivery-status-card h3 {
+            margin: 0;
+            font-size: 11px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .delivery-status-card p {
+            margin: 6px 0 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-brown);
+        }
+
+        .status-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 11px;
+            background: white;
+        }
+
+        .status-select.pending {
+            background: #fff3cd;
+        }
+
+        .status-select.shipped {
+            background: #cce5ff;
+        }
+
+        .status-select.delivered {
+            background: #d4edda;
+        }
+
+        /* Velocity */
+        .velocity-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .velocity-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .velocity-card .v-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-brown);
+        }
+
+        .velocity-card .v-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stock-critical {
+            color: var(--danger);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #6c757d;
+            font-size: 0.8em;
         }
 
         @media (max-width: 768px) {
@@ -766,7 +759,7 @@
                     </table>
                 </div>
 
-                <!-- Reorder Alerts (Dashboard) -->
+                <!-- Reorder Alerts -->
                 <div class="alerts-section">
                     <h2>🔄 Reorder Alerts</h2>
                     <div class="info-note">💡 Items that need to be reordered. Suggested order quantity is calculated based on current stock.</div>
@@ -785,7 +778,7 @@
                     </table>
                 </div>
 
-                <!-- Fast & Slow Moving Items (Dashboard) -->
+                <!-- Fast & Slow Moving Items -->
                 <div class="alerts-section">
                     <h2>⚡ Fast & Slow Moving Items</h2>
                     <div class="info-note">💡 Fast moving items sell quickly, slow moving items need promotion or price adjustment.</div>
@@ -828,7 +821,7 @@
                     </table>
                 </div>
 
-                <!-- Pending Reorders (Dashboard) -->
+                <!-- Pending Reorders -->
                 <div class="alerts-section">
                     <h2>🔄 Pending Reorders</h2>
                     <table class="data-table">
@@ -1006,7 +999,7 @@
                 </div>
             </div>
 
-            <!-- ===== ACTIVE SUPPLIERS TAB ===== -->
+            <!-- ===== ACTIVE SUPPLIERS TAB (NEW - Only Approved Suppliers) ===== -->
             <div id="tab-suppliers" class="tab-content">
                 <div class="alerts-section">
                     <h2 style="color: var(--primary-brown); margin-bottom: 15px;">🏭 Approved Active Suppliers</h2>
@@ -1020,9 +1013,8 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Materials Supplied</th>
-                                <th>Orders Cost (Rs.)</th>
+                                <th>Username</th>
                                 <th>Status</th>
-                                <th>Approved Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1034,11 +1026,11 @@
                 </div>
             </div>
 
-            <!-- ===== SUPPLIER SAMPLE FLOW TAB ===== -->
+            <!-- ===== SUPPLIER SAMPLE FLOW TAB (NEW) ===== -->
             <div id="tab-supplier-flow" class="tab-content">
                 <div class="alerts-section">
                     <h2 style="color: var(--primary-brown); margin-bottom: 15px;">📦 Supplier Sample Flow</h2>
-                    <div class="info-note">📌 Manage supplier sample requests, QC testing, and PO creation.</div>
+                    <div class="info-note">📌 Only active suppliers can receive sample requests.</div>
                 </div>
 
                 <!-- 1️⃣ Request Sample -->
@@ -1090,7 +1082,6 @@
                                 <th>Material</th>
                                 <th>QC Result</th>
                                 <th>Price (LKR)</th>
-                                <th>Quality Score</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1133,7 +1124,6 @@
                                 <th>Unit Price</th>
                                 <th>Total (LKR)</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="pending-po-body"></tbody>
@@ -1268,82 +1258,76 @@
 
         let qcReports = [
             { sampleId: 'SAMP-002', supplier: 'Jaffna Exports', material: 'Cardamom', testDate: '2026-03-14',
-                result: 'Pass', remarks: 'Good quality', price: 2800, qualityScore: 8.5 }
+                result: 'Pass', remarks: 'Good quality', price: 2800 }
         ];
 
         let purchaseOrders = [
             { id: 'PO-001', supplier: 'Jaffna Exports', material: 'Cardamom', qty: 50, unitPrice: 2800, total: 140000,
-                deliveryDate: '2026-03-25', terms: '30 Days Credit', status: 'Pending Approval', approved: false,
-                sampleId: 'SAMP-002' }
+                deliveryDate: '2026-03-25', terms: '30 Days Credit', status: 'Pending Approval', sampleId: 'SAMP-002' }
         ];
 
         let grns = [];
 
-        // ===================== ACTIVE SUPPLIERS =====================
-        let activeSuppliers = [
-            { id: 'S001', company: 'Lanka Spices', contact: 'Kamal Perera', email: 'lanka@spices.com',
-                phone: '071-1234567', materials: 'Turmeric, Chili Powder', ordersCost: 500000, status: 'Active',
-                approvedDate: '2025-01-16' },
-            { id: 'S002', company: 'Jaffna Exports', contact: 'Priya Kumari', email: 'jaffna@exports.lk',
-                phone: '077-2345678', materials: 'Black Pepper, Cardamom', ordersCost: 250000, status: 'Active',
-                approvedDate: '2025-02-10' },
-            { id: 'S003', company: 'Matale Growers', contact: 'Mr. Silva', email: 'matale@growers.lk',
-                phone: '076-3456789', materials: 'Cinnamon, Cloves', ordersCost: 180000, status: 'Active',
-                approvedDate: '2025-03-01' }
-        ];
+        // ===================== GET ACTIVE SUPPLIERS (Only from Manager's approved list) =====================
+        function getActiveSuppliers() {
+            let managersSuppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+            let approvedSuppliers = managersSuppliers.filter(s => s.status === 'Active');
+            
+            let registeredUsers = JSON.parse(localStorage.getItem('registered_users')) || [];
+            let approvedUsers = registeredUsers.filter(u => u.status === 'approved' || u.account_status === 'approved');
+            
+            approvedUsers.forEach(user => {
+                if (!approvedSuppliers.some(s => s.email === user.email)) {
+                    approvedSuppliers.push({
+                        id: 'SUP' + String(approvedSuppliers.length + 1).padStart(3, '0'),
+                        company: user.company_name || user.company || 'N/A',
+                        contact: user.full_name || user.contact_person || 'N/A',
+                        email: user.email || 'N/A',
+                        phone: user.phone || 'N/A',
+                        materials: user.materials || 'N/A',
+                        username: user.username || 'N/A',
+                        status: 'Active',
+                        registered: user.created_at || new Date().toISOString().split('T')[0],
+                        approved: new Date().toISOString().split('T')[0]
+                    });
+                }
+            });
+            
+            localStorage.setItem('managerSuppliers', JSON.stringify(approvedSuppliers));
+            
+            if (approvedSuppliers.length === 0) {
+                return [
+                    { id: 'S001', company: 'Lanka Spices', contact: 'Kamal Perera', email: 'lanka@spices.com',
+                        phone: '071-1234567', materials: 'Turmeric, Chili Powder', username: 'ex-kamal',
+                        status: 'Active' },
+                    { id: 'S002', company: 'Jaffna Exports', contact: 'Priya Kumari', email: 'jaffna@exports.lk',
+                        phone: '077-2345678', materials: 'Black Pepper, Cardamom', username: 'ex-priya',
+                        status: 'Active' }
+                ];
+            }
+            
+            return approvedSuppliers;
+        }
+
+        let activeSuppliers = getActiveSuppliers();
 
         // ===================== TOAST NOTIFICATION =====================
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = 'toast ' + type;
-            
-            // Trigger reflow
             void toast.offsetWidth;
-            
             toast.classList.add('show');
-            
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
         }
 
-        // ===================== LOGOUT FUNCTION (FIXED) =====================
+        // ===================== LOGOUT =====================
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                const btn = document.getElementById('logoutBtn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '⏳ Logging out...';
-                btn.disabled = true;
-                
-                // Clear all local storage and session storage
-                try {
-                    localStorage.clear();
-                    sessionStorage.clear();
-                } catch(e) {
-                    // Ignore errors if storage is not available
-                }
-                
-                // Delete all cookies
-                document.cookie.split(";").forEach(function(c) {
-                    document.cookie = c.replace(/^ +/, "")
-                        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-                });
-                
-                // Show success message
-                showToast('✅ Logging out...', 'success');
-                
-                // Redirect to logout handler
-                setTimeout(function() {
-                    // If you have a logout.php file, redirect to it
-                    window.location.href = 'logout.php';
-                    
-                    // If you don't have a logout.php, just redirect to login page
-                    // window.location.href = 'login.html';
-                    
-                    // If you want to stay on same page but reset state
-                    // window.location.reload(true);
-                }, 500);
+                localStorage.clear();
+                window.location.href = 'login.html';
             }
         }
 
@@ -1363,9 +1347,6 @@
             loadSampleFlowData();
             analyzeVelocity();
             showTab('overview');
-            
-            // Check if user is logged in (simple session check)
-            // If using PHP session, you can check via AJAX
             console.log('📦 Stock Clerk Dashboard loaded successfully!');
             showToast('👋 Welcome to Stock Dashboard!', 'info');
         });
@@ -1378,15 +1359,17 @@
             let totalValue = products.reduce((sum, p) => sum + (p.stock * p.price), 0);
             let pendingSamples = sampleRequests.filter(s => s.status === 'Pending').length;
             let pendingPOs = purchaseOrders.filter(p => p.status === 'Pending Approval').length;
+            let activeSupplierCount = activeSuppliers.length;
 
             document.getElementById('stats-summary').innerHTML = `
-                        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Total Products</h3><div class="stat-number">${totalProducts}</div></div></div>
-                        <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-details"><h3>Low Stock Items</h3><div class="stat-number">${lowStock}</div></div></div>
-                        <div class="stat-card"><div class="stat-icon">⛔</div><div class="stat-details"><h3>Out of Stock</h3><div class="stat-number">${outOfStock}</div></div></div>
-                        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Stock Value</h3><div class="stat-number">Rs. ${totalValue.toLocaleString()}</div></div></div>
-                        <div class="stat-card"><div class="stat-icon">🔬</div><div class="stat-details"><h3>Sample Requests</h3><div class="stat-number">${pendingSamples}</div></div></div>
-                        <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-details"><h3>Pending POs</h3><div class="stat-number">${pendingPOs}</div></div></div>
-                    `;
+                <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-details"><h3>Total Products</h3><div class="stat-number">${totalProducts}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-details"><h3>Low Stock Items</h3><div class="stat-number">${lowStock}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">⛔</div><div class="stat-details"><h3>Out of Stock</h3><div class="stat-number">${outOfStock}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-details"><h3>Stock Value</h3><div class="stat-number">Rs. ${totalValue.toLocaleString()}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">🔬</div><div class="stat-details"><h3>Sample Requests</h3><div class="stat-number">${pendingSamples}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-details"><h3>Pending POs</h3><div class="stat-number">${pendingPOs}</div></div></div>
+                <div class="stat-card"><div class="stat-icon">🏭</div><div class="stat-details"><h3>Active Suppliers</h3><div class="stat-number">${activeSupplierCount}</div></div></div>
+            `;
         }
 
         // ===================== PRODUCTS =====================
@@ -1645,8 +1628,10 @@
             document.getElementById('stock-report-results').innerHTML = html;
         }
 
-        // ===================== ACTIVE SUPPLIERS =====================
+        // ===================== ACTIVE SUPPLIERS (NEW - Only Approved) =====================
         function loadActiveSuppliers() {
+            activeSuppliers = getActiveSuppliers();
+            
             let tbody = document.getElementById('active-suppliers-body');
             let noMsg = document.getElementById('no-suppliers-msg');
 
@@ -1656,19 +1641,18 @@
             } else {
                 noMsg.style.display = 'none';
                 tbody.innerHTML = activeSuppliers.map(s => `
-                            <tr>
-                                <td><strong>${s.id}</strong></td>
-                                <td>${s.company}</td>
-                                <td>${s.contact || 'N/A'}</td>
-                                <td>${s.email}</td>
-                                <td>${s.phone}</td>
-                                <td>${s.materials}</td>
-                                <td><strong>Rs. ${(s.ordersCost || 0).toLocaleString()}</strong></td>
-                                <td><span class="badge badge-success">✅ Active</span></td>
-                                <td>${s.approvedDate || 'N/A'}</td>
-                                <td><button class="btn-secondary btn-sm" onclick="contactSupplier('${s.email}', '${s.company}')">📧 Contact</button></td>
-                            </tr>
-                        `).join('');
+                    <tr>
+                        <td><strong>${s.id}</strong></td>
+                        <td>${s.company}</td>
+                        <td>${s.contact || 'N/A'}</td>
+                        <td>${s.email}</td>
+                        <td>${s.phone || 'N/A'}</td>
+                        <td>${s.materials}</td>
+                        <td><strong>${s.username || 'N/A'}</strong></td>
+                        <td><span class="badge badge-success">✅ Active</span></td>
+                        <td><button class="btn-secondary btn-sm" onclick="contactSupplier('${s.email}', '${s.company}')">📧 Contact</button></td>
+                    </tr>
+                `).join('');
             }
 
             let select = document.getElementById('sample-supplier-select');
@@ -1702,7 +1686,7 @@
                             <td>${s.qty} kg</td>
                             <td>${s.requestDate}</td>
                             <td><span class="badge ${isSent ? 'badge-info' : 'badge-warning'}">${isSent ? 'Sample Sent' : 'Pending'}</span></td>
-                            <td>${isSent ? `<button class="btn-approve" onclick="simulateQC('${s.id}', 'Pass', 'Good quality', 800, 9)">✅ Pass</button> <button class="btn-reject" onclick="simulateQC('${s.id}', 'Reject', 'Poor quality', null, 0)">❌ Reject</button>` : '<span style="color:#888;">Waiting...</span>'}</td>
+                            <td>${isSent ? `<button class="btn-approve" onclick="simulateQC('${s.id}', 'Pass', 'Good quality', 800)">✅ Pass</button> <button class="btn-reject" onclick="simulateQC('${s.id}', 'Reject', 'Poor quality', null)">❌ Reject</button>` : '<span style="color:#888;">Waiting...</span>'}</td>
                         </tr>`;
             });
             document.getElementById('qc-test-body').innerHTML = qcHtml ||
@@ -1719,13 +1703,12 @@
                                 <td>${q.material}</td>
                                 <td><span class="badge badge-success">✅ Pass</span></td>
                                 <td>${q.price ? 'Rs. ' + q.price : 'N/A'}</td>
-                                <td>${q.qualityScore || 'N/A'}</td>
                                 <td><button class="btn-secondary btn-sm" onclick="selectForPO('${q.sampleId}')">📄 Create PO</button></td>
                             </tr>`;
                 }
             });
             document.getElementById('best-sample-body').innerHTML = bestHtml ||
-                '<tr><td colspan="7">No samples passed QC yet</td></tr>';
+                '<tr><td colspan="6">No samples passed QC yet</td></tr>';
 
             let poHtml = '';
             purchaseOrders.forEach(po => {
@@ -1737,11 +1720,10 @@
                             <td>Rs. ${po.unitPrice}</td>
                             <td>Rs. ${(po.total || po.qty * po.unitPrice).toLocaleString()}</td>
                             <td><span class="badge ${po.status === 'Approved' ? 'badge-success' : 'badge-warning'}">${po.status}</span></td>
-                            <td>${po.status === 'Pending Approval' ? '⏳ Waiting for Manager' : '✅ Approved'}</td>
                         </tr>`;
             });
             document.getElementById('pending-po-body').innerHTML = poHtml ||
-                '<tr><td colspan="8">No POs created</td></tr>';
+                '<tr><td colspan="7">No POs created</td></tr>';
 
             let approvedPOs = purchaseOrders.filter(po => po.status === 'Approved');
             let goodsHtml = '';
@@ -1790,6 +1772,15 @@
                 return;
             }
 
+            // Check if supplier is active
+            let supplierObj = activeSuppliers.find(s => s.company === supplier);
+            let isActive = supplierObj !== undefined;
+            
+            if (!isActive) {
+                showToast('❌ This supplier is not active. Only approved suppliers can receive sample requests.', 'error');
+                return;
+            }
+
             let id = 'SAMP-' + String(sampleRequests.length + 1).padStart(3, '0');
             let today = new Date().toISOString().split('T')[0];
 
@@ -1800,8 +1791,22 @@
                 qty: parseInt(qty) || 2,
                 requestDate: today,
                 status: 'Pending',
-                sampleSent: false
+                sampleSent: false,
+                supplierUsername: supplierObj.username || 'N/A'
             });
+
+            // Save to localStorage for supplier
+            let pendingSamples = JSON.parse(localStorage.getItem('pendingSamples') || '[]');
+            pendingSamples.push({
+                sampleId: id,
+                supplier: supplier,
+                material: material,
+                qty: parseInt(qty) || 2,
+                requestDate: today,
+                status: 'Pending',
+                supplierUsername: supplierObj.username || 'N/A'
+            });
+            localStorage.setItem('pendingSamples', JSON.stringify(pendingSamples));
 
             showToast(`✅ Sample requested from ${supplier} for ${material}`, 'success');
             loadSampleFlowData();
@@ -1811,7 +1816,7 @@
             document.getElementById('sample-qty').value = '2';
         }
 
-        function simulateQC(sampleId, result, remarks, price, qualityScore) {
+        function simulateQC(sampleId, result, remarks, price) {
             let sample = sampleRequests.find(s => s.id === sampleId);
             if (!sample) { 
                 showToast('❌ Sample not found!', 'error');
@@ -1828,7 +1833,6 @@
                 existing.result = result;
                 existing.remarks = remarks;
                 existing.price = price;
-                existing.qualityScore = qualityScore;
                 existing.testDate = testDate;
             } else {
                 qcReports.push({
@@ -1838,10 +1842,11 @@
                     testDate: testDate,
                     result: result,
                     remarks: remarks,
-                    price: price,
-                    qualityScore: qualityScore
+                    price: price
                 });
             }
+
+            localStorage.setItem('qcReports', JSON.stringify(qcReports));
 
             showToast(result === 'Pass' ? `✅ Sample ${sampleId} PASSED QC.` : `❌ Sample ${sampleId} REJECTED.`, 
                 result === 'Pass' ? 'success' : 'error');
@@ -1860,8 +1865,7 @@
             document.getElementById('po-material').value = qc.material;
             document.getElementById('po-price').value = qc.price || '';
             document.getElementById('po-qty').value = '';
-            document.getElementById('po-delivery-date').value = new Date(Date.now() + 14 * 86400000).toISOString().split(
-            'T')[0];
+            document.getElementById('po-delivery-date').value = new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0];
             document.getElementById('po-creation-area').style.display = 'block';
             document.getElementById('po-creation-area').dataset.selectedSampleId = sampleId;
             document.getElementById('po-creation-area').scrollIntoView({ behavior: 'smooth' });
@@ -1884,7 +1888,7 @@
             let poId = 'PO-' + String(purchaseOrders.length + 1).padStart(3, '0');
             let total = unitPrice * qty;
 
-            purchaseOrders.push({
+            let newPO = {
                 id: poId,
                 sampleId: sampleId,
                 supplier: supplier,
@@ -1895,8 +1899,11 @@
                 deliveryDate: deliveryDate,
                 terms: terms,
                 status: 'Pending Approval',
-                approved: false
-            });
+                supplierUsername: activeSuppliers.find(s => s.company === supplier)?.username || 'N/A'
+            };
+
+            purchaseOrders.push(newPO);
+            localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
 
             let sample = sampleRequests.find(s => s.id === sampleId);
             if (sample) {
@@ -1953,7 +1960,7 @@
 
             let grnId = 'GRN-' + String(grns.length + 1).padStart(3, '0');
 
-            grns.push({
+            let newGRN = {
                 id: grnId,
                 poId: po.id,
                 supplier: po.supplier,
@@ -1966,11 +1973,16 @@
                 inspector: inspector,
                 remarks: remarks,
                 status: 'Approved'
-            });
+            };
 
+            grns.push(newGRN);
+            localStorage.setItem('grns', JSON.stringify(grns));
+
+            // Update product stock
             let product = products.find(p => p.name.toLowerCase().includes(po.material.toLowerCase()));
             if (product) {
                 product.stock += receivedQty;
+                localStorage.setItem('managerProducts', JSON.stringify(products));
             }
 
             showToast(`✅ GRN ${grnId} created and auto-approved!`, 'success');

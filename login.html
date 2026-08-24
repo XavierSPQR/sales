@@ -275,6 +275,19 @@
             font-size: 14px;
         }
 
+        .info-message {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 12px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            font-weight: 500;
+            font-size: 14px;
+            border-left: 5px solid #17a2b8;
+        }
+
         .footer {
             text-align: center;
             margin-top: 25px;
@@ -344,6 +357,21 @@
             transform: translateY(-3px);
         }
 
+        .status-info {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .status-info.show {
+            display: block;
+        }
+
         @media (max-width: 620px) {
             .login-container {
                 margin: 20px;
@@ -400,6 +428,7 @@
 
         <div class="error-message" id="errorMessage"></div>
         <div class="success-message" id="successMessage"></div>
+        <div class="info-message" id="infoMessage"></div>
 
         <form id="loginForm">
             <input type="hidden" id="selectedRole" value="customer">
@@ -425,6 +454,11 @@
             </button>
         </form>
 
+        <!-- Status Info - Shows supplier registration status -->
+        <div class="status-info" id="statusInfo">
+            ⏳ Enter your username to check status
+        </div>
+
         <div class="register-buttons">
             <a href="customer-registration.html" class="register-btn register-customer">📝 New Customer? Register</a>
             <a href="supplier-registration.html" class="register-btn register-supplier">🚚 New Supplier? Register</a>
@@ -437,7 +471,7 @@
     </div>
 
     <script>
-        // DOM elements
+        // ========== DOM ELEMENTS ==========
         const roleDropdown = document.getElementById('roleSelectDropdown');
         const selectedRoleHidden = document.getElementById('selectedRole');
         const usernameInput = document.getElementById('username');
@@ -445,8 +479,10 @@
         const loginRoleSpan = document.getElementById('loginRoleText');
         const errorMsgDiv = document.getElementById('errorMessage');
         const successMsgDiv = document.getElementById('successMessage');
+        const infoMsgDiv = document.getElementById('infoMessage');
+        const statusInfo = document.getElementById('statusInfo');
 
-        // Role display mapping
+        // ========== ROLE DISPLAY MAPPING ==========
         const roleDisplayMap = {
             'customer': 'Customer',
             'supplier': 'Supplier',
@@ -457,7 +493,7 @@
             'account': 'Account Clerk'
         };
 
-        // Demo credentials for non-customer roles
+        // ========== DEMO CREDENTIALS ==========
         const roleCredentials = {
             manager: { username: 'manager', password: 'manager123', redirect: 'managerdashboard.html' },
             admin: { username: 'admin', password: 'admin123', redirect: 'admin-dashboard-embedded.html' },
@@ -465,7 +501,18 @@
             account: { username: 'account', password: 'account123', redirect: 'accountdashboard.html' }
         };
 
-        // Update UI on role change
+        // ========== ROLE REDIRECTS ==========
+        const roleRedirects = {
+            'customer': 'customer.html',
+            'supplier': 'supllierdashboard.html',
+            'wholesaler': 'wholeseller.html',
+            'manager': 'managerdashboard.html',
+            'admin': 'admin-dashboard-embedded.html',
+            'clerk': 'stockdashboard.html',
+            'account': 'accountdashboard.html'
+        };
+
+        // ========== UPDATE UI ON ROLE CHANGE ==========
         function updateRoleSelection(roleValue) {
             selectedRoleHidden.value = roleValue;
             loginRoleSpan.textContent = roleDisplayMap[roleValue] || 'User';
@@ -483,13 +530,66 @@
             // Hide messages
             errorMsgDiv.style.display = 'none';
             successMsgDiv.style.display = 'none';
+            infoMsgDiv.style.display = 'none';
+            statusInfo.classList.remove('show');
         }
 
         roleDropdown.addEventListener('change', (e) => {
             updateRoleSelection(e.target.value);
         });
 
-        // Login handler
+        // ========== CHECK USERNAME STATUS (FOR SUPPLIER) ==========
+        usernameInput.addEventListener('input', function() {
+            const val = this.value.trim();
+            const role = selectedRoleHidden.value;
+            
+            // Only check status for supplier role
+            if (role === 'supplier' && val.length > 3) {
+                try {
+                    let registeredUsers = JSON.parse(localStorage.getItem('registered_users')) || [];
+                    let managerSuppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+                    let pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
+                    
+                    let user = registeredUsers.find(u => u.username && u.username.toLowerCase() === val.toLowerCase());
+                    let supplier = managerSuppliers.find(s => s.username && s.username.toLowerCase() === val.toLowerCase());
+                    let pending = pendingRegistrations.find(p => p.username && p.username.toLowerCase() === val.toLowerCase());
+                    
+                    if (user) {
+                        let status = user.status || user.account_status || 'pending';
+                        let statusText = status === 'approved' || status === 'active' ? '✅ Approved - You can login' : 
+                                       (status === 'rejected' ? '❌ Rejected - Contact Manager' : '⏳ Pending - Waiting for Approval');
+                        statusInfo.textContent = `📊 Status: ${statusText}`;
+                        statusInfo.style.background = status === 'approved' || status === 'active' ? '#d4edda' : 
+                                                     (status === 'rejected' ? '#f8d7da' : '#fff3cd');
+                        statusInfo.style.color = status === 'approved' || status === 'active' ? '#155724' : 
+                                                (status === 'rejected' ? '#721c24' : '#856404');
+                        statusInfo.classList.add('show');
+                    } else if (supplier) {
+                        let status = supplier.status === 'Active' ? '✅ Approved - You can login' : '⏳ Pending';
+                        statusInfo.textContent = `📊 Status: ${status}`;
+                        statusInfo.style.background = supplier.status === 'Active' ? '#d4edda' : '#fff3cd';
+                        statusInfo.style.color = supplier.status === 'Active' ? '#155724' : '#856404';
+                        statusInfo.classList.add('show');
+                    } else if (pending) {
+                        statusInfo.textContent = `📊 Status: ⏳ Pending Approval - Waiting for Manager`;
+                        statusInfo.style.background = '#fff3cd';
+                        statusInfo.style.color = '#856404';
+                        statusInfo.classList.add('show');
+                    } else {
+                        statusInfo.textContent = `📊 Username not found. Please register first.`;
+                        statusInfo.style.background = '#f8d7da';
+                        statusInfo.style.color = '#721c24';
+                        statusInfo.classList.add('show');
+                    }
+                } catch(e) {
+                    console.error('Status check error:', e);
+                }
+            } else {
+                statusInfo.classList.remove('show');
+            }
+        });
+
+        // ========== LOGIN HANDLER ==========
         async function handleLogin(event) {
             event.preventDefault();
 
@@ -500,6 +600,7 @@
             // Clear previous messages
             errorMsgDiv.style.display = 'none';
             successMsgDiv.style.display = 'none';
+            infoMsgDiv.style.display = 'none';
 
             if (!username || !password) {
                 showError('Please enter username and password.');
@@ -510,9 +611,10 @@
             loginBtn.disabled = true;
             loginBtn.textContent = '⏳ Logging in...';
 
-            // Customer, Supplier, Wholesaler - Use API
+            // ===== CUSTOMER, SUPPLIER, WHOLESALER - Check ALL Sources =====
             if (role === 'customer' || role === 'supplier' || role === 'wholesaler') {
                 try {
+                    // First try API
                     const response = await fetch('api/login.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -522,53 +624,39 @@
                     const result = await response.json();
 
                     if (result.success) {
-                        // Save session
                         localStorage.setItem('user_session', JSON.stringify(result.user));
-                        
-                        // Show success
                         successMsgDiv.textContent = '✅ Login successful! Redirecting...';
                         successMsgDiv.style.display = 'block';
 
                         setTimeout(() => {
-                            window.location.href = result.redirect_page || 'customer.html';
+                            window.location.href = result.redirect_page || roleRedirects[role] || 'index.html';
                         }, 1000);
+                        return false;
                     } else {
-                        showError(result.message || 'Invalid username or password');
+                        // If API fails, try localStorage
+                        const loginSuccess = checkLocalStorageLogin(username, password, role);
+                        if (loginSuccess) {
+                            return false;
+                        }
+                        showError(result.message || 'Invalid username or password. Please register first.');
                         loginBtn.disabled = false;
                         loginBtn.textContent = '🔐 Login as ' + roleDisplayMap[role];
+                        return false;
                     }
                 } catch (e) {
                     // Offline fallback - check localStorage
-                    const users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-                    const user = users.find(u => 
-                        u.username.toLowerCase() === username.toLowerCase() && 
-                        u.password === password &&
-                        u.role === role
-                    );
-
-                    if (user) {
-                        localStorage.setItem('user_session', JSON.stringify(user));
-                        successMsgDiv.textContent = '✅ Login successful (Offline mode)!';
-                        successMsgDiv.style.display = 'block';
-
-                        const roleRedirects = {
-                            'customer': 'customer.html',
-                            'supplier': 'supllierdashboard.html',
-                            'wholesaler': 'wholeseller.html'
-                        };
-                        setTimeout(() => {
-                            window.location.href = roleRedirects[role] || 'index.html';
-                        }, 1000);
-                    } else {
-                        showError('Invalid username or password. Please register first.');
-                        loginBtn.disabled = false;
-                        loginBtn.textContent = '🔐 Login as ' + roleDisplayMap[role];
+                    const loginSuccess = checkLocalStorageLogin(username, password, role);
+                    if (loginSuccess) {
+                        return false;
                     }
+                    showError('Invalid username or password. Please register first.');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = '🔐 Login as ' + roleDisplayMap[role];
+                    return false;
                 }
-                return false;
             }
 
-            // Demo-only roles (manager, admin, clerk, account)
+            // ===== DEMO-ONLY ROLES (manager, admin, clerk, account) =====
             const validCred = roleCredentials[role];
             if (!validCred) {
                 showError('Role configuration error.');
@@ -578,7 +666,6 @@
             }
 
             if (username === validCred.username && password === validCred.password) {
-                // Save session for demo roles
                 const demoUser = {
                     username: username,
                     role: role,
@@ -600,21 +687,158 @@
             return false;
         }
 
+        // ===== CHECK LOCALSTORAGE LOGIN (Supports Supplier from ALL Sources) =====
+        function checkLocalStorageLogin(username, password, role) {
+            // Load all data sources
+            let registeredUsers = JSON.parse(localStorage.getItem('registered_users')) || [];
+            let managerSuppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+            let pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
+            
+            console.log('🔍 Searching for:', username);
+            console.log('📋 Registered Users:', registeredUsers.length);
+            console.log('📋 Manager Suppliers:', managerSuppliers.length);
+            console.log('📋 Pending Registrations:', pendingRegistrations.length);
+
+            let user = null;
+            let source = '';
+
+            // 1. Check registered_users
+            user = registeredUsers.find(u => 
+                u.username && u.username.toLowerCase() === username.toLowerCase() &&
+                u.password === password &&
+                (u.role === role || (role === 'supplier' && u.role === 'supplier'))
+            );
+            if (user) {
+                source = 'registered_users';
+                console.log('✅ Found in registered_users');
+            }
+
+            // 2. If not found, check managerSuppliers (for suppliers)
+            if (!user && role === 'supplier') {
+                let supplier = managerSuppliers.find(s => 
+                    s.username && s.username.toLowerCase() === username.toLowerCase() &&
+                    (s.password === password || s.password === 'default123')
+                );
+                if (supplier) {
+                    user = {
+                        username: supplier.username,
+                        password: supplier.password || 'default123',
+                        full_name: supplier.contact || supplier.company,
+                        company_name: supplier.company,
+                        email: supplier.email,
+                        role: 'supplier',
+                        status: supplier.status === 'Active' ? 'approved' : 'pending'
+                    };
+                    source = 'managerSuppliers';
+                    console.log('✅ Found in managerSuppliers');
+                }
+            }
+
+            // 3. If still not found, check pendingRegistrations
+            if (!user && role === 'supplier') {
+                let pending = pendingRegistrations.find(p => 
+                    p.username && p.username.toLowerCase() === username.toLowerCase() &&
+                    p.password === password
+                );
+                if (pending) {
+                    user = {
+                        username: pending.username,
+                        password: pending.password,
+                        full_name: pending.full_name || pending.contact_person,
+                        company_name: pending.company_name || pending.company,
+                        email: pending.email,
+                        role: 'supplier',
+                        status: 'pending'
+                    };
+                    source = 'pendingRegistrations';
+                    console.log('✅ Found in pendingRegistrations');
+                }
+            }
+
+            // 4. Check sample requests (if supplier has samples but not registered properly)
+            if (!user && role === 'supplier') {
+                let sampleRequests = JSON.parse(localStorage.getItem('sampleRequests')) || [];
+                let sampleSupplier = sampleRequests.find(s => 
+                    s.supplier && s.supplier.toLowerCase() === username.toLowerCase()
+                );
+                if (sampleSupplier) {
+                    // Try to find in registered users by email
+                    let registered = registeredUsers.find(u => 
+                        u.email && u.email.toLowerCase() === sampleSupplier.supplierUsername?.toLowerCase()
+                    );
+                    if (registered && registered.password === password) {
+                        user = registered;
+                        source = 'registered_users (via sample)';
+                        console.log('✅ Found via sample request');
+                    }
+                }
+            }
+
+            // If user found, proceed with login
+            if (user) {
+                // Check status for supplier
+                let status = user.status || user.account_status || 'pending';
+                
+                if (status === 'approved' || status === 'active') {
+                    // Save session
+                    localStorage.setItem('user_session', JSON.stringify({
+                        username: user.username,
+                        role: role,
+                        full_name: user.full_name || user.company_name || user.username,
+                        email: user.email || '',
+                        company: user.company_name || '',
+                        status: 'approved'
+                    }));
+
+                    successMsgDiv.textContent = '✅ Login successful! Redirecting...';
+                    successMsgDiv.style.display = 'block';
+
+                    setTimeout(() => {
+                        window.location.href = roleRedirects[role] || 'index.html';
+                    }, 1000);
+                    return true;
+                } else if (status === 'rejected') {
+                    showError('❌ Your registration has been rejected. Reason: ' + (user.rejection_reason || 'Not specified'));
+                    return false;
+                } else {
+                    showError('⏳ Your registration is pending Manager approval. Please wait.');
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        // ========== SHOW ERROR ==========
         function showError(message) {
             errorMsgDiv.textContent = '⚠️ ' + message;
             errorMsgDiv.style.display = 'block';
             setTimeout(() => {
                 if (errorMsgDiv) errorMsgDiv.style.display = 'none';
-            }, 5000);
+            }, 6000);
         }
 
-        // Initialize
+        // ========== INITIALIZE ==========
         function initializePage() {
             const initialRole = roleDropdown.value;
             updateRoleSelection(initialRole);
+            
+            // Check if already logged in
+            let session = JSON.parse(localStorage.getItem('user_session') || 'null');
+            if (session) {
+                // Redirect to appropriate dashboard
+                let redirect = roleRedirects[session.role] || 'index.html';
+                window.location.href = redirect;
+            }
         }
 
-        usernameInput.addEventListener('input', () => { errorMsgDiv.style.display = 'none'; });
+        usernameInput.addEventListener('input', () => { 
+            errorMsgDiv.style.display = 'none';
+            // Trigger status check for supplier
+            if (selectedRoleHidden.value === 'supplier') {
+                usernameInput.dispatchEvent(new Event('input'));
+            }
+        });
         passwordInput.addEventListener('input', () => { errorMsgDiv.style.display = 'none'; });
 
         document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -622,7 +846,9 @@
         window.addEventListener('DOMContentLoaded', initializePage);
         window.onpageshow = function() { initializePage(); };
 
-        console.log('✅ Login page loaded with Customer support');
+        console.log('✅ Login page loaded with full Supplier support');
+        console.log('📋 Registered Users:', JSON.parse(localStorage.getItem('registered_users') || '[]').length);
+        console.log('📋 Manager Suppliers:', JSON.parse(localStorage.getItem('managerSuppliers') || '[]').length);
     </script>
 </body>
 
