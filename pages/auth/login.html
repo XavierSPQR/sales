@@ -832,12 +832,8 @@
             }
         }
 
-        usernameInput.addEventListener('input', () => { 
+        usernameInput.addEventListener('input', () => {
             errorMsgDiv.style.display = 'none';
-            // Trigger status check for supplier
-            if (selectedRoleHidden.value === 'supplier') {
-                usernameInput.dispatchEvent(new Event('input'));
-            }
         });
         passwordInput.addEventListener('input', () => { errorMsgDiv.style.display = 'none'; });
 

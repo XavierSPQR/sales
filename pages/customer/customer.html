@@ -1708,22 +1708,26 @@
             try {
                 const session = JSON.parse(localStorage.getItem('user_session'));
                 if (!session || session.role !== 'customer') {
-                    window.location.href = 'login.html';
+                    window.location.href = '../auth/login.html';
                     return null;
                 }
                 return session;
             } catch (e) {
-                window.location.href = 'login.html';
+                window.location.href = '../auth/login.html';
                 return null;
             }
         }
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('user_session');
-                localStorage.removeItem('cart');
-                localStorage.removeItem('selectedShippingZone');
-                window.location.href = 'login.html';
+                try {
+                    localStorage.removeItem('user_session');
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('selectedShippingZone');
+                } catch (e) {
+                    console.error('Failed to clear session storage:', e);
+                }
+                window.location.href = '../auth/login.html';
             }
         }
 
@@ -1732,7 +1736,7 @@
                 const session = JSON.parse(localStorage.getItem('user_session'));
 
                 if (!session || session.role !== 'customer') {
-                    window.location.href = 'login.html';
+                    window.location.href = '../auth/login.html';
                     return;
                 }
 
@@ -1768,7 +1772,7 @@
 
             } catch (e) {
                 console.error('Session load error:', e);
-                window.location.href = 'login.html';
+                window.location.href = '../auth/login.html';
             }
         }
 

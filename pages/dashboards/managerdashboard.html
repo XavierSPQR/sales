@@ -3253,10 +3253,14 @@
                     e.preventDefault();
                     if (confirm('Do you want to logout?')) {
                         // Clear session storage
-                        localStorage.removeItem('user_session');
-                        localStorage.removeItem('supplier_session');
+                        try {
+                            localStorage.removeItem('user_session');
+                            localStorage.removeItem('supplier_session');
+                        } catch (err) {
+                            console.error('Failed to clear session storage:', err);
+                        }
                         // Redirect to login page
-                        window.location.href = 'login.html';
+                        window.location.href = '../auth/login.html';
                     }
                 });
                 console.log('✅ Logout button fixed - redirects to login.html');
@@ -3266,9 +3270,13 @@
         // Backup logout function
         function logoutToLogin() {
             if (confirm('Do you want to logout?')) {
-                localStorage.removeItem('user_session');
-                localStorage.removeItem('supplier_session');
-                window.location.href = 'login.html';
+                try {
+                    localStorage.removeItem('user_session');
+                    localStorage.removeItem('supplier_session');
+                } catch (err) {
+                    console.error('Failed to clear session storage:', err);
+                }
+                window.location.href = '../auth/login.html';
             }
         }
 
