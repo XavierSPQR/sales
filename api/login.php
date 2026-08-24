@@ -32,13 +32,13 @@ endpoint_guard(function (): void {
     update_user_session($user);
 
     $redirects = [
-        'admin' => 'admin-dashboard.php',
-        'manager' => 'manager-dashboard.php',
-        'stock_clerk' => 'stock-dashboard.php',
-        'account_clerk' => 'account-dashboard.php',
-        'customer' => 'customer.html',
-        'wholesaler' => 'wholeseller.html',
-        'supplier' => 'supllierdashboard.html',
+        'admin' => '../dashboards/admin-dashboard.php',
+        'manager' => '../../manager/manager-dashboard.php',
+        'stock_clerk' => '../dashboards/stock-dashboard.php',
+        'account_clerk' => '../dashboards/account-dashboard.php',
+        'customer' => '../customer/customer.html',
+        'wholesaler' => '../dashboards/wholeseller.html',
+        'supplier' => '../dashboards/supplierdashboard.html',
     ];
 
     respond(true, 'Login successful', [

@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📝 Customer Registration - Pearl Land Commodities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.35);
+            border: 1px solid #D2691E;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .brand-section h1 {
+            color: #8B4513;
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .brand-section p {
+            color: #D2691E;
+            font-size: 14px;
+        }
+
+        h2 {
+            color: #8B4513;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px dashed #D2691E;
+            padding-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #4A2E1A;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #EBDCCB;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #FEFAF5;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #FF8C42;
+        }
+
+        .form-group input.error {
+            border-color: #e74c3c;
+            background: #fff5f5;
+        }
+
+        .form-group input.success {
+            border-color: #27ae60;
+            background: #f0fff4;
+        }
+
+        .validation-hint {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+
+        .validation-hint.error {
+            color: #e74c3c;
+        }
+
+        .validation-hint.success {
+            color: #27ae60;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(105deg, #7B3F12, #C45F1C);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #6A3510, #B25415);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #FFECEB;
+            color: #C73D23;
+            padding: 12px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* ============================================
+           IMPROVED SIGN IN LINK SECTION
+           ============================================ */
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #E4CBB1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .login-link .text {
+            color: #4A2E1A;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .login-link .sign-in-btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background: linear-gradient(105deg, #2b5e2b, #3d7a3d);
+            color: white;
+            text-decoration: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .login-link .sign-in-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #1e4520, #2b5e2b);
+            box-shadow: 0 5px 15px rgba(43, 94, 43, 0.3);
+        }
+
+        .login-link .sign-in-btn:active {
+            transform: translateY(0px);
+        }
+
+        .login-link .or-text {
+            color: #8B4513;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Alternative style - Link only (no button) */
+        .login-link .sign-in-link {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            padding: 2px 5px;
+        }
+
+        .login-link .sign-in-link:hover {
+            color: #D2691E;
+            border-bottom-color: #D2691E;
+        }
+
+        .spice-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .spice-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spice-option input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #ddd;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .password-strength-text {
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .capital-hint {
+            font-size: 11px;
+            color: #7f8c8d;
+            background: #f8f9fa;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .register-container {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .spice-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .login-link {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <div class="brand-section">
+            <h1>🌶️ Pearl Land Commodities</h1>
+            <p>Join as a Valued Customer</p>
+        </div>
+        <h2>📋 Customer Registration</h2>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage">✅ Registration successful! Redirecting to login...</div>
+
+        <form id="registerForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" placeholder="e.g., Saman" required>
+                    <div class="validation-hint" id="firstNameHint">⚠️ First letter must be CAPITAL (e.g., Saman)</div>
+                    <span class="capital-hint">📌 Must start with Capital Letter</span>
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" placeholder="e.g., Kumara" required>
+                    <div class="validation-hint" id="lastNameHint">⚠️ First letter must be CAPITAL (e.g., Kumara)</div>
+                    <span class="capital-hint">📌 Must start with Capital Letter</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email Address <span class="required">*</span></label>
+                <input type="email" id="email" placeholder="example@domain.com" required>
+                <div class="validation-hint" id="emailHint">Standard email format (e.g., name@domain.com)</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span> (10 digits only)</label>
+                    <input type="tel" id="phone" maxlength="10" placeholder="0712345678" required>
+                </div>
+                <div class="form-group">
+                    <label>Select City <span class="required">*</span></label>
+                    <select id="city" required>
+                        <option value="">Select City</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Kegalle">Kegalle</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Postal Code <span class="required">*</span> (5 digits only)</label>
+                    <input type="text" id="postalCode" maxlength="5" placeholder="e.g., 00300" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Address <span class="required">*</span></label>
+                <textarea id="address" rows="2" required></textarea>
+            </div>
+
+            <!-- Spice Preferences - Checkboxes -->
+            <div class="form-group">
+                <label>🌶️ Spice Preferences (Select your favorites)</label>
+                <div class="spice-options">
+                    <label class="spice-option"><input type="checkbox" value="Turmeric"> Turmeric Powder</label>
+                    <label class="spice-option"><input type="checkbox" value="Chili"> Chili Powder</label>
+                    <label class="spice-option"><input type="checkbox" value="Cinnamon"> Cinnamon Sticks</label>
+                    <label class="spice-option"><input type="checkbox" value="Black Pepper"> Black Pepper</label>
+                    <label class="spice-option"><input type="checkbox" value="Cardamom"> Cardamom</label>
+                    <label class="spice-option"><input type="checkbox" value="Cloves"> Cloves</label>
+                    <label class="spice-option"><input type="checkbox" value="Coriander"> Coriander Powder</label>
+                    <label class="spice-option"><input type="checkbox" value="Curry Powder"> Curry Powder</label>
+                    <label class="spice-option"><input type="checkbox" value="Fenugreek"> Fenugreek</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Username <span class="required">*</span> (Min 4 chars - Your choice)</label>
+                    <input type="text" id="username" placeholder="e.g., saman_cust, kumara123" required>
+                    <div class="validation-hint" id="usernameHint">Min 4 characters - letters, numbers, underscore</div>
+                </div>
+                <div class="form-group">
+                    <label>Password <span class="required">*</span> (Min 8 chars, 1 number, 1 uppercase, 1 special)</label>
+                    <input type="password" id="password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="password-strength-text" id="strengthText"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password <span class="required">*</span></label>
+                <input type="password" id="confirmPassword" required>
+                <div class="validation-hint" id="confirmHint"></div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the Terms & Conditions <span class="required">*</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="newsletter">
+                <label for="newsletter">📧 Subscribe to spice offers & seasonal discounts</label>
+            </div>
+
+            <button type="submit" class="register-btn" id="submitBtn">🌶️ Create Customer Account</button>
+        </form>
+
+        <!-- ============================================
+             IMPROVED SIGN IN LINK - Option 1: With Button
+             ============================================ -->
+        <div class="login-link">
+            <span class="text">Already have an account?</span>
+            <span class="or-text">🔑</span>
+            <a href="login.html" class="sign-in-btn">Sign In Here →</a>
+        </div>
+
+        <!-- ============================================
+             IMPROVED SIGN IN LINK - Option 2: With Link (uncomment to use)
+             ============================================ -->
+        <!--
+        <div class="login-link">
+            <span class="text">Already have an account?</span>
+            <a href="login.html" class="sign-in-link">Sign In Here →</a>
+        </div>
+        -->
+    </div>
+
+    <script>
+        // ============================================
+        // VALIDATION FUNCTIONS
+        // ============================================
+
+        // 1. Name validation - Only letters, first letter must be CAPITAL
+        function validateName(name) {
+            // Must contain only letters
+            if (!/^[A-Za-z]+$/.test(name)) return { valid: false, message: 'Only letters allowed' };
+            // First letter must be capital
+            if (name[0] !== name[0].toUpperCase()) return { valid: false, message: 'First letter must be CAPITAL' };
+            return { valid: true };
+        }
+
+        // 2. Email validation - Standard format
+        function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+
+        // 3. Username validation - Min 4 chars, letters, numbers, underscore
+        function validateUsername(username) {
+            return /^[A-Za-z0-9_]{4,}$/.test(username);
+        }
+
+        // 4. Password validation
+        function validatePassword(password) {
+            return password.length >= 8 && 
+                   /[0-9]/.test(password) && 
+                   /[A-Z]/.test(password) && 
+                   /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        }
+
+        // 5. Phone validation
+        function validatePhone(phone) {
+            return /^[0-9]{10}$/.test(phone);
+        }
+
+        // 6. Postal code validation
+        function validatePostalCode(postalCode) {
+            return /^[0-9]{5}$/.test(postalCode);
+        }
+
+        // ============================================
+        // REAL-TIME VALIDATIONS
+        // ============================================
+
+        // First Name - Capital first letter
+        document.getElementById('firstName').addEventListener('input', function(e) {
+            const value = this.value;
+            const hint = document.getElementById('firstNameHint');
+            
+            const filtered = value.replace(/[^A-Za-z]/g, '');
+            if (value !== filtered) {
+                this.value = filtered;
+            }
+            
+            if (filtered.length === 0) {
+                this.classList.remove('success');
+                this.classList.remove('error');
+                hint.textContent = '⚠️ First letter must be CAPITAL (e.g., Saman)';
+                hint.className = 'validation-hint';
+                return;
+            }
+            
+            const result = validateName(filtered);
+            
+            if (result.valid) {
+                this.classList.add('success');
+                this.classList.remove('error');
+                hint.textContent = '✅ Valid name';
+                hint.className = 'validation-hint success';
+            } else {
+                this.classList.add('error');
+                this.classList.remove('success');
+                hint.textContent = '❌ ' + result.message;
+                hint.className = 'validation-hint error';
+            }
+        });
+
+        // Last Name - Capital first letter
+        document.getElementById('lastName').addEventListener('input', function(e) {
+            const value = this.value;
+            const hint = document.getElementById('lastNameHint');
+            
+            const filtered = value.replace(/[^A-Za-z]/g, '');
+            if (value !== filtered) {
+                this.value = filtered;
+            }
+            
+            if (filtered.length === 0) {
+                this.classList.remove('success');
+                this.classList.remove('error');
+                hint.textContent = '⚠️ First letter must be CAPITAL (e.g., Kumara)';
+                hint.className = 'validation-hint';
+                return;
+            }
+            
+            const result = validateName(filtered);
+            
+            if (result.valid) {
+                this.classList.add('success');
+                this.classList.remove('error');
+                hint.textContent = '✅ Valid name';
+                hint.className = 'validation-hint success';
+            } else {
+                this.classList.add('error');
+                this.classList.remove('success');
+                hint.textContent = '❌ ' + result.message;
+                hint.className = 'validation-hint error';
+            }
+        });
+
+        // Email - Standard format
+        document.getElementById('email').addEventListener('input', function(e) {
+            const value = this.value.trim();
+            const hint = document.getElementById('emailHint');
+            
+            if (value.length === 0) {
+                this.classList.remove('success');
+                this.classList.remove('error');
+                hint.textContent = 'Standard email format (e.g., name@domain.com)';
+                hint.className = 'validation-hint';
+                return;
+            }
+            
+            if (validateEmail(value)) {
+                this.classList.add('success');
+                this.classList.remove('error');
+                hint.textContent = '✅ Valid email address';
+                hint.className = 'validation-hint success';
+            } else {
+                this.classList.add('error');
+                this.classList.remove('success');
+                hint.textContent = '❌ Invalid email format (e.g., name@domain.com)';
+                hint.className = 'validation-hint error';
+            }
+        });
+
+        // Username
+        document.getElementById('username').addEventListener('input', function(e) {
+            const value = this.value;
+            const hint = document.getElementById('usernameHint');
+            
+            const filtered = value.replace(/[^A-Za-z0-9_]/g, '');
+            if (value !== filtered) {
+                this.value = filtered;
+            }
+            
+            if (filtered.length === 0) {
+                this.classList.remove('success');
+                this.classList.remove('error');
+                hint.textContent = 'Min 4 characters - letters, numbers, underscore';
+                hint.className = 'validation-hint';
+            } else if (validateUsername(filtered)) {
+                this.classList.add('success');
+                this.classList.remove('error');
+                hint.textContent = '✅ Username available';
+                hint.className = 'validation-hint success';
+            } else {
+                this.classList.add('error');
+                this.classList.remove('success');
+                hint.textContent = '❌ Min 4 chars - letters/numbers/underscore only';
+                hint.className = 'validation-hint error';
+            }
+        });
+
+        // Password Strength
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = this.value;
+            const bar = document.getElementById('strengthBar');
+            const text = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let label = '';
+            let color = '';
+            
+            if (password.length >= 8) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+            if (password.length >= 12) strength++;
+            
+            const percentage = (strength / 5) * 100;
+            
+            if (strength <= 1) { label = 'Weak'; color = '#e74c3c'; }
+            else if (strength <= 2) { label = 'Fair'; color = '#f39c12'; }
+            else if (strength <= 3) { label = 'Good'; color = '#3498db'; }
+            else if (strength <= 4) { label = 'Strong'; color = '#2ecc71'; }
+            else { label = 'Very Strong'; color = '#27ae60'; }
+            
+            bar.style.width = percentage + '%';
+            bar.style.background = color;
+            text.textContent = password.length > 0 ? `Strength: ${label}` : '';
+            text.style.color = color;
+            
+            checkConfirmPassword();
+        });
+
+        // Confirm Password
+        document.getElementById('confirmPassword').addEventListener('input', checkConfirmPassword);
+        
+        function checkConfirmPassword() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const hint = document.getElementById('confirmHint');
+            
+            if (confirm.length === 0) {
+                hint.textContent = '';
+                hint.className = 'validation-hint';
+                return;
+            }
+            
+            if (password === confirm) {
+                hint.textContent = '✅ Passwords match';
+                hint.className = 'validation-hint success';
+            } else {
+                hint.textContent = '❌ Passwords do not match';
+                hint.className = 'validation-hint error';
+            }
+        }
+
+        // Phone - Only digits
+        document.getElementById('phone').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+
+        // Postal Code - Only digits
+        document.getElementById('postalCode').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);
+        });
+
+        // Auto-capitalize First Name & Last Name (on blur)
+        document.getElementById('firstName').addEventListener('blur', function(e) {
+            const value = this.value.trim();
+            if (value.length > 0) {
+                this.value = value.charAt(0).toUpperCase() + value.slice(1);
+                this.dispatchEvent(new Event('input'));
+            }
+        });
+
+        document.getElementById('lastName').addEventListener('blur', function(e) {
+            const value = this.value.trim();
+            if (value.length > 0) {
+                this.value = value.charAt(0).toUpperCase() + value.slice(1);
+                this.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const city = document.getElementById('city').value;
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            const selectedSpices = [];
+            document.querySelectorAll('.spice-option input:checked').forEach(cb => {
+                selectedSpices.push(cb.value);
+            });
+
+            // Validations
+            if (!firstName || !lastName || !email || !phone || !city || !postalCode || !address || !username || !password) {
+                showError('All fields marked with * are required');
+                return;
+            }
+
+            const firstNameResult = validateName(firstName);
+            if (!firstNameResult.valid) {
+                showError('First Name: ' + firstNameResult.message);
+                return;
+            }
+
+            const lastNameResult = validateName(lastName);
+            if (!lastNameResult.valid) {
+                showError('Last Name: ' + lastNameResult.message);
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address in standard format (e.g., name@domain.com)');
+                return;
+            }
+
+            if (!validateUsername(username)) {
+                showError('Username must be at least 4 characters and contain only letters, numbers, or underscore');
+                return;
+            }
+
+            if (!validatePhone(phone)) {
+                showError('Phone number must be exactly 10 digits (e.g., 0712345678)');
+                return;
+            }
+
+            if (!validatePostalCode(postalCode)) {
+                showError('Postal code must be exactly 5 digits (e.g., 00300)');
+                return;
+            }
+
+            if (!validatePassword(password)) {
+                showError('Password must be at least 8 characters, contain 1 number, 1 uppercase letter, and 1 special character');
+                return;
+            }
+
+            if (password !== confirm) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            if (!terms) {
+                showError('You must agree to the Terms & Conditions');
+                return;
+            }
+
+            const data = {
+                first_name: firstName,
+                last_name: lastName,
+                full_name: firstName + ' ' + lastName,
+                username: username,
+                email: email,
+                phone: phone,
+                address: address,
+                city: city,
+                postal_code: postalCode,
+                spice_preferences: selectedSpices.join(', '),
+                newsletter: document.getElementById('newsletter').checked ? 1 : 0,
+                password: password,
+                role: 'customer'
+            };
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Creating Account...';
+
+            try {
+                const response = await fetch('../../api/register.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    localStorage.setItem('registered_username', username);
+                    localStorage.setItem('registered_email', email);
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2500);
+                } else {
+                    showError(result.message || 'Registration failed. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🌶️ Create Customer Account';
+                }
+            } catch (error) {
+                // Offline mode - Save to localStorage
+                let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
+                
+                if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                    showError('Username already exists. Please choose another.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🌶️ Create Customer Account';
+                    return;
+                }
+                
+                if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                    showError('Email already registered. Please use another email.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🌶️ Create Customer Account';
+                    return;
+                }
+                
+                users.push({
+                    ...data,
+                    id: Date.now(),
+                    registered_at: new Date().toISOString()
+                });
+                
+                localStorage.setItem('registered_users', JSON.stringify(users));
+                
+                document.getElementById('successMessage').style.display = 'block';
+                localStorage.setItem('registered_username', username);
+                localStorage.setItem('registered_email', email);
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2500);
+            }
+        });
+
+        function showError(msg) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '⚠️ ' + msg;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 6000);
+        }
+    </script>
+</body>
+
+</html>

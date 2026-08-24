@@ -66,7 +66,7 @@ if ($foundUser['account_status'] === 'rejected') {
 // Successful login
 $redirectMap = [
     'customer' => 'customer.html',
-    'supplier' => 'supllierdashboard.html',
+    'supplier' => 'supplierdashboard.html',
     'wholesaler' => 'wholeseller.html'
 ];
 
