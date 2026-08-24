@@ -14,7 +14,7 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: ../index.php');
+        header('Location: /index.php');
         exit();
     }
 }
@@ -28,13 +28,13 @@ function requireRole($role) {
     if (!hasRole($role)) {
         // Redirect to appropriate dashboard based on role
         if (hasRole('manager')) {
-            header('Location: ../manager-dashboard.php');
+            header('Location: /manager/manager-dashboard.php');
         } elseif (hasRole('stock_clerk')) {
-            header('Location: ../stock-dashboard.php');
+            header('Location: /pages/dashboards/stock-dashboard.php');
         } elseif (hasRole('account_clerk')) {
-            header('Location: ../account-dashboard.php');
+            header('Location: /pages/dashboards/account-dashboard.php');
         } else {
-            header('Location: ../index.php');
+            header('Location: /index.php');
         }
         exit();
     }

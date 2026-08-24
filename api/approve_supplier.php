@@ -42,7 +42,7 @@ endpoint_guard(function (): void {
 
         $pdo->prepare('
             INSERT INTO users (username, password, role, full_name, email, phone, address, city, status, redirect_page)
-            VALUES (?, ?, "supplier", ?, ?, ?, ?, ?, "active", "supllierdashboard.html")
+            VALUES (?, ?, "supplier", ?, ?, ?, ?, ?, "active", "supplierdashboard.html")
         ')->execute([
             $username,
             $request['password'],

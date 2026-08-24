@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Account Clerk Dashboard - Pearl Land Commodities</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --pb: #8B4513;
+            --sb: #A0522D;
+            --po: #D2691E;
+            --so: #FF8C00;
+            --cream: #FFF5E6;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+        }
+
+        body {
+            background: var(--cream);
+            min-height: 100vh;
+        }
+
+        .wrap {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .side {
+            width: 240px;
+            background: var(--pb);
+            color: #fff;
+            padding: 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .side h2 {
+            font-size: 18px;
+            text-align: center;
+            padding: 12px 0;
+            border-bottom: 2px solid var(--so);
+            margin-bottom: 12px;
+        }
+
+        .side ul {
+            list-style: none;
+        }
+
+        .side li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all .2s;
+        }
+
+        .side li a:hover,
+        .side li a.act {
+            background: var(--sb);
+            transform: translateX(4px);
+        }
+
+        .side li a i {
+            font-size: 18px;
+            width: 24px;
+        }
+
+        .sfoot {
+            margin-top: 16px;
+            padding: 12px;
+            background: rgba(0, 0, 0, .2);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .sfoot a {
+            color: #ffcba4;
+            text-decoration: none;
+        }
+
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 20px;
+        }
+
+        .hdr {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+            border-left: 6px solid var(--po);
+        }
+
+        .hdr h1 {
+            color: var(--pb);
+            font-size: 20px;
+        }
+
+        .badge-role {
+            background: var(--pb);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .sec {
+            display: none;
+        }
+
+        .sec.act {
+            display: block;
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: var(--pb);
+            margin-bottom: 14px;
+            border-bottom: 2px dashed var(--po);
+            padding-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+            border-bottom: 4px solid var(--po);
+            text-align: center;
+        }
+
+        .stat .ico {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .stat h3 {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .stat .num {
+            color: var(--pb);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .tbl thead {
+            background: var(--pb);
+            color: #fff;
+        }
+
+        .tbl th,
+        .tbl td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tbl tbody tr:hover {
+            background: #fdf5ec;
+        }
+
+        .bdg {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .bg-s {
+            background: var(--success);
+            color: #fff;
+        }
+        .bg-w {
+            background: var(--warning);
+            color: #fff;
+        }
+        .bg-d {
+            background: var(--danger);
+            color: #fff;
+        }
+        .bg-i {
+            background: var(--info);
+            color: #fff;
+        }
+        .bg-p {
+            background: #9b59b6;
+            color: #fff;
+        }
+        .bg-grn {
+            background: #1abc9c;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-s {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-o {
+            background: var(--po);
+            color: #fff;
+        }
+
+        .btn-d {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: var(--po);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-sm-success {
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: var(--success);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .fg label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--pb);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .fg input,
+        .fg select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0d5cc;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .fg input:focus,
+        .fg select:focus {
+            outline: none;
+            border-color: var(--po);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border: 2px solid var(--po);
+            border-radius: 20px;
+            background: #fff;
+            color: var(--po);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tab.act {
+            background: var(--po);
+            color: #fff;
+        }
+
+        .chart-wrap {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            margin-bottom: 12px;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .quick {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .qcard {
+            background: var(--cream);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .qcard h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--pb);
+        }
+
+        .qcard p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .period-btns {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .pbtn {
+            padding: 6px 14px;
+            border: 1.5px solid var(--po);
+            border-radius: 20px;
+            background: #fff;
+            color: var(--po);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .pbtn.act {
+            background: var(--po);
+            color: #fff;
+        }
+
+        .sup-form-card {
+            border-left: 6px solid var(--success);
+        }
+
+        .net-positive {
+            color: var(--success) !important;
+        }
+
+        .net-negative {
+            color: var(--danger) !important;
+        }
+
+        .invoice-preview {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
+        .invoice-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .invoice-preview th,
+        .invoice-preview td {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .invoice-preview .total-row {
+            font-weight: 700;
+            background: #e8f5e9;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            max-width: 700px;
+            width: 90%;
+            border-radius: 16px;
+            padding: 25px;
+            animation: fadeInUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            color: var(--pb);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--so);
+            padding-bottom: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-note {
+            background: #e8f5e9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #2e7d32;
+            border-left: 3px solid var(--success);
+        }
+
+        .info-note.warning-note {
+            background: #fff3cd;
+            border-left-color: var(--warning);
+            color: #856404;
+        }
+
+        @media (max-width: 900px) {
+            .side {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main {
+                margin-left: 0;
+            }
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .quick {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <!-- SIDEBAR -->
+        <div class="side">
+            <h2>🌶️ Pearl Land<br><small style="font-size:12px;font-weight:400">Finance Dept.</small></h2>
+            <ul>
+                <li><a onclick="show('dash')" class="act" id="nav-dash"><i class="ti ti-home"></i> Dashboard</a></li>
+                <li><a onclick="show('cust-pay')" id="nav-cust-pay"><i class="ti ti-users"></i> Customer Payments</a></li>
+                <li><a onclick="show('whole-pay')" id="nav-whole-pay"><i class="ti ti-building-store"></i> Wholesaler Payments</a></li>
+                <li><a onclick="show('sup-pay')" id="nav-sup-pay"><i class="ti ti-truck"></i> Supplier Payments</a></li>
+                <li><a onclick="show('sup-invoices')" id="nav-sup-invoices"><i class="ti ti-file-invoice"></i> Supplier Invoices</a></li>
+                <li><a onclick="show('outstanding')" id="nav-outstanding"><i class="ti ti-file-invoice"></i> Outstanding</a></li>
+                <li><a onclick="show('history')" id="nav-history"><i class="ti ti-history"></i> Payment History</a></li>
+                <li><a onclick="show('reports')" id="nav-reports"><i class="ti ti-chart-bar"></i> Reports</a></li>
+            </ul>
+            <div class="sfoot">
+                <div>💰 Account Clerk</div>
+                <div style="font-size:12px;">account@pearlland.com</div>
+                <a href="../../index.html">🚪 Logout</a>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main">
+            <div class="hdr">
+                <h1><i class="ti ti-dashboard"></i> Account Clerk Dashboard</h1>
+                <div class="badge-role"><i class="ti ti-lock"></i> Finance Access</div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats" id="stats"></div>
+
+            <!-- ===== DASHBOARD ===== -->
+            <div id="sec-dash" class="sec act">
+                <div class="card">
+                    <h2><i class="ti ti-chart-line"></i> Revenue Overview</h2>
+                    <div class="period-btns">
+                        <button class="pbtn act" id="pb-daily" onclick="setPeriod('daily')">Daily (7 days)</button>
+                        <button class="pbtn" id="pb-weekly" onclick="setPeriod('weekly')">Weekly</button>
+                        <button class="pbtn" id="pb-monthly" onclick="setPeriod('monthly')">Monthly</button>
+                    </div>
+                    <div class="legend">
+                        <span><span class="dot" style="background:#3498db"></span>Customer Income</span>
+                        <span><span class="dot" style="background:#9b59b6"></span>Wholesaler Income</span>
+                        <span><span class="dot" style="background:#e74c3c"></span>Supplier Expense</span>
+                        <span><span class="dot" style="background:#2ecc71"></span>Net Revenue (line)</span>
+                    </div>
+                    <div class="chart-wrap"><canvas id="revChart" role="img"
+                            aria-label="Revenue overview bar and line chart">Revenue chart</canvas></div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="ti ti-chart-donut"></i> Cash Flow Breakdown</h2>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center">
+                        <div>
+                            <div class="legend">
+                                <span><span class="dot" style="background:#3498db"></span>Customer</span>
+                                <span><span class="dot" style="background:#9b59b6"></span>Wholesaler</span>
+                                <span><span class="dot" style="background:#e74c3c"></span>Supplier</span>
+                            </div>
+                            <div class="chart-wrap" style="height:200px"><canvas id="pieChart" role="img"
+                                    aria-label="Cash flow doughnut chart">Cash flow breakdown</canvas></div>
+                        </div>
+                        <div>
+                            <p style="font-size:13px;color:#666;margin-bottom:10px">How revenue changes:</p>
+                            <div style="background:#e8f8ef;border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px">
+                                <strong style="color:#155724">➕ Income:</strong> Customer & Wholesaler payments add to revenue
+                            </div>
+                            <div style="background:#fdecea;border-radius:8px;padding:10px;margin-bottom:8px;font-size:13px">
+                                <strong style="color:#721c24">➖ Expense:</strong> Supplier payments reduce revenue
+                            </div>
+                            <div style="background:#fff3cd;border-radius:8px;padding:10px;font-size:13px">
+                                <strong style="color:#856404">= Net Revenue:</strong> Income minus Supplier expenses
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="ti ti-bolt"></i> Quick Actions</h2>
+                    <div class="quick">
+                        <div class="qcard">
+                            <h3>👤 Customer Payments</h3>
+                            <p>Record payments received from customers</p><button class="btn-sm"
+                                onclick="show('cust-pay')">Open →</button>
+                        </div>
+                        <div class="qcard">
+                            <h3>🏪 Wholesaler Payments</h3>
+                            <p>Record payments received from wholesalers</p><button class="btn-sm"
+                                onclick="show('whole-pay')">Open →</button>
+                        </div>
+                        <div class="qcard">
+                            <h3>🚛 Supplier Payments</h3>
+                            <p>Process approved GRN supplier payments</p><button class="btn-sm"
+                                onclick="show('sup-pay')">Open →</button>
+                        </div>
+                        <div class="qcard">
+                            <h3>📄 Supplier Invoices</h3>
+                            <p>Generate invoices for approved GRNs</p><button class="btn-sm"
+                                onclick="show('sup-invoices')">Open →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CUSTOMER PAYMENTS ===== -->
+            <div id="sec-cust-pay" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-plus"></i> Record Customer Payment</h2>
+                    <div class="form-row">
+                        <div class="fg"><label>Customer Name</label><input type="text" id="cp-name"
+                                placeholder="e.g. Saman Perera"></div>
+                        <div class="fg"><label>Invoice #</label><input type="text" id="cp-inv"
+                                placeholder="INV-2026-0001"></div>
+                        <div class="fg"><label>Amount (LKR)</label><input type="number" id="cp-amount"
+                                placeholder="0.00" min="0"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="fg"><label>Payment Date</label><input type="date" id="cp-date"></div>
+                        <div class="fg"><label>Payment Method</label>
+                            <select id="cp-method">
+                                <option>Cash</option>
+                                <option>Cheque</option>
+                                <option>Bank Transfer</option>
+                                <option>Online</option>
+                            </select>
+                        </div>
+                        <div class="fg"><label>Reference No</label><input type="text" id="cp-ref"
+                                placeholder="Cheque / Transaction ID"></div>
+                    </div>
+                    <button class="btn btn-s" onclick="addCustomerPayment()"><i class="ti ti-check"></i> Record Payment</button>
+                </div>
+                <div class="card">
+                    <h2><i class="ti ti-list"></i> Customer Payment Records</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Invoice #</th>
+                                <th>Amount (LKR)</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cust-pay-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== WHOLESALER PAYMENTS ===== -->
+            <div id="sec-whole-pay" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-plus"></i> Record Wholesaler Payment</h2>
+                    <div class="form-row">
+                        <div class="fg"><label>Wholesaler Name</label><input type="text" id="wp-name"
+                                placeholder="e.g. Colombo Wholesale Co."></div>
+                        <div class="fg"><label>Invoice #</label><input type="text" id="wp-inv"
+                                placeholder="WINV-2026-0001"></div>
+                        <div class="fg"><label>Amount (LKR)</label><input type="number" id="wp-amount"
+                                placeholder="0.00" min="0"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="fg"><label>Payment Date</label><input type="date" id="wp-date"></div>
+                        <div class="fg"><label>Payment Method</label>
+                            <select id="wp-method">
+                                <option>Cash</option>
+                                <option>Cheque</option>
+                                <option>Bank Transfer</option>
+                                <option>Online</option>
+                            </select>
+                        </div>
+                        <div class="fg"><label>Reference No</label><input type="text" id="wp-ref"
+                                placeholder="Cheque / Transaction ID"></div>
+                    </div>
+                    <button class="btn btn-s" onclick="addWholesalerPayment()"><i class="ti ti-check"></i> Record Payment</button>
+                </div>
+                <div class="card">
+                    <h2><i class="ti ti-list"></i> Wholesaler Payment Records</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Wholesaler</th>
+                                <th>Invoice #</th>
+                                <th>Amount (LKR)</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="whole-pay-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== SUPPLIER PAYMENTS ===== -->
+            <div id="sec-sup-pay" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-truck"></i> Supplier Payments (Based on Approved GRNs)</h2>
+                    <div class="info-note">📌 When GRN is approved by Manager, you can process payment here.</div>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>GRN #</th>
+                                <th>PO #</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>Qty</th>
+                                <th>Unit Price</th>
+                                <th>Amount (LKR)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sup-pay-body"></tbody>
+                    </table>
+                </div>
+                <div class="card sup-form-card" id="sup-form" style="display:none">
+                    <h2><i class="ti ti-coin"></i> Process Supplier Payment</h2>
+                    <div class="form-row">
+                        <div class="fg"><label>GRN #</label><input type="text" id="sf-grn" readonly></div>
+                        <div class="fg"><label>Supplier</label><input type="text" id="sf-sup" readonly></div>
+                        <div class="fg"><label>Amount (LKR)</label><input type="text" id="sf-amt" readonly></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="fg"><label>Payment Date</label><input type="date" id="sf-date"></div>
+                        <div class="fg"><label>Payment Method</label>
+                            <select id="sf-method">
+                                <option>Cash</option>
+                                <option>Cheque</option>
+                                <option>Bank Transfer</option>
+                            </select>
+                        </div>
+                        <div class="fg"><label>Reference No</label><input type="text" id="sf-ref"
+                                placeholder="Cheque / Transaction ID"></div>
+                    </div>
+                    <button class="btn btn-s" onclick="processSupPay()"><i class="ti ti-check"></i> Process Payment</button>
+                    <button class="btn btn-o" style="margin-left:8px" onclick="document.getElementById('sup-form').style.display='none'">Cancel</button>
+                </div>
+            </div>
+
+            <!-- ===== SUPPLIER INVOICES (NEW - Integrated with GRNs) ===== -->
+            <div id="sec-sup-invoices" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-file-invoice"></i> Supplier Invoice Management</h2>
+                    <div class="info-note">📌 Generate supplier invoice from approved GRN. Supplier will receive this invoice.</div>
+                </div>
+                <div class="card">
+                    <h2><i class="ti ti-list"></i> Approved GRNs Ready for Invoice</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>GRN #</th>
+                                <th>PO #</th>
+                                <th>Supplier</th>
+                                <th>Material</th>
+                                <th>Amount (LKR)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sup-invoice-body"></tbody>
+                    </table>
+                </div>
+                <div class="card" id="sup-invoice-form" style="display:none">
+                    <h2><i class="ti ti-file"></i> Generate Supplier Invoice</h2>
+                    <div class="form-row">
+                        <div class="fg"><label>GRN #</label><input type="text" id="si-grn" readonly></div>
+                        <div class="fg"><label>Supplier</label><input type="text" id="si-sup" readonly></div>
+                        <div class="fg"><label>Amount (LKR)</label><input type="text" id="si-amt" readonly></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="fg"><label>Invoice Date</label><input type="date" id="si-date"></div>
+                        <div class="fg"><label>Due Date</label><input type="date" id="si-due"></div>
+                        <div class="fg"><label>Payment Terms</label>
+                            <select id="si-terms">
+                                <option>30 Days Credit</option>
+                                <option>Cash on Delivery</option>
+                                <option>Net 45 Days</option>
+                                <option>Advance 50%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="fg"><label>Invoice Number</label><input type="text" id="si-number" readonly></div>
+                        <div class="fg"><label>Status</label>
+                            <select id="si-status">
+                                <option>Pending</option>
+                                <option>Sent</option>
+                                <option>Paid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="invoice-preview" id="si-preview"></div>
+                    <button class="btn btn-s" onclick="generateSupplierInvoice()"><i class="ti ti-check"></i> Generate & Send Invoice</button>
+                    <button class="btn btn-o" style="margin-left:8px" onclick="document.getElementById('sup-invoice-form').style.display='none'">Cancel</button>
+                </div>
+                <!-- Invoices List -->
+                <div class="card">
+                    <h2><i class="ti ti-list"></i> Generated Supplier Invoices</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>GRN #</th>
+                                <th>Supplier</th>
+                                <th>Amount (LKR)</th>
+                                <th>Invoice Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="generated-invoices-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== OUTSTANDING ===== -->
+            <div id="sec-outstanding" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-file-invoice"></i> Customer Outstanding Payments</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Invoice #</th>
+                                <th>Date</th>
+                                <th>Due Date</th>
+                                <th>Amount (LKR)</th>
+                                <th>Days Overdue</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="out-body"></tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <h2><i class="ti ti-file-invoice"></i> Supplier Outstanding Payments</h2>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>Supplier</th>
+                                <th>Invoice #</th>
+                                <th>Date</th>
+                                <th>Due Date</th>
+                                <th>Amount (LKR)</th>
+                                <th>Days Overdue</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sup-out-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== PAYMENT HISTORY ===== -->
+            <div id="sec-history" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-history"></i> All Payment History</h2>
+                    <div class="tabs">
+                        <button class="tab act" onclick="filterHistory('all',this)">All</button>
+                        <button class="tab" onclick="filterHistory('Customer',this)">Customer</button>
+                        <button class="tab" onclick="filterHistory('Wholesaler',this)">Wholesaler</button>
+                        <button class="tab" onclick="filterHistory('Supplier',this)">Supplier</button>
+                    </div>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Party</th>
+                                <th>Invoice/GRN</th>
+                                <th>Amount (LKR)</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hist-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===== REPORTS ===== -->
+            <div id="sec-reports" class="sec">
+                <div class="card">
+                    <h2><i class="ti ti-report"></i> Generate Financial Report</h2>
+                    <div class="form-row" style="background:var(--cream);padding:16px;border-radius:10px">
+                        <div class="fg"><label>Report Type</label>
+                            <select id="rpt-type">
+                                <option value="supplier">Supplier Payment Report</option>
+                                <option value="customer">Customer Collection Report</option>
+                                <option value="wholesaler">Wholesaler Collection Report</option>
+                                <option value="cashflow">Cash Flow Statement</option>
+                            </select>
+                        </div>
+                        <div class="fg"><label>From Date</label><input type="date" id="rpt-from"></div>
+                        <div class="fg"><label>To Date</label><input type="date" id="rpt-to"></div>
+                        <div class="fg" style="display:flex;align-items:flex-end">
+                            <button class="btn btn-s" onclick="genReport()"><i class="ti ti-file-analytics"></i> Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="rpt-out"></div>
+            </div>
+
+        </div><!-- /main -->
+    </div><!-- /wrap -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js">
+    </script>
+    <script>
+        // ===================== DATA =====================
+        let customerPayments = JSON.parse(localStorage.getItem('custPay') || 'null');
+        let wholesalerPayments = JSON.parse(localStorage.getItem('wholePay') || 'null');
+        let supplierPayments = JSON.parse(localStorage.getItem('supPay') || 'null');
+        let grns = JSON.parse(localStorage.getItem('grns') || 'null');
+        let supplierInvoices = JSON.parse(localStorage.getItem('supplierInvoices')) || [];
+
+        // Sample data if nothing in storage
+        if (!customerPayments) customerPayments = [
+            { id: 'CPAY-001', name: 'Saman Perera', invoice: 'INV-2026-0125', amount: 25000, method: 'Bank Transfer',
+                date: '2026-05-10', reference: 'TR123', type: 'Customer' },
+            { id: 'CPAY-002', name: 'Nimali Stores', invoice: 'INV-2026-0142', amount: 42000, method: 'Cash',
+                date: '2026-05-20', reference: '', type: 'Customer' }
+        ];
+        if (!wholesalerPayments) wholesalerPayments = [
+            { id: 'WPAY-001', name: 'Colombo Wholesale Co.', invoice: 'WINV-2026-0010', amount: 85000,
+                method: 'Bank Transfer', date: '2026-05-15', reference: 'TRW001', type: 'Wholesaler' }
+        ];
+        if (!supplierPayments) supplierPayments = [
+            { id: 'SPAY-001', grnId: 'GRN-001', supplier: 'Silva Spices', amount: 600000, method: 'Bank Transfer',
+                date: '2026-05-25', reference: 'TRS001', type: 'Supplier' }
+        ];
+        if (!grns) grns = [
+            { id: 'GRN-001', poId: 'PO-001', supplier: 'Silva Spices', material: 'Black Pepper', receivedQty: 500,
+                unitPrice: 1200, totalAmount: 600000, status: 'Approved' },
+            { id: 'GRN-002', poId: 'PO-002', supplier: 'Lanka Herbs', material: 'Turmeric', receivedQty: 200,
+                unitPrice: 800, totalAmount: 160000, status: 'Approved' },
+            { id: 'GRN-003', poId: 'PO-003', supplier: 'Hill Country Farms', material: 'Cardamom', receivedQty: 100,
+                unitPrice: 3500, totalAmount: 350000, status: 'Pending' }
+        ];
+
+        function save() {
+            localStorage.setItem('custPay', JSON.stringify(customerPayments));
+            localStorage.setItem('wholePay', JSON.stringify(wholesalerPayments));
+            localStorage.setItem('supPay', JSON.stringify(supplierPayments));
+            localStorage.setItem('supplierInvoices', JSON.stringify(supplierInvoices));
+        }
+
+        // ===================== NAVIGATION =====================
+        function show(id) {
+            document.querySelectorAll('.sec').forEach(s => s.classList.remove('act'));
+            document.getElementById('sec-' + id).classList.add('act');
+            document.querySelectorAll('.side li a').forEach(a => a.classList.remove('act'));
+            let nav = document.getElementById('nav-' + id);
+            if (nav) nav.classList.add('act');
+            if (id === 'history') renderHistory();
+            if (id === 'outstanding') renderOutstanding();
+            if (id === 'sup-pay') renderSupPay();
+            if (id === 'sup-invoices') renderSupInvoices();
+            if (id === 'cust-pay') renderCustPay();
+            if (id === 'whole-pay') renderWholePay();
+        }
+
+        // ===================== STATS =====================
+        function updateStats() {
+            let totC = customerPayments.reduce((s, p) => s + p.amount, 0);
+            let totW = wholesalerPayments.reduce((s, p) => s + p.amount, 0);
+            let totS = supplierPayments.reduce((s, p) => s + p.amount, 0);
+            let net = totC + totW - totS;
+            let pendingGRNs = grns.filter(g => g.status === 'Approved' && !supplierPayments.some(p => p.grnId === g.id)).length;
+            let pendingInvoices = supplierInvoices.filter(inv => inv.status !== 'Paid').length;
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat"><div class="ico">👤</div><h3>Customer Income</h3><div class="num">Rs.${totC.toLocaleString()}</div></div>
+                <div class="stat"><div class="ico">🏪</div><h3>Wholesaler Income</h3><div class="num">Rs.${totW.toLocaleString()}</div></div>
+                <div class="stat" style="border-bottom-color:var(--danger)"><div class="ico">🚛</div><h3>Supplier Expense</h3><div class="num" style="color:var(--danger)">Rs.${totS.toLocaleString()}</div></div>
+                <div class="stat" style="border-bottom-color:${net >= 0 ? 'var(--success)' : 'var(--danger)'}">
+                    <div class="ico">📊</div><h3>Net Revenue</h3>
+                    <div class="num ${net >= 0 ? 'net-positive' : 'net-negative'}">Rs.${net.toLocaleString()}</div>
+                </div>
+                <div class="stat" style="border-bottom-color:var(--info)">
+                    <div class="ico">📄</div><h3>Pending GRN Payments</h3>
+                    <div class="num">${pendingGRNs}</div>
+                </div>
+                <div class="stat" style="border-bottom-color:#1abc9c">
+                    <div class="ico">📄</div><h3>Supplier Invoices</h3>
+                    <div class="num">${supplierInvoices.length}</div>
+                </div>
+                <div class="stat" style="border-bottom-color:var(--warning)">
+                    <div class="ico">⏳</div><h3>Pending Invoices</h3>
+                    <div class="num">${pendingInvoices}</div>
+                </div>
+            `;
+        }
+
+        // ===================== CHARTS =====================
+        let revChart = null, pieChart = null;
+        let currentPeriod = 'daily';
+
+        function setPeriod(p) {
+            currentPeriod = p;
+            document.querySelectorAll('.pbtn').forEach(b => b.classList.remove('act'));
+            document.getElementById('pb-' + p).classList.add('act');
+            buildRevChart();
+        }
+
+        function getWeek(ds) {
+            let d = new Date(ds);
+            let day = Math.floor((d - new Date('2026-01-01')) / (7 * 86400000));
+            return Math.min(Math.floor(day / 4) + 1, 6);
+        }
+
+        function getRevenueData(period) {
+            let labels = [], custData = [], wholeData = [], supData = [], netData = [];
+            let now = new Date();
+
+            if (period === 'daily') {
+                for (let i = 6; i >= 0; i--) {
+                    let d = new Date(now);
+                    d.setDate(d.getDate() - i);
+                    let ds = d.toISOString().split('T')[0];
+                    labels.push(ds.slice(5));
+                    let c = customerPayments.filter(p => p.date === ds).reduce((s, p) => s + p.amount, 0);
+                    let w = wholesalerPayments.filter(p => p.date === ds).reduce((s, p) => s + p.amount, 0);
+                    let s = supplierPayments.filter(p => p.date === ds).reduce((s2, p) => s2 + p.amount, 0);
+                    custData.push(c);
+                    wholeData.push(w);
+                    supData.push(s);
+                    netData.push(c + w - s);
+                }
+            } else if (period === 'weekly') {
+                let weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'];
+                labels = weeks;
+                for (let i = 0; i < 6; i++) {
+                    let c = customerPayments.filter(p => getWeek(p.date) === i + 1).reduce((s, p) => s + p.amount, 0);
+                    let w = wholesalerPayments.filter(p => getWeek(p.date) === i + 1).reduce((s, p) => s + p.amount, 0);
+                    let s = supplierPayments.filter(p => getWeek(p.date) === i + 1).reduce((s2, p) => s2 + p.amount, 0);
+                    custData.push(c);
+                    wholeData.push(w);
+                    supData.push(s);
+                    netData.push(c + w - s);
+                }
+            } else {
+                let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                labels = months;
+                for (let i = 0; i < 6; i++) {
+                    let m = String(i + 1).padStart(2, '0');
+                    let c = customerPayments.filter(p => p.date.slice(5, 7) === m).reduce((s, p) => s + p.amount, 0);
+                    let w = wholesalerPayments.filter(p => p.date.slice(5, 7) === m).reduce((s, p) => s + p.amount, 0);
+                    let s = supplierPayments.filter(p => p.date.slice(5, 7) === m).reduce((s2, p) => s2 + p.amount, 0);
+                    custData.push(c);
+                    wholeData.push(w);
+                    supData.push(s);
+                    netData.push(c + w - s);
+                }
+            }
+            return { labels, custData, wholeData, supData, netData };
+        }
+
+        function buildRevChart() {
+            let { labels, custData, wholeData, supData, netData } = getRevenueData(currentPeriod);
+            if (revChart) revChart.destroy();
+            revChart = new Chart(document.getElementById('revChart'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Customer Income', data: custData, backgroundColor: '#3498db', borderWidth: 0 },
+                        { label: 'Wholesaler Income', data: wholeData, backgroundColor: '#9b59b6', borderWidth: 0 },
+                        { label: 'Supplier Expense', data: supData, backgroundColor: 'rgba(231,76,60,0.25)',
+                            borderColor: '#e74c3c', borderWidth: 2 },
+                        {
+                            label: 'Net Revenue',
+                            data: netData,
+                            type: 'line',
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46,204,113,0.08)',
+                            borderWidth: 2,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#2ecc71',
+                            fill: false,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { autoSkip: false } },
+                        y: { ticks: { callback: v => 'Rs.' + (v / 1000).toFixed(0) + 'k' } }
+                    }
+                }
+            });
+        }
+
+        function buildPieChart() {
+            let totC = customerPayments.reduce((s, p) => s + p.amount, 0);
+            let totW = wholesalerPayments.reduce((s, p) => s + p.amount, 0);
+            let totS = supplierPayments.reduce((s, p) => s + p.amount, 0);
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Customer Income', 'Wholesaler Income', 'Supplier Expense'],
+                    data: [totC, totW, totS],
+                    backgroundColor: ['#3498db', '#9b59b6', '#e74c3c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // ===================== CUSTOMER PAYMENTS =====================
+        function addCustomerPayment() {
+            let name = document.getElementById('cp-name').value.trim();
+            let inv = document.getElementById('cp-inv').value.trim();
+            let amount = parseFloat(document.getElementById('cp-amount').value);
+            let date = document.getElementById('cp-date').value;
+            let method = document.getElementById('cp-method').value;
+            let ref = document.getElementById('cp-ref').value.trim();
+            if (!name || !inv || !amount || amount <= 0) { alert('Please fill in Customer Name, Invoice # and Amount.');
+                return; }
+            let id = 'CPAY-' + String(customerPayments.length + 1).padStart(3, '0');
+            customerPayments.push({ id, name, invoice: inv, amount, method, date: date || new Date().toISOString().split(
+                    'T')[0], reference: ref, type: 'Customer' });
+            save();
+            renderCustPay();
+            updateStats();
+            buildRevChart();
+            buildPieChart();
+            document.getElementById('cp-name').value = '';
+            document.getElementById('cp-inv').value = '';
+            document.getElementById('cp-amount').value = '';
+            document.getElementById('cp-ref').value = '';
+            alert('✅ Customer payment recorded: ' + id);
+        }
+
+        function renderCustPay() {
+            let html = '';
+            customerPayments.slice().reverse().forEach(p => {
+                html += `<tr><td>${p.id}</td><td>${p.name}</td><td>${p.invoice}</td>
+                         <td>Rs.${p.amount.toLocaleString()}</td><td>${p.method}</td>
+                         <td>${p.date}</td><td>${p.reference || '-'}</td></tr>`;
+            });
+            document.getElementById('cust-pay-body').innerHTML = html ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No records yet</td></tr>';
+        }
+
+        // ===================== WHOLESALER PAYMENTS =====================
+        function addWholesalerPayment() {
+            let name = document.getElementById('wp-name').value.trim();
+            let inv = document.getElementById('wp-inv').value.trim();
+            let amount = parseFloat(document.getElementById('wp-amount').value);
+            let date = document.getElementById('wp-date').value;
+            let method = document.getElementById('wp-method').value;
+            let ref = document.getElementById('wp-ref').value.trim();
+            if (!name || !inv || !amount || amount <= 0) { alert('Please fill in Wholesaler Name, Invoice # and Amount.');
+                return; }
+            let id = 'WPAY-' + String(wholesalerPayments.length + 1).padStart(3, '0');
+            wholesalerPayments.push({ id, name, invoice: inv, amount, method, date: date || new Date().toISOString().split(
+                    'T')[0], reference: ref, type: 'Wholesaler' });
+            save();
+            renderWholePay();
+            updateStats();
+            buildRevChart();
+            buildPieChart();
+            document.getElementById('wp-name').value = '';
+            document.getElementById('wp-inv').value = '';
+            document.getElementById('wp-amount').value = '';
+            document.getElementById('wp-ref').value = '';
+            alert('✅ Wholesaler payment recorded: ' + id);
+        }
+
+        function renderWholePay() {
+            let html = '';
+            wholesalerPayments.slice().reverse().forEach(p => {
+                html += `<tr><td>${p.id}</td><td>${p.name}</td><td>${p.invoice}</td>
+                         <td>Rs.${p.amount.toLocaleString()}</td><td>${p.method}</td>
+                         <td>${p.date}</td><td>${p.reference || '-'}</td></tr>`;
+            });
+            document.getElementById('whole-pay-body').innerHTML = html ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No records yet</td></tr>';
+        }
+
+        // ===================== SUPPLIER PAYMENTS =====================
+        function renderSupPay() {
+            let approved = grns.filter(g => g.status === 'Approved' || g.status === 'Manager Approved');
+            let html = '';
+            approved.forEach(g => {
+                let paid = supplierPayments.some(p => p.grnId === g.id);
+                html += `<tr>
+                            <td>${g.id}</td><td>${g.poId}</td><td>${g.supplier}</td><td>${g.material}</td>
+                            <td>${g.receivedQty || g.qty} kg</td><td>Rs.${(g.unitPrice || g.totalAmount / g.receivedQty).toLocaleString()}</td>
+                            <td>Rs.${(g.totalAmount || g.amount).toLocaleString()}</td>
+                            <td><span class="bdg ${paid ? 'bg-s' : 'bg-w'}">${paid ? 'Paid' : 'Pending'}</span></td>
+                            <td>${!paid ? `<button class="btn-sm" onclick="openSupForm('${g.id}','${g.supplier}',${g.totalAmount || g.amount})">💰 Pay Now</button>` : '-'}</td>
+                        </tr>`;
+            });
+            document.getElementById('sup-pay-body').innerHTML = html ||
+                '<tr><td colspan="9" style="text-align:center;color:#999;padding:20px">No approved GRNs found</td></tr>';
+        }
+
+        function openSupForm(grnId, supplier, amount) {
+            document.getElementById('sf-grn').value = grnId;
+            document.getElementById('sf-sup').value = supplier;
+            document.getElementById('sf-amt').value = 'Rs.' + amount.toLocaleString();
+            document.getElementById('sup-form').dataset.amount = amount;
+            document.getElementById('sup-form').style.display = 'block';
+            document.getElementById('sf-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('sf-ref').value = '';
+            document.getElementById('sup-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function processSupPay() {
+            let grnId = document.getElementById('sf-grn').value;
+            let supplier = document.getElementById('sf-sup').value;
+            let amount = parseFloat(document.getElementById('sup-form').dataset.amount);
+            let date = document.getElementById('sf-date').value;
+            let method = document.getElementById('sf-method').value;
+            let ref = document.getElementById('sf-ref').value.trim();
+            if (!grnId) { alert('No GRN selected'); return; }
+            let id = 'SPAY-' + String(supplierPayments.length + 1).padStart(3, '0');
+            supplierPayments.push({ id, grnId, supplier, amount, method, date: date || new Date().toISOString().split(
+                    'T')[0], reference: ref, type: 'Supplier' });
+            save();
+            document.getElementById('sup-form').style.display = 'none';
+            renderSupPay();
+            updateStats();
+            buildRevChart();
+            buildPieChart();
+            alert(`✅ Payment processed: ${id}\nSupplier: ${supplier}\nAmount: Rs.${amount.toLocaleString()}\nMethod: ${method}\nRef: ${ref || 'N/A'}`);
+        }
+
+        // ===================== SUPPLIER INVOICES (Integrated with GRNs) =====================
+        function renderSupInvoices() {
+            let approved = grns.filter(g => g.status === 'Approved' || g.status === 'Manager Approved');
+            let html = '';
+            approved.forEach(g => {
+                let hasInvoice = supplierInvoices.some(inv => inv.grnId === g.id);
+                let hasPayment = supplierPayments.some(p => p.grnId === g.id);
+                if (!hasInvoice && !hasPayment) {
+                    html += `<tr>
+                                <td>${g.id}</td><td>${g.poId}</td><td>${g.supplier}</td>
+                                <td>${g.material}</td>
+                                <td>Rs.${(g.totalAmount || g.amount).toLocaleString()}</td>
+                                <td><span class="bdg bg-grn">✅ Approved</span></td>
+                                <td><button class="btn-sm-success" onclick="openSupInvoiceForm('${g.id}','${g.supplier}',${g.totalAmount || g.amount})">📄 Generate Invoice</button></td>
+                            </tr>`;
+                } else if (hasInvoice) {
+                    let inv = supplierInvoices.find(inv => inv.grnId === g.id);
+                    html += `<tr>
+                                <td>${g.id}</td><td>${g.poId}</td><td>${g.supplier}</td>
+                                <td>${g.material}</td>
+                                <td>Rs.${(g.totalAmount || g.amount).toLocaleString()}</td>
+                                <td><span class="bdg bg-i">✅ Invoiced (${inv?.invoiceNumber || 'N/A'})</span></td>
+                                <td><span class="bdg ${inv?.status === 'Paid' ? 'bg-s' : 'bg-w'}">${inv?.status || 'Pending'}</span></td>
+                            </tr>`;
+                }
+            });
+            document.getElementById('sup-invoice-body').innerHTML = html ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No approved GRNs ready for invoice</td></tr>';
+
+            // Render generated invoices
+            let invHtml = '';
+            supplierInvoices.forEach(inv => {
+                let statusClass = inv.status === 'Paid' ? 'bg-s' : (inv.status === 'Sent' ? 'bg-i' : 'bg-w');
+                invHtml += `<tr>
+                            <td>${inv.invoiceNumber}</td>
+                            <td>${inv.grnId}</td>
+                            <td>${inv.supplier}</td>
+                            <td>Rs.${inv.amount.toLocaleString()}</td>
+                            <td>${inv.invoiceDate}</td>
+                            <td>${inv.dueDate}</td>
+                            <td><span class="bdg ${statusClass}">${inv.status || 'Pending'}</span></td>
+                        </tr>`;
+            });
+            document.getElementById('generated-invoices-body').innerHTML = invHtml ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No invoices generated yet</td></tr>';
+        }
+
+        function openSupInvoiceForm(grnId, supplier, amount) {
+            let invNumber = 'SINV-' + String(supplierInvoices.length + 1).padStart(4, '0');
+            document.getElementById('si-grn').value = grnId;
+            document.getElementById('si-sup').value = supplier;
+            document.getElementById('si-amt').value = 'Rs.' + amount.toLocaleString();
+            document.getElementById('si-number').value = invNumber;
+            document.getElementById('si-date').value = new Date().toISOString().split('T')[0];
+            let due = new Date();
+            due.setDate(due.getDate() + 30);
+            document.getElementById('si-due').value = due.toISOString().split('T')[0];
+
+            document.getElementById('si-preview').innerHTML = `
+                        <h4>📄 Invoice Preview</h4>
+                        <table>
+                            <tr><th style="width:40%;">Field</th><th style="width:60%;">Value</th></tr>
+                            <tr><td><strong>Invoice Number</strong></td><td>${invNumber}</td></tr>
+                            <tr><td><strong>GRN Number</strong></td><td>${grnId}</td></tr>
+                            <tr><td><strong>Supplier</strong></td><td>${supplier}</td></tr>
+                            <tr><td><strong>Invoice Date</strong></td><td>${document.getElementById('si-date').value}</td></tr>
+                            <tr><td><strong>Due Date</strong></td><td>${document.getElementById('si-due').value}</td></tr>
+                            <tr><td><strong>Amount</strong></td><td>Rs. ${amount.toLocaleString()}</td></tr>
+                            <tr><td><strong>Payment Terms</strong></td><td>${document.getElementById('si-terms').value}</td></tr>
+                            <tr class="total-row"><td><strong>Total Due</strong></td><td><strong>Rs. ${amount.toLocaleString()}</strong></td></tr>
+                        </table>
+                    `;
+
+            document.getElementById('sup-invoice-form').style.display = 'block';
+            document.getElementById('sup-invoice-form').dataset.grnId = grnId;
+            document.getElementById('sup-invoice-form').dataset.amount = amount;
+            document.getElementById('sup-invoice-form').dataset.supplier = supplier;
+            document.getElementById('sup-invoice-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateSupplierInvoice() {
+            let grnId = document.getElementById('sup-invoice-form').dataset.grnId;
+            let supplier = document.getElementById('sup-invoice-form').dataset.supplier;
+            let amount = parseFloat(document.getElementById('sup-invoice-form').dataset.amount);
+            let invNumber = document.getElementById('si-number').value;
+            let invDate = document.getElementById('si-date').value;
+            let dueDate = document.getElementById('si-due').value;
+            let terms = document.getElementById('si-terms').value;
+            let status = document.getElementById('si-status').value;
+
+            if (!grnId) { alert('No GRN selected'); return; }
+
+            if (supplierInvoices.some(inv => inv.grnId === grnId)) {
+                alert('Invoice already exists for this GRN!');
+                return;
+            }
+
+            let newInvoice = {
+                invoiceNumber: invNumber,
+                grnId: grnId,
+                supplier: supplier,
+                amount: amount,
+                invoiceDate: invDate,
+                dueDate: dueDate,
+                paymentTerms: terms,
+                status: status,
+                createdAt: new Date().toISOString()
+            };
+
+            supplierInvoices.push(newInvoice);
+            localStorage.setItem('supplierInvoices', JSON.stringify(supplierInvoices));
+
+            // Send email
+            sendSupplierInvoiceEmail(newInvoice);
+
+            document.getElementById('sup-invoice-form').style.display = 'none';
+            renderSupInvoices();
+            updateStats();
+
+            alert(`✅ Supplier Invoice ${invNumber} generated and sent to ${supplier}!\n\nAmount: Rs. ${amount.toLocaleString()}\nDue Date: ${dueDate}`);
+        }
+
+        function sendSupplierInvoiceEmail(invoice) {
+            let subject = encodeURIComponent(`📄 Supplier Invoice ${invoice.invoiceNumber} - Pearl Land Commodities`);
+            let body = encodeURIComponent(
+                `Dear ${invoice.supplier},\n\n` +
+                `Please find your invoice details below:\n\n` +
+                `─────────────────────\n` +
+                `Invoice Number: ${invoice.invoiceNumber}\n` +
+                `Invoice Date: ${invoice.invoiceDate}\n` +
+                `Due Date: ${invoice.dueDate}\n` +
+                `Payment Terms: ${invoice.paymentTerms}\n` +
+                `─────────────────────\n` +
+                `Amount: Rs. ${invoice.amount.toLocaleString()}\n` +
+                `─────────────────────\n\n` +
+                `Please make payment by the due date.\n\n` +
+                `For any questions, contact us at finance@pearlland.com\n\n` +
+                `🌿 Pearl Land Commodities\n` +
+                `📍 No 308/4, Temple Road, Kadanhena, Horana\n` +
+                `📞 +94 342 259 403\n\n` +
+                `© 2026 Pearl Land Commodities (Pvt) Ltd. All rights reserved.`
+            );
+
+            let supplierEmail = prompt(`Enter supplier email address for ${invoice.supplier}:`, 'supplier@example.com');
+            if (supplierEmail) {
+                window.open(`mailto:${supplierEmail}?subject=${subject}&body=${body}`, '_blank');
+            } else {
+                alert('Email not sent. You can manually send the invoice.');
+            }
+        }
+
+        // ===================== OUTSTANDING =====================
+        function renderOutstanding() {
+            let customerOut = [
+                { id: 'INV-2026-0125', customer: 'Saman Perera', date: '2026-02-10', dueDate: '2026-02-25',
+                amount: 25000 },
+                { id: 'INV-2026-0142', customer: 'Nimali Stores', date: '2026-02-25', dueDate: '2026-03-11',
+                amount: 42000 }
+            ];
+            let today = new Date();
+            let html = '';
+            customerOut.forEach(inv => {
+                let due = new Date(inv.dueDate);
+                let days = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
+                let cls = days > 30 ? 'bg-d' : days > 0 ? 'bg-w' : 'bg-s';
+                let txt = days > 30 ? 'Critical' : days > 0 ? 'Overdue' : 'Current';
+                html += `<tr><td>${inv.customer}</td><td>${inv.id}</td><td>${inv.date}</td><td>${inv.dueDate}</td>
+                         <td>Rs.${inv.amount.toLocaleString()}</td><td>${Math.max(0, days)} days</td>
+                         <td><span class="bdg ${cls}">${txt}</span></td></tr>`;
+            });
+            document.getElementById('out-body').innerHTML = html ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No outstanding payments</td></tr>';
+
+            let supOut = [];
+            supplierInvoices.forEach(inv => {
+                if (inv.status !== 'Paid') {
+                    let due = new Date(inv.dueDate);
+                    let days = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
+                    let cls = days > 30 ? 'bg-d' : days > 0 ? 'bg-w' : 'bg-s';
+                    let txt = days > 30 ? 'Critical' : days > 0 ? 'Overdue' : 'Current';
+                    supOut.push(`<tr>
+                                <td>${inv.supplier}</td><td>${inv.invoiceNumber}</td>
+                                <td>${inv.invoiceDate}</td><td>${inv.dueDate}</td>
+                                <td>Rs.${inv.amount.toLocaleString()}</td>
+                                <td>${Math.max(0, days)} days</td>
+                                <td><span class="bdg ${cls}">${txt}</span></td>
+                            </tr>`);
+                }
+            });
+            document.getElementById('sup-out-body').innerHTML = supOut.join('') ||
+                '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No outstanding supplier invoices</td></tr>';
+        }
+
+        // ===================== HISTORY =====================
+        let histFilter = 'all';
+
+        function filterHistory(f, el) {
+            histFilter = f;
+            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('act'));
+            el.classList.add('act');
+            renderHistory();
+        }
+
+        function renderHistory() {
+            let all = [
+                ...customerPayments.map(p => ({ ...p, party: p.name, refId: p.invoice })),
+                ...wholesalerPayments.map(p => ({ ...p, party: p.name, refId: p.invoice })),
+                ...supplierPayments.map(p => ({ ...p, party: p.supplier, refId: p.grnId }))
+            ];
+            let filtered = histFilter === 'all' ? all : all.filter(p => p.type === histFilter);
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            let html = '';
+            filtered.forEach(p => {
+                let cls = p.type === 'Customer' ? 'bg-i' : p.type === 'Wholesaler' ? 'bg-p' : 'bg-d';
+                html += `<tr>
+                            <td>${p.id}</td>
+                            <td><span class="bdg ${cls}">${p.type}</span></td>
+                            <td>${p.party}</td><td>${p.refId}</td>
+                            <td>Rs.${p.amount.toLocaleString()}</td>
+                            <td>${p.method}</td><td>${p.date}</td><td>${p.reference || '-'}</td>
+                        </tr>`;
+            });
+            document.getElementById('hist-body').innerHTML = html ||
+                '<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">No records found</td></tr>';
+        }
+
+        // ===================== REPORTS =====================
+        function genReport() {
+            let type = document.getElementById('rpt-type').value;
+            let from = document.getElementById('rpt-from').value;
+            let to = document.getElementById('rpt-to').value;
+
+            let all = [
+                ...customerPayments.map(p => ({ ...p, party: p.name, refId: p.invoice })),
+                ...wholesalerPayments.map(p => ({ ...p, party: p.name, refId: p.invoice })),
+                ...supplierPayments.map(p => ({ ...p, party: p.supplier, refId: p.grnId }))
+            ].filter(p => p.date >= from && p.date <= to);
+
+            let filtered = type === 'supplier' ? all.filter(p => p.type === 'Supplier') :
+                type === 'customer' ? all.filter(p => p.type === 'Customer') :
+                type === 'wholesaler' ? all.filter(p => p.type === 'Wholesaler') : all;
+
+            let totC = all.filter(p => p.type === 'Customer').reduce((s, p) => s + p.amount, 0);
+            let totW = all.filter(p => p.type === 'Wholesaler').reduce((s, p) => s + p.amount, 0);
+            let totS = all.filter(p => p.type === 'Supplier').reduce((s, p) => s + p.amount, 0);
+            let net = totC + totW - totS;
+
+            let titles = {
+                supplier: 'Supplier Payment Report',
+                customer: 'Customer Collection Report',
+                wholesaler: 'Wholesaler Collection Report',
+                cashflow: 'Cash Flow Statement'
+            };
+
+            let summary = type === 'cashflow' ? `
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+                            <div style="background:#e8f8ef;padding:12px;border-radius:8px;text-align:center">
+                                <div style="font-size:11px;color:#155724">Customer Income</div>
+                                <div style="font-size:18px;font-weight:700;color:#155724">Rs.${totC.toLocaleString()}</div>
+                            </div>
+                            <div style="background:#e8f0fd;padding:12px;border-radius:8px;text-align:center">
+                                <div style="font-size:11px;color:#3c1367">Wholesaler Income</div>
+                                <div style="font-size:18px;font-weight:700;color:#3c1367">Rs.${totW.toLocaleString()}</div>
+                            </div>
+                            <div style="background:#fdecea;padding:12px;border-radius:8px;text-align:center">
+                                <div style="font-size:11px;color:#721c24">Supplier Expense</div>
+                                <div style="font-size:18px;font-weight:700;color:#721c24">Rs.${totS.toLocaleString()}</div>
+                            </div>
+                            <div style="background:${net >= 0 ? '#e8f8ef' : '#fdecea'};padding:12px;border-radius:8px;text-align:center">
+                                <div style="font-size:11px;color:${net >= 0 ? '#155724' : '#721c24'}">Net Cash Flow</div>
+                                <div style="font-size:18px;font-weight:700;color:${net >= 0 ? '#155724' : '#721c24'}">Rs.${net.toLocaleString()}</div>
+                            </div>
+                        </div>
+                    ` : '';
+
+            let rows = '';
+            filtered.forEach(p => {
+                let cls = p.type === 'Customer' ? 'bg-i' : p.type === 'Wholesaler' ? 'bg-p' : 'bg-d';
+                rows += `<tr>
+                            <td><span class="bdg ${cls}">${p.type}</span></td>
+                            <td>${p.party}</td><td>${p.refId}</td>
+                            <td>Rs.${p.amount.toLocaleString()}</td>
+                            <td>${p.method}</td><td>${p.date}</td><td>${p.reference || '-'}</td>
+                        </tr>`;
+            });
+
+            document.getElementById('rpt-out').innerHTML = `
+                        <div class="card">
+                            <h2><i class="ti ti-file-analytics"></i> ${titles[type]}</h2>
+                            <p style="font-size:13px;color:#666;margin-bottom:14px">
+                                Period: <strong>${from}</strong> to <strong>${to}</strong> &nbsp;|&nbsp; ${filtered.length} transactions
+                            </p>
+                            ${summary}
+                            <table class="tbl">
+                                <thead><tr><th>Type</th><th>Party</th><th>Invoice/GRN</th><th>Amount (LKR)</th><th>Method</th><th>Date</th><th>Reference</th></tr></thead>
+                                <tbody>${rows || '<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">No records for this period</td></tr>'}</tbody>
+                            </table>
+                        </div>
+                    `;
+        }
+
+        // ===================== INIT =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('cp-date').value = today;
+            document.getElementById('wp-date').value = today;
+            document.getElementById('sf-date').value = today;
+            document.getElementById('si-date').value = today;
+            document.getElementById('rpt-from').value = '2026-01-01';
+            document.getElementById('rpt-to').value = today;
+
+            updateStats();
+            renderCustPay();
+            renderWholePay();
+            renderSupPay();
+            renderSupInvoices();
+            renderOutstanding();
+            renderHistory();
+            setTimeout(() => { buildRevChart(); buildPieChart(); }, 150);
+
+            // Auto sync
+            setInterval(() => {
+                let storedGrns = JSON.parse(localStorage.getItem('grns'));
+                if (storedGrns) grns = storedGrns;
+                let storedInvoices = JSON.parse(localStorage.getItem('supplierInvoices'));
+                if (storedInvoices) supplierInvoices = storedInvoices;
+                renderSupPay();
+                renderSupInvoices();
+                updateStats();
+            }, 5000);
+        });
+
+        console.log('💰 Account Clerk Dashboard loaded successfully!');
+        console.log('📊 Data loaded:', {
+            customerPayments: customerPayments.length,
+            wholesalerPayments: wholesalerPayments.length,
+            supplierPayments: supplierPayments.length,
+            grns: grns.length,
+            supplierInvoices: supplierInvoices.length
+        });
+    </script>
+</body>
+
+</html>
