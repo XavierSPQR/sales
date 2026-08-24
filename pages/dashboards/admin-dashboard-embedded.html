@@ -767,7 +767,14 @@
         }
 
         function logout() {
-            if (confirm('Logout?')) window.location.href = '../../index.html';
+            if (confirm('Logout?')) {
+                try {
+                    localStorage.removeItem('user_session');
+                } catch (e) {
+                    console.error('Failed to clear session storage:', e);
+                }
+                window.location.href = '../auth/login.html';
+            }
         }
 
         // Initialize

@@ -1326,7 +1326,11 @@
         // ===================== LOGOUT =====================
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.clear();
+                try {
+                    localStorage.clear();
+                } catch (e) {
+                    console.error('Failed to clear session storage:', e);
+                }
                 window.location.href = '../auth/login.html';
             }
         }
