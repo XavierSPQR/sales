@@ -1894,6 +1894,29 @@
             setTimeout(() => { window.location.href = '../auth/login.html'; }, 2200);
         }
 
+        // A single 401/403 can be a one-off blip rather than a real logout -
+        // e.g. this same browser has another Pearl Land tab open under a
+        // different role/session, and something there transiently touched
+        // the shared cookie. Re-check a beat later before showing the
+        // "you're logged out" banner; only act if the failure is still
+        // there. Callers should fire this instead of handleAuthFailure()
+        // directly whenever a 401/403 comes from a background poll rather
+        // than a user-initiated action.
+        let authRecheckInFlight = false;
+        function confirmAuthFailure() {
+            if (authFailureHandled || authRecheckInFlight) return;
+            authRecheckInFlight = true;
+            setTimeout(async () => {
+                authRecheckInFlight = false;
+                try {
+                    const r = await fetch('../../api/manager_purchase_orders.php');
+                    if (r.status === 401 || r.status === 403) {
+                        handleAuthFailure();
+                    }
+                } catch (e) { /* network hiccup, not an auth failure - ignore */ }
+            }, 1500);
+        }
+
         // Sample Requests + QC Results - loaded from the real backend
         // (api/manager_samples.php), which reads the same stock_clerk_db
         // tables the Stock Clerk's dashboard writes to. See loadSampleData().
@@ -1910,7 +1933,7 @@
                     sampleRequests = [];
                     qcReports = [];
                     if (response.status === 401 || response.status === 403) {
-                        handleAuthFailure();
+                        confirmAuthFailure();
                     }
                     return;
                 }
@@ -1958,7 +1981,7 @@
                 const result = await response.json();
                 registeredSuppliers = result.success ? (result.suppliers || []) : [];
                 if (!result.success && (response.status === 401 || response.status === 403)) {
-                    handleAuthFailure();
+                    confirmAuthFailure();
                 }
             } catch (err) {
                 console.error('Could not reach supplier directory service:', err);
@@ -2516,7 +2539,7 @@
                     console.error('Failed to load purchase orders:', result.message);
                     purchaseOrders = [];
                     if (response.status === 401 || response.status === 403) {
-                        handleAuthFailure();
+                        confirmAuthFailure();
                     }
                     return;
                 }
