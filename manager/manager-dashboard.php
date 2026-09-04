@@ -1,6 +1,6 @@
 <?php
 // manager-dashboard.php
-require_once 'includes/auth.php';
+require_once __DIR__ . '/../includes/auth.php';
 requireRole('manager');
 
 $pdo = Database::getInstance()->getConnection();
@@ -16,8 +16,8 @@ $orderCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE MONTH(order_date) =
 $pendingSuppliers = $pdo->query("
     SELECT s.*, 
            s.created_at as registered_date,
-           s.company_name,
-           s.contact_person,
+           s.name as company_name,
+           s.contact as contact_person,
            s.email,
            s.phone,
            s.business_type,
@@ -33,8 +33,8 @@ $activeSuppliers = $pdo->query("
     SELECT s.*, 
            s.created_at as registered_date,
            s.updated_at as approved_date,
-           s.company_name,
-           s.contact_person,
+           s.name as company_name,
+           s.contact as contact_person,
            s.email,
            s.phone,
            s.business_type,
@@ -44,7 +44,7 @@ $activeSuppliers = $pdo->query("
            (SELECT COALESCE(SUM(po.total_amount), 0) FROM purchase_orders po WHERE po.supplier_id = s.supplier_id) as total_orders_cost
     FROM suppliers s 
     WHERE s.status = 'active' 
-    ORDER BY s.company_name ASC
+    ORDER BY s.name ASC
 ")->fetchAll();
 
 // ===================== GET RECENT ORDERS =====================
@@ -57,11 +57,15 @@ $orders = $pdo->query("
 ")->fetchAll();
 
 // ===================== GET EMAIL LOG =====================
-$emailLog = $pdo->query("
-    SELECT * FROM email_log 
-    ORDER BY sent_at DESC 
-    LIMIT 50
-")->fetchAll();
+try {
+    $emailLog = $pdo->query("
+        SELECT * FROM email_log
+        ORDER BY sent_at DESC
+        LIMIT 50
+    ")->fetchAll();
+} catch (Exception $e) {
+    $emailLog = [];
+}
 
 // ===================== HANDLE APPROVE/REJECT ACTIONS =====================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -518,3 +522,39 @@ $errorMessage = $_SESSION['error'] ?? '';
 unset($_SESSION['success']);
 unset($_SESSION['error']);
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manager Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 30px; background: #f4f6f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-val { font-size: 28px; font-weight: bold; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>🌿 Manager Dashboard</h1>
+    <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name'] ?? 'Manager'); ?>!</p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Customers</h3>
+            <div class="stat-val"><?php echo $customerCount; ?></div>
+        </div>
+        <div class="card">
+            <h3>Active Suppliers</h3>
+            <div class="stat-val"><?php echo $supplierCount; ?></div>
+        </div>
+        <div class="card">
+            <h3>Pending Suppliers</h3>
+            <div class="stat-val"><?php echo $pendingSupplierCount; ?></div>
+        </div>
+        <div class="card">
+            <h3>Products</h3>
+            <div class="stat-val"><?php echo $productCount; ?></div>
+        </div>
+    </div>
+</body>
+</html>
