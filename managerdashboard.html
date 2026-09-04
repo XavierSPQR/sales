@@ -1841,7 +1841,7 @@
     <script>
         // ===================== DATA =====================
         // Customer Orders
-        let customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || [
+        let customerOrders = JSON.parse(null) || [
             { id: 'CUST-001', customer: 'John Doe', product: 'Cinnamon', qty: 25, amount: 11250, status: 'Delivered', payment: 'Online', date: '2026-01-15' },
             { id: 'CUST-002', customer: 'Mary Smith', product: 'Black Pepper', qty: 15, amount: 11700, status: 'Processing', payment: 'COD', date: '2026-02-10' },
             { id: 'CUST-003', customer: 'ABC Wholesale', product: 'Turmeric', qty: 100, amount: 32000, status: 'Pending', payment: 'Online', date: '2026-03-05' },
@@ -1850,7 +1850,7 @@
         ];
 
         // Supplier Orders
-        let supplierOrders = JSON.parse(localStorage.getItem('supplierOrders')) || [
+        let supplierOrders = JSON.parse(null) || [
             { id: 'SUPP-001', supplier: 'Lanka Spices', material: 'Cinnamon', qty: 200, amount: 90000, status: 'Delivered', date: '2026-01-10' },
             { id: 'SUPP-002', supplier: 'Kalutara Farmers', material: 'Turmeric', qty: 150, amount: 52500, status: 'Processing', date: '2026-02-20' },
             { id: 'SUPP-003', supplier: 'Ceylon Pepper Co', material: 'Black Pepper', qty: 100, amount: 78000, status: 'Pending', date: '2026-03-01' },
@@ -1858,20 +1858,20 @@
         ];
 
         // Wholesaler Orders
-        let wholesalerOrders = JSON.parse(localStorage.getItem('wholesalerOrders')) || [];
+        let wholesalerOrders = JSON.parse(null) || [];
 
-        let sampleRequests = JSON.parse(localStorage.getItem('sampleRequests')) || [
+        let sampleRequests = JSON.parse(null) || [
             { id: 'SAMP-001', supplier: 'Lanka Spices', material: 'Black Pepper', qty: 2, requestDate: '2026-06-05', status: 'Pending', sampleSent: false },
             { id: 'SAMP-002', supplier: 'Kalutara Farmers', material: 'Turmeric Roots', qty: 3, requestDate: '2026-06-08', status: 'Pending', sampleSent: false }
         ];
 
-        let qcReports = JSON.parse(localStorage.getItem('qcReports')) || [
+        let qcReports = JSON.parse(null) || [
             { sampleId: 'SAMP-001', supplier: 'Lanka Spices', material: 'Black Pepper', testDate: '2026-06-10', result: 'Pass', remarks: 'Good quality', price: 750 },
             { sampleId: 'SAMP-002', supplier: 'Kalutara Farmers', material: 'Turmeric Roots', testDate: '2026-06-12', result: 'Reject', remarks: 'High moisture', price: null }
         ];
 
-        let purchaseOrders = JSON.parse(localStorage.getItem('purchaseOrders')) || [];
-        let grns = JSON.parse(localStorage.getItem('grns')) || [];
+        let purchaseOrders = JSON.parse(null) || [];
+        let grns = JSON.parse(null) || [];
 
         let sampleOrders = [
             { id: 'ORD001', customer: 'John Doe', product: 'Cinnamon', qty: 25, amount: 11250, status: 'Pending', payment: 'Online' },
@@ -1879,7 +1879,7 @@
             { id: 'ORD003', customer: 'Mary Smith', product: 'Pepper', qty: 15, amount: 11700, status: 'Delivered', payment: 'COD' }
         ];
 
-        let products = JSON.parse(localStorage.getItem('managerProducts')) || [
+        let products = JSON.parse(null) || [
             { code: 'P001', name: 'Cinnamon', category: 'Spice', price: 450, stock: 150, minStock: 50, totalSales: 125 },
             { code: 'P002', name: 'Tea', category: 'Beverage', price: 320, stock: 200, minStock: 100, totalSales: 80 },
             { code: 'P003', name: 'Black Pepper', category: 'Spice', price: 780, stock: 8, minStock: 20, totalSales: 45 },
@@ -1888,25 +1888,25 @@
         ];
 
         // ===================== SUPPLIER REGISTRATION DATA =====================
-        let supplierRegistrations = JSON.parse(localStorage.getItem('registered_users')) || [];
-        let pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
-        let suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+        let supplierRegistrations = JSON.parse(null) || [];
+        let pendingRegistrations = JSON.parse(null) || [];
+        let suppliers = JSON.parse(null) || [];
 
         // ===================== SAVE FUNCTIONS =====================
         function saveAllData() {
-            localStorage.setItem('customerOrders', JSON.stringify(customerOrders));
-            localStorage.setItem('supplierOrders', JSON.stringify(supplierOrders));
-            localStorage.setItem('wholesalerOrders', JSON.stringify(wholesalerOrders));
-            localStorage.setItem('managerProducts', JSON.stringify(products));
-            localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
-            localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
-            localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
         }
 
         function loadSupplierRegistrations() {
-            supplierRegistrations = JSON.parse(localStorage.getItem('registered_users')) || [];
-            pendingRegistrations = JSON.parse(localStorage.getItem('pending_registrations')) || [];
-            suppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+            supplierRegistrations = JSON.parse(null) || [];
+            pendingRegistrations = JSON.parse(null) || [];
+            suppliers = JSON.parse(null) || [];
             
             // Sync pending registrations
             const pendingFromUsers = supplierRegistrations.filter(u => u.status === 'pending' || u.account_status === 'pending');
@@ -1961,9 +1961,9 @@
                 }
             });
             
-            localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
-            localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
-            localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
             return { supplierRegistrations, pendingRegistrations, suppliers };
         }
 
@@ -2131,7 +2131,7 @@
         }
 
         function refreshWholesalerOrders() {
-            wholesalerOrders = JSON.parse(localStorage.getItem('wholesalerOrders')) || [];
+            wholesalerOrders = JSON.parse(null) || [];
             renderWholesalerOrders();
             renderDashboard();
             alert('✅ Wholesaler orders refreshed!');
@@ -2146,7 +2146,7 @@
                 order.approvedDate = new Date().toISOString().split('T')[0];
                 saveAllData();
 
-                let stockNotifications = JSON.parse(localStorage.getItem('stockNotifications')) || [];
+                let stockNotifications = JSON.parse(null) || [];
                 stockNotifications.push({
                     orderId: order.id,
                     message: `New order ${order.id} from wholesaler approved for delivery. Total: Rs. ${order.total.toLocaleString()}`,
@@ -2154,9 +2154,9 @@
                     read: false,
                     type: 'wholesaler_delivery'
                 });
-                localStorage.setItem('stockNotifications', JSON.stringify(stockNotifications));
+                /* localStorage removed */
 
-                let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+                let userMessages = JSON.parse(null) || [];
                 userMessages.push({
                     orderId: order.id,
                     message: `✅ Your order ${order.id} has been approved by Manager. Stock Clerk will process delivery soon.`,
@@ -2164,7 +2164,7 @@
                     recipientType: 'Wholesaler',
                     type: 'approved'
                 });
-                localStorage.setItem('userMessages', JSON.stringify(userMessages));
+                /* localStorage removed */
 
                 renderWholesalerOrders();
                 renderDashboard();
@@ -2294,8 +2294,8 @@
         }
 
         function refreshSamples() {
-            sampleRequests = JSON.parse(localStorage.getItem('sampleRequests')) || sampleRequests;
-            qcReports = JSON.parse(localStorage.getItem('qcReports')) || qcReports;
+            sampleRequests = JSON.parse(null) || sampleRequests;
+            qcReports = JSON.parse(null) || qcReports;
             renderSamples();
             alert('✅ Samples refreshed!');
         }
@@ -2347,10 +2347,10 @@
             };
 
             purchaseOrders.push(newPO);
-            localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+            /* localStorage removed */
 
             const sample = sampleRequests.find(s => s.id === sampleId);
-            if (sample) { sample.status = 'PO Created'; localStorage.setItem('sampleRequests', JSON.stringify(sampleRequests)); }
+            if (sample) { sample.status = 'PO Created'; /* localStorage removed */ }
 
             closeModal('poModal');
             alert(`✅ PO ${poId} created successfully!\n\nSupplier: ${supplier}\nMaterial: ${material}\nQuantity: ${qty}kg\nTotal: Rs. ${total.toLocaleString()}\nDelivery: ${deliveryDate}\nPayment Terms: ${terms}\nPayment Status: ${paymentStatus}`);
@@ -2423,7 +2423,7 @@
             if (po) {
                 po.status = 'Approved';
                 po.approvedDate = new Date().toISOString().split('T')[0];
-                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+                /* localStorage removed */
                 alert(`✅ PO ${id} approved!\nPayment Terms: ${po.paymentTerms}\nPayment Status: ${po.paymentStatus}`);
                 renderPOs();
                 renderDashboard();
@@ -2433,7 +2433,7 @@
         function rejectPO(id) {
             if (confirm('Reject PO ' + id + '?')) {
                 purchaseOrders = purchaseOrders.filter(p => p.id !== id);
-                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+                /* localStorage removed */
                 alert('❌ PO ' + id + ' rejected.');
                 renderPOs();
             }
@@ -2446,7 +2446,7 @@
             let newStatus = prompt(`Current Payment Status: ${current}\n\nEnter new status:\n- Pending\n- Paid\n- Overdue`, current);
             if (newStatus && ['Pending', 'Paid', 'Overdue'].includes(newStatus)) {
                 po.paymentStatus = newStatus;
-                localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+                /* localStorage removed */
                 renderPOs();
                 alert(`✅ Payment status updated to: ${newStatus}`);
             } else if (newStatus !== null) {
@@ -2525,7 +2525,7 @@
                 const newCode = 'P' + String(products.length + 1).padStart(3, '0');
                 products.push({ code: newCode, name, category, price, stock, minStock, totalSales: 0 });
             }
-            localStorage.setItem('managerProducts', JSON.stringify(products));
+            /* localStorage removed */
             closeModal('productModal');
             renderProducts();
             alert(`✅ Product ${code || 'added'} successfully!`);
@@ -2716,9 +2716,9 @@
                     }
                 }
                 
-                localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
-                localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
-                localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+                /* localStorage removed */
+                /* localStorage removed */
+                /* localStorage removed */
                 
                 renderSuppliers();
                 renderDashboard();
@@ -2803,9 +2803,9 @@
                         }
                     }
                     
-                    localStorage.setItem('registered_users', JSON.stringify(supplierRegistrations));
-                    localStorage.setItem('pending_registrations', JSON.stringify(pendingRegistrations));
-                    localStorage.setItem('managerSuppliers', JSON.stringify(suppliers));
+                    /* localStorage removed */
+                    /* localStorage removed */
+                    /* localStorage removed */
                     
                     renderSuppliers();
                     closeModal('rejectModal');
@@ -3249,13 +3249,10 @@
                 const newBtn = logoutBtn.cloneNode(true);
                 logoutBtn.parentNode.replaceChild(newBtn, logoutBtn);
                 
-                newBtn.addEventListener('click', function(e) {
+                newBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
                     if (confirm('Do you want to logout?')) {
-                        // Clear session storage
-                        localStorage.removeItem('user_session');
-                        localStorage.removeItem('supplier_session');
-                        // Redirect to login page
+                        try { await fetch('logout.php'); } catch(e) {}
                         window.location.href = 'login.html';
                     }
                 });
@@ -3264,10 +3261,9 @@
         });
 
         // Backup logout function
-        function logoutToLogin() {
+        async function logoutToLogin() {
             if (confirm('Do you want to logout?')) {
-                localStorage.removeItem('user_session');
-                localStorage.removeItem('supplier_session');
+                try { await fetch('logout.php'); } catch(e) {}
                 window.location.href = 'login.html';
             }
         }
@@ -3293,13 +3289,13 @@
         showSection('dashboard');
 
         setInterval(() => {
-            customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || customerOrders;
-            supplierOrders = JSON.parse(localStorage.getItem('supplierOrders')) || supplierOrders;
-            wholesalerOrders = JSON.parse(localStorage.getItem('wholesalerOrders')) || wholesalerOrders;
-            sampleRequests = JSON.parse(localStorage.getItem('sampleRequests')) || sampleRequests;
-            qcReports = JSON.parse(localStorage.getItem('qcReports')) || qcReports;
-            purchaseOrders = JSON.parse(localStorage.getItem('purchaseOrders')) || purchaseOrders;
-            products = JSON.parse(localStorage.getItem('managerProducts')) || products;
+            customerOrders = JSON.parse(null) || customerOrders;
+            supplierOrders = JSON.parse(null) || supplierOrders;
+            wholesalerOrders = JSON.parse(null) || wholesalerOrders;
+            sampleRequests = JSON.parse(null) || sampleRequests;
+            qcReports = JSON.parse(null) || qcReports;
+            purchaseOrders = JSON.parse(null) || purchaseOrders;
+            products = JSON.parse(null) || products;
             loadSupplierRegistrations();
 
             if (document.getElementById('wholesaler-ordersSection').classList.contains('active')) {

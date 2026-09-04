@@ -985,18 +985,22 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- Manager
 INSERT IGNORE INTO users (username, password, role, full_name, email, phone, address, city, status, redirect_page) VALUES
-('manager_kamal', 'manager123', 'manager', 'Kamal Perera', 'kamal@pearlland.com', '071-0000001', 'No 308/4, Temple Road', 'Horana', 'active', 'managerdashboard.html');
+('manager', 'manager123', 'manager', 'Admin Manager', 'manager@pearlland.com', '071-0000001', 'No 308/4, Temple Road', 'Horana', 'active', 'manager-dashboard.php'),
+('manager_kamal', 'manager123', 'manager', 'Kamal Perera', 'kamal@pearlland.com', '071-0000001', 'No 308/4, Temple Road', 'Horana', 'active', 'manager-dashboard.php');
 
 -- Admin
 INSERT IGNORE INTO users (username, password, role, full_name, email, phone, address, city, status, redirect_page) VALUES
-('admin_nimal', 'admin123', 'admin', 'Nimal Fernando', 'nimal@pearlland.com', '071-0000002', 'No 301/2, Medikele', 'Horana', 'active', 'admin-dashboard.html');
+('admin', 'admin123', 'admin', 'System Admin', 'admin@pearlland.com', '071-0000002', 'No 301/2, Medikele', 'Horana', 'active', 'admin-dashboard-embedded.html'),
+('admin_nimal', 'admin123', 'admin', 'Nimal Fernando', 'nimal@pearlland.com', '071-0000002', 'No 301/2, Medikele', 'Horana', 'active', 'admin-dashboard-embedded.html');
 
 -- Stock Clerk
 INSERT IGNORE INTO users (username, password, role, full_name, email, phone, address, city, status, redirect_page) VALUES
+('clerk', 'clerk123', 'stock_clerk', 'Stock Clerk', 'clerk@pearlland.com', '071-0000003', 'No 308/4, Temple Road', 'Horana', 'active', 'stockdashboard.html'),
 ('clerk_saman', 'clerk123', 'stock_clerk', 'Saman Rathnayake', 'saman@pearlland.com', '071-0000003', 'No 308/4, Temple Road', 'Horana', 'active', 'stockdashboard.html');
 
 -- Account Clerk
 INSERT IGNORE INTO users (username, password, role, full_name, email, phone, address, city, status, redirect_page) VALUES
+('account', 'account123', 'account_clerk', 'Account Clerk', 'account@pearlland.com', '071-0000004', 'No 308/4, Temple Road', 'Horana', 'active', 'accountdashboard.html'),
 ('account_sunil', 'account123', 'account_clerk', 'Sunil Wickramasinghe', 'sunil@pearlland.com', '071-0000004', 'No 308/4, Temple Road', 'Horana', 'active', 'accountdashboard.html');
 
 -- Sample Customer (Already approved/active)

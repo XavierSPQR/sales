@@ -848,8 +848,6 @@
 
                 if (result.success) {
                     document.getElementById('successMessage').style.display = 'block';
-                    localStorage.setItem('registered_username', username);
-                    localStorage.setItem('registered_email', email);
                     
                     setTimeout(() => {
                         window.location.href = 'login.html';
@@ -860,38 +858,9 @@
                     submitBtn.textContent = '🌶️ Create Customer Account';
                 }
             } catch (error) {
-                // Offline mode - Save to localStorage
-                let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-                
-                if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-                    showError('Username already exists. Please choose another.');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '🌶️ Create Customer Account';
-                    return;
-                }
-                
-                if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-                    showError('Email already registered. Please use another email.');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '🌶️ Create Customer Account';
-                    return;
-                }
-                
-                users.push({
-                    ...data,
-                    id: Date.now(),
-                    registered_at: new Date().toISOString()
-                });
-                
-                localStorage.setItem('registered_users', JSON.stringify(users));
-                
-                document.getElementById('successMessage').style.display = 'block';
-                localStorage.setItem('registered_username', username);
-                localStorage.setItem('registered_email', email);
-                
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2500);
+                showError('Server error or network failure. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🌶️ Create Customer Account';
             }
         });
 

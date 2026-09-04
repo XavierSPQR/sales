@@ -402,16 +402,16 @@
         // LOAD ORDERS: merge customer orders + sample orders
         // ============================================================
         function loadOrders() {
-            let linked = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+            let linked = JSON.parse(null || '[]');
             if (linked.length === 0) {
                 // first time: seed with sample data and save
                 orders = [...sampleOrders];
-                localStorage.setItem('linkedDashOrders', JSON.stringify(orders));
+                /* localStorage removed */
             } else {
                 orders = linked;
             }
             // Also sync manager approval status from managerOrders
-            let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+            let managerOrders = JSON.parse(null || '[]');
             managerOrders.forEach(mo => {
                 let o = orders.find(x => x.id === mo.id);
                 if (o && mo.status) o.orderStatus = mo.status;
@@ -422,7 +422,7 @@
         // SAVE ORDERS: write back to localStorage so customer sees it
         // ============================================================
         function saveOrders() {
-            localStorage.setItem('linkedDashOrders', JSON.stringify(orders));
+            /* localStorage removed */
         }
 
         function refreshFromCustomer() {

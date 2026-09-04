@@ -987,8 +987,8 @@
         ];
 
         const featuredProducts = products.filter(p => p.isEnabled).slice(0, 3);
-        let cart = JSON.parse(localStorage.getItem('wholesaleCart')) || [];
-        let orders = JSON.parse(localStorage.getItem('wholesalerOrders')) || [];
+        let cart = JSON.parse(null) || [];
+        let orders = JSON.parse(null) || [];
 
         function generateOrderId() {
             const date = new Date();
@@ -1051,7 +1051,7 @@
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartCount').innerText = count;
             document.getElementById('headerCartCount').innerText = count;
-            localStorage.setItem('wholesaleCart', JSON.stringify(cart));
+            /* localStorage removed */
         }
 
         function addToCart(productId) {
@@ -1121,19 +1121,19 @@
             };
 
             orders.push(order);
-            localStorage.setItem('wholesalerOrders', JSON.stringify(orders));
+            /* localStorage removed */
 
             // Also save to manager orders for approval
-            let managerOrders = JSON.parse(localStorage.getItem('managerOrders')) || [];
+            let managerOrders = JSON.parse(null) || [];
             managerOrders.push({
                 ...order,
                 wholesalerName: 'Saman Perera',
                 wholesalerEmail: 'saman@example.com'
             });
-            localStorage.setItem('managerOrders', JSON.stringify(managerOrders));
+            /* localStorage removed */
 
             // Send notification to manager
-            let notifications = JSON.parse(localStorage.getItem('managerNotifications')) || [];
+            let notifications = JSON.parse(null) || [];
             notifications.push({
                 orderId: order.id,
                 message: `New wholesaler order ${order.id} from Saman Perera - Total: Rs. ${totalWithDelivery.toLocaleString()}`,
@@ -1141,7 +1141,7 @@
                 read: false,
                 type: 'wholesaler_order'
             });
-            localStorage.setItem('managerNotifications', JSON.stringify(notifications));
+            /* localStorage removed */
 
             // Clear cart
             cart = [];
@@ -1156,7 +1156,7 @@
 
         // Listen for status updates from manager (via localStorage)
         function checkForOrderUpdates() {
-            const updatedOrders = JSON.parse(localStorage.getItem('wholesalerOrders')) || [];
+            const updatedOrders = JSON.parse(null) || [];
             if (updatedOrders.length !== orders.length) {
                 orders = updatedOrders;
                 renderWholesalerOrders();
@@ -1334,7 +1334,7 @@
 
         function renderUserMessages() {
             try {
-                let messages = JSON.parse(localStorage.getItem('userMessages')) || [];
+                let messages = JSON.parse(null) || [];
                 let html = '';
                 const orderMessages = messages.filter(m => m.recipientType === 'Wholesaler');
                 
@@ -1360,10 +1360,10 @@
             }
         }
 
-        function logout() { 
+        async function logout() {
             cart = []; 
-            localStorage.removeItem('wholesaleCart'); 
-            window.location.href = 'index.html'; 
+            try { await fetch('logout.php'); } catch(e) {}
+            window.location.href = 'login.html';
         }
 
         // Initialize

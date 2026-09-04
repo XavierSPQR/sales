@@ -18,45 +18,34 @@ endpoint_guard(function (): void {
         $user = null;
     }
 
-    if ($user) {
-        if (isset($user['status']) && $user['status'] !== 'active') {
-            fail('Invalid username or inactive account', 401);
-        }
-
-        $stored = (string)$user['password'];
-        $valid = password_verify($password, $stored) || hash_equals($stored, $password);
-
-        if (!$valid) {
-            fail('Invalid username or password', 401);
-        }
-
-        if (isset($user['user_id']) && !password_get_info($stored)['algo']) {
-            try {
-                $hash = password_hash($password, PASSWORD_DEFAULT);
-                $update = get_pdo()->prepare('UPDATE users SET password = ? WHERE user_id = ?');
-                $update->execute([$hash, $user['user_id']]);
-            } catch (Throwable $e) {}
-        }
-
-        try {
-            get_pdo()->prepare('UPDATE users SET last_login = NOW() WHERE user_id = ?')->execute([$user['user_id']]);
-        } catch (Throwable $e) {}
-
-        update_user_session($user);
-    } else {
-        // Fallback for demo manager credentials if database user is not found
-        if ($username === 'manager' && $password === 'manager123') {
-            $user = [
-                'user_id' => 1,
-                'username' => 'manager',
-                'role' => 'manager',
-                'full_name' => 'Admin Manager'
-            ];
-            update_user_session($user);
-        } else {
-            fail('Invalid username or password', 401);
-        }
+    if (!$user) {
+        fail('Invalid username or password', 401);
     }
+
+    if (isset($user['status']) && $user['status'] !== 'active') {
+        fail('Invalid username or inactive account', 401);
+    }
+
+    $stored = (string)$user['password'];
+    $valid = password_verify($password, $stored) || hash_equals($stored, $password);
+
+    if (!$valid) {
+        fail('Invalid username or password', 401);
+    }
+
+    if (isset($user['user_id']) && !password_get_info($stored)['algo']) {
+        try {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $update = get_pdo()->prepare('UPDATE users SET password = ? WHERE user_id = ?');
+            $update->execute([$hash, $user['user_id']]);
+        } catch (Throwable $e) {}
+    }
+
+    try {
+        get_pdo()->prepare('UPDATE users SET last_login = NOW() WHERE user_id = ?')->execute([$user['user_id']]);
+    } catch (Throwable $e) {}
+
+    update_user_session($user);
 
     $redirects = [
         'admin' => 'admin-dashboard.php',

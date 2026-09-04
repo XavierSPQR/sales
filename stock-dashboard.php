@@ -1254,7 +1254,7 @@ $rawMaterialsJSON = json_encode($rawMaterials);
                         
                         // Clear local storage
                         try {
-                            localStorage.clear();
+                            /* localStorage cleared */
                             sessionStorage.clear();
                         } catch(e) { /* Ignore */ }
                         

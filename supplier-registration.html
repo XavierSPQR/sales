@@ -581,52 +581,7 @@
                     showError(result.message || 'Registration failed. Please try again.');
                 }
             } catch (error) {
-                // Offline fallback - save to localStorage
-                try {
-                    const users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-
-                    // Check if username already exists
-                    if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-                        showError('Username already exists. Please choose another.');
-                        btn.disabled = false;
-                        btn.textContent = '🚚 Register as Supplier';
-                        return;
-                    }
-
-                    const newUser = {
-                        ...data,
-                        registration_id: Date.now(),
-                        created_at: new Date().toISOString(),
-                        status: 'pending',
-                        account_status: 'pending'
-                    };
-
-                    users.push(newUser);
-                    localStorage.setItem('registered_users', JSON.stringify(users));
-
-                    // Also save to pending registrations for admin dashboard
-                    const pending = JSON.parse(localStorage.getItem('pending_registrations') || '[]');
-                    pending.push({
-                        ...newUser,
-                        request_id: Date.now(),
-                        request_code: 'REQ-' + Date.now().toString().slice(-6),
-                        status: 'Pending'
-                    });
-                    localStorage.setItem('pending_registrations', JSON.stringify(pending));
-
-                    successDiv.textContent = '✅ Registration submitted (Offline mode)! Admin will review and approve.';
-                    successDiv.style.display = 'block';
-
-                    document.getElementById('registerForm').reset();
-                    document.getElementById('passwordStrengthBar').className = 'bar';
-                    document.getElementById('passwordStrengthLabel').textContent = '';
-
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 5000);
-                } catch (localErr) {
-                    showError('Connection error. Please try again later.');
-                }
+                showError('Server error or network connection failure. Please try again.');
             }
 
             btn.disabled = false;
@@ -661,12 +616,12 @@
         });
 
         // ========== CHECK FOR EXISTING SESSION ==========
-        // If user already logged in, redirect to dashboard
-        (function checkSession() {
+        (async function checkSession() {
             try {
-                const session = JSON.parse(localStorage.getItem('user_session'));
-                if (session && session.role === 'supplier') {
-                    window.location.href = 'supplierdashboard.html';
+                const res = await fetch('api/me.php');
+                const data = await res.json();
+                if (data.success && data.user && data.user.role === 'supplier') {
+                    window.location.href = 'supllierdashboard.html';
                 }
             } catch (e) {}
         })();

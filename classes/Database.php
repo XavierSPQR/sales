@@ -91,6 +91,12 @@ class Database {
             password TEXT NOT NULL,
             role TEXT NOT NULL,
             full_name TEXT NOT NULL,
+            email TEXT,
+            phone TEXT,
+            address TEXT,
+            city TEXT,
+            status TEXT DEFAULT 'active',
+            redirect_page TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
@@ -137,10 +143,11 @@ class Database {
 
         $userCount = $this->pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
         if ($userCount == 0) {
-            $stmt = $this->pdo->prepare("INSERT INTO users (username, password, role, full_name) VALUES (?, ?, ?, ?)");
-            $stmt->execute(['manager', 'manager123', 'manager', 'Admin Manager']);
-            $stmt->execute(['clerk', 'clerk123', 'stock_clerk', 'Stock Clerk']);
-            $stmt->execute(['account', 'account123', 'account_clerk', 'Account Clerk']);
+            $stmt = $this->pdo->prepare("INSERT INTO users (username, password, role, full_name, email, status, redirect_page) VALUES (?, ?, ?, ?, ?, 'active', ?)");
+            $stmt->execute(['manager', 'manager123', 'manager', 'Admin Manager', 'manager@pearlland.com', 'manager-dashboard.php']);
+            $stmt->execute(['admin', 'admin123', 'admin', 'System Admin', 'admin@pearlland.com', 'admin-dashboard-embedded.html']);
+            $stmt->execute(['clerk', 'clerk123', 'stock_clerk', 'Stock Clerk', 'clerk@pearlland.com', 'stockdashboard.html']);
+            $stmt->execute(['account', 'account123', 'account_clerk', 'Account Clerk', 'account@pearlland.com', 'accountdashboard.html']);
         }
     }
 
