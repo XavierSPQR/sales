@@ -45,19 +45,26 @@ class Database {
 
         try {
             if ($this->driver === 'mysql') {
-                $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
-                $this->pdo = new PDO($dsn, $this->username, $this->password);
+                try {
+                    $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
+                    $this->pdo = new PDO($dsn, $this->username, $this->password);
+                } catch (PDOException $e) {
+                    $this->driver = 'sqlite';
+                    $dsn = "sqlite:" . $this->sqlitePath;
+                    $this->pdo = new PDO($dsn);
+                    $this->pdo->exec("PRAGMA foreign_keys = ON");
+                    $this->initSqlite();
+                }
             } else {
                 $dsn = "sqlite:" . $this->sqlitePath;
                 $this->pdo = new PDO($dsn);
-                // Enable foreign keys for SQLite
                 $this->pdo->exec("PRAGMA foreign_keys = ON");
+                $this->initSqlite();
             }
 
             // Common PDO settings
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         } catch (PDOException $e) {
             die("❌ Database connection failed: " . $e->getMessage());
@@ -75,6 +82,66 @@ class Database {
     // Prevent unserialization
     public function __wakeup() {
         throw new \Exception("Cannot unserialize a singleton.");
+    }
+
+    private function initSqlite() {
+        $this->pdo->exec("CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            role TEXT NOT NULL,
+            full_name TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $this->pdo->exec("CREATE TABLE IF NOT EXISTS customers (
+            customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_code TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
+            email TEXT,
+            phone TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $this->pdo->exec("CREATE TABLE IF NOT EXISTS suppliers (
+            supplier_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            contact TEXT,
+            email TEXT,
+            phone TEXT,
+            materials TEXT,
+            orders_cost REAL DEFAULT 0.00,
+            status TEXT DEFAULT 'active',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $this->pdo->exec("CREATE TABLE IF NOT EXISTS products (
+            product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_code TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
+            category TEXT,
+            price REAL NOT NULL,
+            current_stock REAL DEFAULT 0.00,
+            reorder_level REAL DEFAULT 10.00,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $this->pdo->exec("CREATE TABLE IF NOT EXISTS orders (
+            order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_code TEXT NOT NULL UNIQUE,
+            customer_id INTEGER,
+            order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+            total_amount REAL NOT NULL,
+            status TEXT DEFAULT 'pending'
+        )");
+
+        $userCount = $this->pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+        if ($userCount == 0) {
+            $stmt = $this->pdo->prepare("INSERT INTO users (username, password, role, full_name) VALUES (?, ?, ?, ?)");
+            $stmt->execute(['manager', 'manager123', 'manager', 'Admin Manager']);
+            $stmt->execute(['clerk', 'clerk123', 'stock_clerk', 'Stock Clerk']);
+            $stmt->execute(['account', 'account123', 'account_clerk', 'Account Clerk']);
+        }
     }
 
     // ─── Public Methods ──────────────────────────────────────
