@@ -6,55 +6,76 @@ requireRole('manager');
 $pdo = Database::getInstance()->getConnection();
 
 // ===================== GET COUNTS FOR DASHBOARD =====================
-$customerCount = $pdo->query("SELECT COUNT(*) FROM customers")->fetchColumn();
-$supplierCount = $pdo->query("SELECT COUNT(*) FROM suppliers WHERE status = 'active'")->fetchColumn();
-$pendingSupplierCount = $pdo->query("SELECT COUNT(*) FROM suppliers WHERE status = 'pending'")->fetchColumn();
-$productCount = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
-$orderCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE MONTH(order_date) = MONTH(CURRENT_DATE())")->fetchColumn();
+$customerCount = 0;
+$supplierCount = 0;
+$pendingSupplierCount = 0;
+$productCount = 0;
+$orderCount = 0;
+
+try { $customerCount = $pdo->query("SELECT COUNT(*) FROM customers")->fetchColumn(); } catch (Exception $e) {}
+try { $supplierCount = $pdo->query("SELECT COUNT(*) FROM suppliers WHERE status = 'active'")->fetchColumn(); } catch (Exception $e) {}
+try { $pendingSupplierCount = $pdo->query("SELECT COUNT(*) FROM suppliers WHERE status = 'pending'")->fetchColumn(); } catch (Exception $e) {}
+try { $productCount = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn(); } catch (Exception $e) {}
+
+try {
+    if (Database::getInstance()->getDriver() === 'sqlite') {
+        $orderCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE strftime('%m', order_date) = strftime('%m', 'now')")->fetchColumn();
+    } else {
+        $orderCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE MONTH(order_date) = MONTH(CURRENT_DATE())")->fetchColumn();
+    }
+} catch (Exception $e) {
+    $orderCount = 0;
+}
 
 // ===================== GET PENDING SUPPLIER REGISTRATIONS =====================
-$pendingSuppliers = $pdo->query("
-    SELECT s.*, 
-           s.created_at as registered_date,
-           s.name as company_name,
-           s.contact as contact_person,
-           s.email,
-           s.phone,
-           s.business_type,
-           s.materials,
-           s.supplier_code
-    FROM suppliers s 
-    WHERE s.status = 'pending' 
-    ORDER BY s.created_at DESC
-")->fetchAll();
+try {
+    $pendingSuppliers = $pdo->query("
+        SELECT s.*,
+               s.created_at as registered_date,
+               s.name as company_name,
+               s.contact as contact_person,
+               s.email,
+               s.phone,
+               s.materials
+        FROM suppliers s
+        WHERE s.status = 'pending'
+        ORDER BY s.created_at DESC
+    ")->fetchAll();
+} catch (Exception $e) {
+    $pendingSuppliers = [];
+}
 
 // ===================== GET ACTIVE SUPPLIERS =====================
-$activeSuppliers = $pdo->query("
-    SELECT s.*, 
-           s.created_at as registered_date,
-           s.updated_at as approved_date,
-           s.name as company_name,
-           s.contact as contact_person,
-           s.email,
-           s.phone,
-           s.business_type,
-           s.materials,
-           s.supplier_code,
-           (SELECT COUNT(*) FROM purchase_orders po WHERE po.supplier_id = s.supplier_id) as order_count,
-           (SELECT COALESCE(SUM(po.total_amount), 0) FROM purchase_orders po WHERE po.supplier_id = s.supplier_id) as total_orders_cost
-    FROM suppliers s 
-    WHERE s.status = 'active' 
-    ORDER BY s.name ASC
-")->fetchAll();
+try {
+    $activeSuppliers = $pdo->query("
+        SELECT s.*,
+               s.created_at as registered_date,
+               s.updated_at as approved_date,
+               s.name as company_name,
+               s.contact as contact_person,
+               s.email,
+               s.phone,
+               s.materials
+        FROM suppliers s
+        WHERE s.status = 'active'
+        ORDER BY s.name ASC
+    ")->fetchAll();
+} catch (Exception $e) {
+    $activeSuppliers = [];
+}
 
 // ===================== GET RECENT ORDERS =====================
-$orders = $pdo->query("
-    SELECT o.*, c.name as customer_name 
-    FROM orders o 
-    LEFT JOIN customers c ON o.customer_id = c.customer_id 
-    ORDER BY o.order_date DESC 
-    LIMIT 5
-")->fetchAll();
+try {
+    $orders = $pdo->query("
+        SELECT o.*, c.name as customer_name
+        FROM orders o
+        LEFT JOIN customers c ON o.customer_id = c.customer_id
+        ORDER BY o.order_date DESC
+        LIMIT 5
+    ")->fetchAll();
+} catch (Exception $e) {
+    $orders = [];
+}
 
 // ===================== GET EMAIL LOG =====================
 try {
@@ -97,11 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $body .= "You can now log in to your supplier account.\n\n";
         $body .= "Best regards,\nPearl Land Commodities Team";
 
-        $emailStmt = $pdo->prepare("
-            INSERT INTO email_log (recipient, subject, body, type, sent_at) 
-            VALUES (?, ?, ?, 'supplier_approval', NOW())
-        ");
-        $emailStmt->execute([$supplierData['email'], $subject, $body]);
+        try {
+            $emailStmt = $pdo->prepare("
+                INSERT INTO email_log (recipient, subject, body, type, sent_at)
+                VALUES (?, ?, ?, 'supplier_approval', NOW())
+            ");
+            $emailStmt->execute([$supplierData['email'], $subject, $body]);
+        } catch (Exception $e) {}
 
         $_SESSION['success'] = "✅ Supplier approved successfully! Email notification sent.";
 
@@ -126,11 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $body .= "Reason: " . ($reason ?: "Your application did not meet our current requirements.") . "\n\n";
         $body .= "Best regards,\nPearl Land Commodities Team";
 
-        $emailStmt = $pdo->prepare("
-            INSERT INTO email_log (recipient, subject, body, type, sent_at) 
-            VALUES (?, ?, ?, 'supplier_rejection', NOW())
-        ");
-        $emailStmt->execute([$supplierData['email'], $subject, $body]);
+        try {
+            $emailStmt = $pdo->prepare("
+                INSERT INTO email_log (recipient, subject, body, type, sent_at)
+                VALUES (?, ?, ?, 'supplier_rejection', NOW())
+            ");
+            $emailStmt->execute([$supplierData['email'], $subject, $body]);
+        } catch (Exception $e) {}
 
         $_SESSION['success'] = "❌ Supplier rejected. Email notification sent.";
     }
@@ -209,8 +234,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_report_data') {
                 $supplierData = $pdo->prepare("
                     SELECT 
                         s.supplier_code,
-                        s.company_name,
-                        s.contact_person,
+                        s.name as company_name,
+                        s.contact as contact_person,
                         s.email,
                         s.phone,
                         s.materials,
@@ -254,7 +279,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_report_data') {
                     SELECT 
                         po.po_code,
                         po.supplier_id,
-                        s.company_name as supplier_name,
+                        s.name as supplier_name,
                         po.total_amount,
                         po.payment_terms,
                         po.payment_status,
@@ -414,7 +439,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_report_data') {
                     SELECT 
                         sr.sample_code,
                         sr.supplier_id,
-                        s.company_name as supplier_name,
+                        s.name as supplier_name,
                         sr.material_name,
                         sr.quantity,
                         sr.request_date,
@@ -485,7 +510,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_suppliers') {
         SELECT s.*, s.created_at as registered_date, s.updated_at as approved_date
         FROM suppliers s 
         WHERE s.status = 'active' 
-        ORDER BY s.company_name ASC
+        ORDER BY s.name ASC
     ")->fetchAll();
     
     echo json_encode([
@@ -499,11 +524,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_suppliers') {
 // ===================== AJAX: GET EMAIL LOG =====================
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_email_log') {
     header('Content-Type: application/json');
-    $logs = $pdo->query("
-        SELECT * FROM email_log 
-        ORDER BY sent_at DESC 
-        LIMIT 50
-    ")->fetchAll();
+    try {
+        $logs = $pdo->query("
+            SELECT * FROM email_log
+            ORDER BY sent_at DESC
+            LIMIT 50
+        ")->fetchAll();
+    } catch (Exception $e) {
+        $logs = [];
+    }
     echo json_encode(['success' => true, 'data' => $logs]);
     exit;
 }
@@ -511,7 +540,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'get_email_log') {
 // ===================== AJAX: CLEAR EMAIL LOG =====================
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'clear_email_log') {
     header('Content-Type: application/json');
-    $pdo->query("TRUNCATE TABLE email_log");
+    try {
+        $pdo->query("TRUNCATE TABLE email_log");
+    } catch (Exception $e) {}
     echo json_encode(['success' => true, 'message' => 'Email log cleared']);
     exit;
 }

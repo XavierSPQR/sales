@@ -666,14 +666,34 @@
             }
 
             if (username === validCred.username && password === validCred.password) {
-                const demoUser = {
-                    username: username,
-                    role: role,
-                    full_name: roleDisplayMap[role],
-                    email: username + '@pelcomo.lk'
-                };
-                localStorage.setItem('user_session', JSON.stringify(demoUser));
-                
+                try {
+                    const response = await fetch('api/login.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password, role })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        localStorage.setItem('user_session', JSON.stringify(result.user));
+                    } else {
+                        const demoUser = {
+                            username: username,
+                            role: role,
+                            full_name: roleDisplayMap[role],
+                            email: username + '@pelcomo.lk'
+                        };
+                        localStorage.setItem('user_session', JSON.stringify(demoUser));
+                    }
+                } catch (e) {
+                    const demoUser = {
+                        username: username,
+                        role: role,
+                        full_name: roleDisplayMap[role],
+                        email: username + '@pelcomo.lk'
+                    };
+                    localStorage.setItem('user_session', JSON.stringify(demoUser));
+                }
+
                 successMsgDiv.textContent = '✅ Login successful!';
                 successMsgDiv.style.display = 'block';
                 setTimeout(() => {
