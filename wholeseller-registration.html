@@ -211,51 +211,17 @@
                     body: JSON.stringify(userData) 
                 });
                 
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        showSuccess('✅ Registration successful! Redirecting...');
-                        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-                        return;
-                    } else {
-                        showError(result.message || 'Registration failed');
-                        return;
-                    }
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess('✅ Registration successful! Redirecting...');
+                    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+                } else {
+                    showError(result.message || 'Registration failed');
                 }
-                
-                // If API fails, save to localStorage
-                saveToLocalStorage(userData);
-                
             } catch (error) {
-                // API unavailable - save locally
-                console.log('API unavailable, saving locally...');
-                saveToLocalStorage(userData);
+                showError('Server connection error. Please try again.');
             }
         });
-        
-        function saveToLocalStorage(userData) {
-            // Get existing users
-            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            
-            // Check if username already exists
-            if (users.some(u => u.username.toLowerCase() === userData.username.toLowerCase())) {
-                showError('Username already exists. Please choose another.');
-                return;
-            }
-            
-            // Check if email already exists
-            if (users.some(u => u.email.toLowerCase() === userData.email.toLowerCase())) {
-                showError('Email already registered. Please use another email.');
-                return;
-            }
-            
-            // Add new user
-            users.push(userData);
-            localStorage.setItem('registered_users', JSON.stringify(users));
-            
-            showSuccess('✅ Registration successful! You can now login.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-        }
         
         function showError(msg) {
             const errorDiv = document.getElementById('errorMessage');

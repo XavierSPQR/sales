@@ -413,7 +413,7 @@
         // Load incoming stock orders added by manager approvals
         function loadIncomingStockOrders() {
             try {
-                let list = JSON.parse(localStorage.getItem('stockOrders')) || [];
+                let list = JSON.parse(null) || [];
                 const tbody = document.getElementById('incomingOrdersBody');
                 if(!tbody) return;
                 if(list.length === 0) {

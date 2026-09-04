@@ -969,11 +969,11 @@
     </script>
     <script>
         // ===================== DATA =====================
-        let customerPayments = JSON.parse(localStorage.getItem('custPay') || 'null');
-        let wholesalerPayments = JSON.parse(localStorage.getItem('wholePay') || 'null');
-        let supplierPayments = JSON.parse(localStorage.getItem('supPay') || 'null');
-        let grns = JSON.parse(localStorage.getItem('grns') || 'null');
-        let supplierInvoices = JSON.parse(localStorage.getItem('supplierInvoices')) || [];
+        let customerPayments = JSON.parse(null || 'null');
+        let wholesalerPayments = JSON.parse(null || 'null');
+        let supplierPayments = JSON.parse(null || 'null');
+        let grns = JSON.parse(null || 'null');
+        let supplierInvoices = JSON.parse(null) || [];
 
         // Sample data if nothing in storage
         if (!customerPayments) customerPayments = [
@@ -1000,10 +1000,10 @@
         ];
 
         function save() {
-            localStorage.setItem('custPay', JSON.stringify(customerPayments));
-            localStorage.setItem('wholePay', JSON.stringify(wholesalerPayments));
-            localStorage.setItem('supPay', JSON.stringify(supplierPayments));
-            localStorage.setItem('supplierInvoices', JSON.stringify(supplierInvoices));
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
+            /* localStorage removed */
         }
 
         // ===================== NAVIGATION =====================
@@ -1410,7 +1410,7 @@
             };
 
             supplierInvoices.push(newInvoice);
-            localStorage.setItem('supplierInvoices', JSON.stringify(supplierInvoices));
+            /* localStorage removed */
 
             // Send email
             sendSupplierInvoiceEmail(newInvoice);
@@ -1622,9 +1622,9 @@
 
             // Auto sync
             setInterval(() => {
-                let storedGrns = JSON.parse(localStorage.getItem('grns'));
+                let storedGrns = JSON.parse(null);
                 if (storedGrns) grns = storedGrns;
-                let storedInvoices = JSON.parse(localStorage.getItem('supplierInvoices'));
+                let storedInvoices = JSON.parse(null);
                 if (storedInvoices) supplierInvoices = storedInvoices;
                 renderSupPay();
                 renderSupInvoices();

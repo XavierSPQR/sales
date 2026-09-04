@@ -662,7 +662,7 @@
 
         // Load data from localStorage (shared with Stock Clerk)
         function loadSupplierFlowData() {
-            let storedSampleRequests = localStorage.getItem('sampleRequests');
+            let storedSampleRequests = null;
             if(storedSampleRequests) {
                 let allRequests = JSON.parse(storedSampleRequests);
                 // Filter only requests for current supplier
@@ -674,7 +674,7 @@
                 ];
             }
             
-            let storedQCReports = localStorage.getItem('qcReports');
+            let storedQCReports = null;
             if(storedQCReports) {
                 let allQC = JSON.parse(storedQCReports);
                 qcResults = allQC.filter(q => q.supplier === currentSupplier.name);
@@ -686,7 +686,7 @@
             }
             
             // Load sent samples
-            let storedSentSamples = localStorage.getItem('sentSamples');
+            let storedSentSamples = null;
             if(storedSentSamples) {
                 sentSamples = JSON.parse(storedSentSamples);
             } else {
@@ -698,7 +698,7 @@
 
         // Save sent samples to localStorage
         function saveSentSamples() {
-            localStorage.setItem('sentSamples', JSON.stringify(sentSamples));
+            /* localStorage removed */
         }
 
         // Render Dashboard Stats
@@ -775,12 +775,12 @@
                 sampleRequests[reqIndex].status = 'Sample Sent';
                 
                 // Update localStorage
-                let allRequests = JSON.parse(localStorage.getItem('sampleRequests') || '[]');
+                let allRequests = JSON.parse(null || '[]');
                 let globalIndex = allRequests.findIndex(s => s.id === requestId);
                 if(globalIndex !== -1) {
                     allRequests[globalIndex].sampleSent = true;
                     allRequests[globalIndex].status = 'Sample Sent';
-                    localStorage.setItem('sampleRequests', JSON.stringify(allRequests));
+                    /* localStorage removed */
                 }
             }
             

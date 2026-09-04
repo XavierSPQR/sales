@@ -1270,10 +1270,10 @@
 
         // ===================== GET ACTIVE SUPPLIERS (Only from Manager's approved list) =====================
         function getActiveSuppliers() {
-            let managersSuppliers = JSON.parse(localStorage.getItem('managerSuppliers')) || [];
+            let managersSuppliers = JSON.parse(null) || [];
             let approvedSuppliers = managersSuppliers.filter(s => s.status === 'Active');
             
-            let registeredUsers = JSON.parse(localStorage.getItem('registered_users')) || [];
+            let registeredUsers = JSON.parse(null) || [];
             let approvedUsers = registeredUsers.filter(u => u.status === 'approved' || u.account_status === 'approved');
             
             approvedUsers.forEach(user => {
@@ -1293,7 +1293,7 @@
                 }
             });
             
-            localStorage.setItem('managerSuppliers', JSON.stringify(approvedSuppliers));
+            /* localStorage removed */
             
             if (approvedSuppliers.length === 0) {
                 return [
@@ -1326,7 +1326,7 @@
         // ===================== LOGOUT =====================
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.clear();
+                /* localStorage cleared */
                 window.location.href = 'login.html';
             }
         }
@@ -1796,7 +1796,7 @@
             });
 
             // Save to localStorage for supplier
-            let pendingSamples = JSON.parse(localStorage.getItem('pendingSamples') || '[]');
+            let pendingSamples = JSON.parse(null || '[]');
             pendingSamples.push({
                 sampleId: id,
                 supplier: supplier,
@@ -1806,7 +1806,7 @@
                 status: 'Pending',
                 supplierUsername: supplierObj.username || 'N/A'
             });
-            localStorage.setItem('pendingSamples', JSON.stringify(pendingSamples));
+            /* localStorage removed */
 
             showToast(`✅ Sample requested from ${supplier} for ${material}`, 'success');
             loadSampleFlowData();
@@ -1846,7 +1846,7 @@
                 });
             }
 
-            localStorage.setItem('qcReports', JSON.stringify(qcReports));
+            /* localStorage removed */
 
             showToast(result === 'Pass' ? `✅ Sample ${sampleId} PASSED QC.` : `❌ Sample ${sampleId} REJECTED.`, 
                 result === 'Pass' ? 'success' : 'error');
@@ -1903,7 +1903,7 @@
             };
 
             purchaseOrders.push(newPO);
-            localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+            /* localStorage removed */
 
             let sample = sampleRequests.find(s => s.id === sampleId);
             if (sample) {
@@ -1976,13 +1976,13 @@
             };
 
             grns.push(newGRN);
-            localStorage.setItem('grns', JSON.stringify(grns));
+            /* localStorage removed */
 
             // Update product stock
             let product = products.find(p => p.name.toLowerCase().includes(po.material.toLowerCase()));
             if (product) {
                 product.stock += receivedQty;
-                localStorage.setItem('managerProducts', JSON.stringify(products));
+                /* localStorage removed */
             }
 
             showToast(`✅ GRN ${grnId} created and auto-approved!`, 'success');

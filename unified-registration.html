@@ -852,63 +852,41 @@
                 return;
             }
 
-            // Check username uniqueness
-            const existingCustomers = JSON.parse(localStorage.getItem('customers') || '[]');
-            const existingWholesalers = JSON.parse(localStorage.getItem('wholesalers') || '[]');
-            const allUsers = [...existingCustomers, ...existingWholesalers];
+            const payload = {
+                role: type,
+                username,
+                password,
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                phone,
+                address: document.getElementById(prefix + 'address').value,
+                city: document.getElementById(prefix + 'city').value,
+                postal_code: document.getElementById(prefix + 'postalCode').value,
+                company_name: type === 'wholesaler' ? document.getElementById('whole_companyName').value : null,
+                business_type: type === 'wholesaler' ? document.getElementById('whole_businessType').value : null,
+                registration_number: type === 'wholesaler' ? document.getElementById('whole_regNumber').value : null
+            };
 
-            if (allUsers.some(u => u.username === username)) {
-                showAlert('❌ Username already taken. Please choose a different username', 'error');
+            try {
+                const res = await fetch('api/register.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    showAlert(`✅ ${type === 'customer' ? 'Customer' : 'Wholesaler'} registered successfully!`, 'success');
+                    form.reset();
+                } else {
+                    showAlert('❌ ' + (result.message || 'Registration failed'), 'error');
+                    return;
+                }
+            } catch (err) {
+                showAlert('❌ Server connection error. Please try again.', 'error');
                 return;
             }
-
-            // Save data
-            if (type === 'customer') {
-                const customerData = {
-                    id: Date.now(),
-                    firstName,
-                    lastName,
-                    fullName: firstName + ' ' + lastName,
-                    email,
-                    phone,
-                    address: document.getElementById('cust_address').value,
-                    city: document.getElementById('cust_city').value,
-                    postalCode: document.getElementById('cust_postalCode').value,
-                    district: document.getElementById('cust_district').value,
-                    country: document.getElementById('cust_country').value,
-                    username,
-                    password,
-                    accountStatus: 'active',
-                    registeredDate: new Date().toISOString()
-                };
-                existingCustomers.push(customerData);
-                localStorage.setItem('customers', JSON.stringify(existingCustomers));
-            } else {
-                const wholesalerData = {
-                    id: Date.now(),
-                    firstName,
-                    lastName,
-                    companyName: document.getElementById('whole_companyName').value,
-                    email,
-                    phone,
-                    address: document.getElementById('whole_address').value,
-                    city: document.getElementById('whole_city').value,
-                    postalCode: document.getElementById('whole_postalCode').value,
-                    district: document.getElementById('whole_district').value,
-                    country: document.getElementById('whole_country').value,
-                    businessType: document.getElementById('whole_businessType').value,
-                    regNumber: document.getElementById('whole_regNumber').value,
-                    username,
-                    password,
-                    accountStatus: 'active',
-                    registeredDate: new Date().toISOString()
-                };
-                existingWholesalers.push(wholesalerData);
-                localStorage.setItem('wholesalers', JSON.stringify(existingWholesalers));
-            }
-
-            showAlert(`✅ ${type === 'customer' ? 'Customer' : 'Wholesaler'} registered successfully!`, 'success');
-            form.reset();
 
             setTimeout(() => {
                 if (isAdminMode) {

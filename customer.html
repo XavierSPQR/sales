@@ -1706,35 +1706,32 @@
 
         function checkSession() {
             try {
-                const session = JSON.parse(localStorage.getItem('user_session'));
-                if (!session || session.role !== 'customer') {
+                const res = await fetch('api/me.php');
+                const data = await res.json();
+                if (!data.success || !data.user || data.user.role !== 'customer') {
                     window.location.href = 'login.html';
                     return null;
                 }
-                return session;
+                return data.user;
             } catch (e) {
                 window.location.href = 'login.html';
                 return null;
             }
         }
 
-        function logout() {
+        async function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('user_session');
-                localStorage.removeItem('cart');
-                localStorage.removeItem('selectedShippingZone');
+                try {
+                    await fetch('logout.php');
+                } catch (e) {}
                 window.location.href = 'login.html';
             }
         }
 
-        function loadCustomerFromSession() {
+        async function loadCustomerFromSession() {
             try {
-                const session = JSON.parse(localStorage.getItem('user_session'));
-
-                if (!session || session.role !== 'customer') {
-                    window.location.href = 'login.html';
-                    return;
-                }
+                const session = await checkSession();
+                if (!session) return;
 
                 const fullName = session.full_name || session.first_name + ' ' + session.last_name || 'Customer';
                 const email = session.email || 'No email';
@@ -1923,14 +1920,14 @@
         }
 
         function logEmailNotification(orderId, email, type) {
-            const emails = JSON.parse(localStorage.getItem('email_log') || '[]');
+            const emails = JSON.parse(null || '[]');
             emails.push({
                 orderId: orderId,
                 email: email,
                 date: new Date().toISOString(),
                 type: type
             });
-            localStorage.setItem('email_log', JSON.stringify(emails));
+            /* localStorage removed */
         }
 
         // ===================================================
@@ -1968,7 +1965,7 @@
 
                     showToast(`❌ Order ${order.id} has been REJECTED by Manager!`, 'error');
 
-                    let messages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+                    let messages = JSON.parse(null || '[]');
                     messages.push({
                         date: new Date().toISOString().split('T')[0],
                         orderId: order.id,
@@ -1976,7 +1973,7 @@
                         recipientType: 'Customer',
                         type: 'rejection'
                     });
-                    localStorage.setItem('userMessages', JSON.stringify(messages));
+                    /* localStorage removed */
                     showUserMessages();
                 }
             });
@@ -2047,8 +2044,8 @@
         // ========== DATA ==========
         // ===================================================
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let selectedZoneId = localStorage.getItem('selectedShippingZone') || 'local_std';
+        let cart = JSON.parse(null) || [];
+        let selectedZoneId = null || 'local_std';
         let orders = [];
         let returns = [];
         let currentFilter = 'all';
@@ -2121,7 +2118,7 @@
 
         function selectZone(zoneId) {
             selectedZoneId = zoneId;
-            localStorage.setItem('selectedShippingZone', zoneId);
+            /* localStorage removed */
             renderShippingOptions();
         }
 
@@ -2143,7 +2140,7 @@
 
         function syncAllStatuses() {
             try {
-                let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+                let managerOrders = JSON.parse(null || '[]');
                 managerOrders.forEach(mo => {
                     let o = orders.find(x => x.id === mo.id);
                     if (o) {
@@ -2155,7 +2152,7 @@
                     }
                 });
 
-                let linkedOrders = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+                let linkedOrders = JSON.parse(null || '[]');
                 linkedOrders.forEach(lo => {
                     let o = orders.find(x => x.id === lo.id);
                     if (o) {
@@ -2176,13 +2173,13 @@
         function pushOrdersToAllDashboards() {
             let customerName = 'Customer';
             try {
-                const session = JSON.parse(localStorage.getItem('user_session'));
+                const session = JSON.parse(null);
                 if (session) {
                     customerName = session.full_name || session.first_name + ' ' + session.last_name || 'Customer';
                 }
             } catch (e) {}
 
-            let managerOrders = JSON.parse(localStorage.getItem('managerOrders') || '[]');
+            let managerOrders = JSON.parse(null || '[]');
             orders.forEach(custOrder => {
                 let existing = managerOrders.find(o => o.id === custOrder.id);
                 const firstItem = custOrder.items && custOrder.items[0] ? custOrder.items[0] : null;
@@ -2214,9 +2211,9 @@
                     existing.paymentDate = custOrder.paymentDate;
                 }
             });
-            localStorage.setItem('managerOrders', JSON.stringify(managerOrders));
+            /* localStorage removed */
 
-            let linkedOrders = JSON.parse(localStorage.getItem('linkedDashOrders') || '[]');
+            let linkedOrders = JSON.parse(null || '[]');
             orders.forEach(custOrder => {
                 let existing = linkedOrders.find(o => o.id === custOrder.id);
                 const firstItem = custOrder.items && custOrder.items[0] ? custOrder.items[0] : null;
@@ -2243,7 +2240,7 @@
                     existing.paymentDate = custOrder.paymentDate;
                 }
             });
-            localStorage.setItem('linkedDashOrders', JSON.stringify(linkedOrders));
+            /* localStorage removed */
         }
 
         // ===================================================
@@ -2415,7 +2412,7 @@
         }
 
         function updateCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
+            /* localStorage removed */
             updateCartCount();
             displayCart();
             renderShippingOptions();
@@ -2792,7 +2789,7 @@
 
         function showUserMessages() {
             try {
-                let messages = JSON.parse(localStorage.getItem('userMessages') || '[]');
+                let messages = JSON.parse(null || '[]');
                 let html = '';
                 messages.filter(m => m.recipientType === 'Customer').reverse().forEach(m => {
                     const isRejection = m.type === 'rejection';
@@ -2816,14 +2813,14 @@
         function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
 
         function updateProfile() {
-            const session = JSON.parse(localStorage.getItem('user_session'));
+            const session = JSON.parse(null);
             if (session) {
                 session.full_name = document.getElementById('profileName').value;
                 session.email = document.getElementById('profileEmail').value;
                 session.phone = document.getElementById('profilePhone').value;
                 session.address = document.getElementById('profileAddress').value;
                 session.city = document.getElementById('profileCity').value;
-                localStorage.setItem('user_session', JSON.stringify(session));
+                /* localStorage removed */
                 loadCustomerFromSession();
                 showToast('✅ Profile updated successfully!');
             }
@@ -2840,12 +2837,12 @@
 
             loadCustomerFromSession();
 
-            const savedOrders = localStorage.getItem('customer_orders');
+            const savedOrders = null;
             if (savedOrders) {
                 orders = JSON.parse(savedOrders);
             }
 
-            const savedReturns = localStorage.getItem('customer_returns');
+            const savedReturns = null;
             if (savedReturns) {
                 returns = JSON.parse(savedReturns);
             }
@@ -2870,8 +2867,8 @@
         });
 
         window.addEventListener('beforeunload', () => {
-            localStorage.setItem('customer_orders', JSON.stringify(orders));
-            localStorage.setItem('customer_returns', JSON.stringify(returns));
+            /* localStorage removed */
+            /* localStorage removed */
         });
     </script>
 </body>
